@@ -53,8 +53,4 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next, ) => {
- /* todo auth middleware **/
-})
-
 export default router

@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import MenuLayout from "@/components/layouts/MenuLayout.vue"
+
 </script>
+
 
 <template>
   <MenuLayout>
-    <p>test</p>
+    test
   </MenuLayout>
 </template>
+
+<style></style>

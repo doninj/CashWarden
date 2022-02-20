@@ -9,7 +9,7 @@ const items: MenuItem[] = [
   {
     route: Routes.Home,
     label: "Vue d'ensemble",
-    icon: "pie-chart"
+    icon: "pie-chart",
   },
   {
     route: Routes.Budget,

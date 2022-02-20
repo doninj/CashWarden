@@ -6,7 +6,6 @@
 <template>
   <div id="app-container">
     <Header/>
-
     <main>
       <slot/>
     </main>

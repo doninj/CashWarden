@@ -2,12 +2,13 @@
 import type { IconName } from "@/faIcons"
 
 defineProps<{
-  name: IconName
+  name: IconName,
+  size: String
 }>()
 </script>
 
 <template>
- <font-awesome-icon :icon="['fas', name]" />
+ <font-awesome-icon :icon="['fas', name]"  :size="size" />
 </template>
 
 <style scoped>

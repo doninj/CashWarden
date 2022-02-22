@@ -9,12 +9,15 @@ import Divider from "primevue/divider"
 import Card from "primevue/card"
 import Avatar from "primevue/avatar"
 import Chart from 'primevue/chart';
+import Dropdown from "primevue/dropdown";
 
 export default [
-  Dialog,
-  SelectButton,
-  Divider,
-  Card,
-  Avatar,
-  Chart
+    Dialog,
+    Divider,
+    Dropdown,
+    SelectButton,
+    Divider,
+    Card,
+    Avatar,
+    Chart
 ]

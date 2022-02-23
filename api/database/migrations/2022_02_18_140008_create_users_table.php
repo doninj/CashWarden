@@ -19,8 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('lastName', 50);
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('idRequisition', 128);
-            $table->unsignedBigInteger("account_id");
+            $table->string('avatar');
+            $table->string('idRequisition', 128)->nullable(true);
+            $table->unsignedBigInteger("account_id")->nullable(true);
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts');

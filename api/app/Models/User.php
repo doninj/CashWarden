@@ -49,4 +49,13 @@ class User extends Authenticatable
     public function limitedTransactions(){
         return $this->hasMany(LimitedTransaction::class);
     }
+
+    /**
+     * Méthode permettant de set le mot de passe
+     * @param $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = bcrypt($password);
+    }
 }

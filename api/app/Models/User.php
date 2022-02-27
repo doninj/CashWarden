@@ -55,6 +55,10 @@ class User extends Authenticatable
         return $this->hasMany(LimitedTransaction::class);
     }
 
+    public function account(){
+        return $this->hasOne(Account::class, "account_id");
+    }
+
     public function getHasBankAutorizationAttribute(){
         if($this->idRequisition ?? null){
             return true;
@@ -78,5 +82,14 @@ class User extends Authenticatable
     public function setPassword($password)
     {
         $this->password = bcrypt($password);
+    }
+
+    public function addAccount($account)
+    {
+        $account = new Account();
+        $account->id = $account["id"];
+        $account->name = $account["name"];
+        $account->save();
+        $this->setRelation("account", $account);
     }
 }

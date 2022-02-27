@@ -23,6 +23,11 @@ class User extends Authenticatable
         'password',
     ];
 
+    public $appends = [
+        "hasBankAutorization",
+        "hasAccountChoices"
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -48,6 +53,22 @@ class User extends Authenticatable
 
     public function limitedTransactions(){
         return $this->hasMany(LimitedTransaction::class);
+    }
+
+    public function getHasBankAutorizationAttribute(){
+        if($this->idRequisition ?? null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getHasAccountChoicesAttribute(){
+        if($this->account_id){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**

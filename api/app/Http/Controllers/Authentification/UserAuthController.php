@@ -85,8 +85,10 @@ class UserAuthController
             $response = [
                 'user' => [
                     "id" => $user->id,
-                    "nickname" => $user->nickname,
-                    "role_name" => $user->role->label,
+                    "firstName" => $user->firstName,
+                    "lastName" => $user->lastName,
+                    "hasBankAutorization" => $user->hasBankAutorization,
+                    "hasAccountChoices" => $user->hasAccountChoices,
                     "avatar" => $user->avatar
                 ],
                 'token' => $token

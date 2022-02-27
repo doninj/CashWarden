@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
+import sleep from "@/utils/sleep"
 
 type User = {
-  name: string
+  email: string
 }
 
 interface AuthState {
@@ -17,8 +18,14 @@ export const useAuth = defineStore({
     isLoggedIn: (state) => !!state.user
   },
   actions: {
-    login() {
-      this.user = { name: 'John Doe' }
+    async login(email: string, password: string) {
+      await sleep(2000)
+      this.user = { email }
     },
+
+    async register(email: string, password: string, confirmPassword: string) {
+      await sleep(2000)
+      this.user = { email }
+    }
   }
 })

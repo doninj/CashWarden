@@ -9,6 +9,8 @@ import router from './router'
 import primeVueComponents from "./primeVue"
 import "./faIcons"
 
+import "@/assets/style/main.scss"
+
 const app = createApp(App)
 
 app.use(createPinia())

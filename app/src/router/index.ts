@@ -1,13 +1,22 @@
-import {createRouter, createWebHistory} from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
+import {
+  createRouter,
+  createWebHistory,
+} from "vue-router"
+
+import HomeView from "@/views/HomeView.vue"
+import LoginView from "@/views/LoginView.vue"
+import RegisterView from "@/views/RegisterView.vue"
+
+import auth from "@/middlewares/auth"
+import { nextFactory } from "@/middlewares/bootstrap"
 
 export enum Routes {
-  Home = '/',
-  Login = '/login',
-  Budget = '/budget',
-  Transactions = '/transactions',
-  Settings = '/settings',
+  Home = "/",
+  Login = "/login",
+  Register = "/register",
+  Budget = "/budget",
+  Transactions = "/transactions",
+  Settings = "/settings",
 }
 
 const router = createRouter({
@@ -17,6 +26,11 @@ const router = createRouter({
       path: Routes.Login,
       name: 'login',
       component: LoginView
+    },
+    {
+      path: Routes.Register,
+      name: "register",
+      component: RegisterView
     },
     {
       path: Routes.Home,
@@ -70,6 +84,26 @@ const router = createRouter({
       ]
     },
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.middleware) {
+    const middleware = Array.isArray(to.meta.middleware)
+      ? to.meta.middleware
+      : [ to.meta.middleware ]
+
+    const context = {
+      from,
+      next,
+      router,
+      to,
+    }
+    const nextMiddleware = nextFactory(context, middleware, 1)
+
+    return middleware[0]({ ...context, next: nextMiddleware })
+  }
+
+  return next()
 })
 
 export default router

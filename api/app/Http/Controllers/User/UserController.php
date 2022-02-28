@@ -15,31 +15,37 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request)
     {
         $user = $request->user();
-        $data = $request->validated();
+        $validated = $request->validated();
 
         try{
             // Set nom prénom
-            $user->firstName = empty($validated['firstName']) ? $user->firstName : $data["firstName"];
-            $user->lastName = empty($validated['lastName']) ? $user->firstName : $data["lastName"];
+            $user->firstName = empty($validated['firstName']) ? $user->firstName : $validated["firstName"];
+            $user->lastName = empty($validated['lastName']) ? $user->firstName : $validated["lastName"];
 
             // Set password
             if(!empty($validated['password'])){
-                $user->setPassword($data["password"]);
+                $user->setPassword($validated["password"]);
             }
 
-            if(!$user->getHasBankAutorizationAttribute()){
-                // Set idRequisition
-                $user->idRequisition = empty($validated["idRequisition"]) ? $user->idRequisition : $data["idRequisition"];
-            }else{
-                return response(["message" => "Une banque a déjà été associé à cet utilisateur !"], 400);
+            if(!empty($validated["idRequisition"])) {
+                if (!$user->getHasBankAutorizationAttribute()) {
+                    // Set idRequisition
+                    $user->idRequisition = $validated["idRequisition"];
+                } else {
+                    return response(["message" => "Une banque a déjà été associé à cet utilisateur !"], 400);
+                }
             }
 
             // Create and set account
             if(!empty($validated["account"])){
-                if(!$user->getHasAccountChoicesAttribute()){
-                    $user->addAccount($validated["account"]);
+                if ($user->getHasBankAutorizationAttribute()) {
+                    if (!$user->getHasAccountChoicesAttribute()) {
+                        $user->addAccount($validated["account"]);
+                    } else {
+                        return response(["message" => "Un compte est déjà associé à cet utilisateur !"], 400);
+                    }
                 }else{
-                    return response(["message" => "Un compte est déjà associé à cet utilisateur !"], 400);
+                    return response(["message" => "Merci de renseigner en priorité un id de réquisition !"], 400);
                 }
             }
 
@@ -51,7 +57,9 @@ class UserController extends Controller
                 [
                     "message" => "Oups une erreur est survenue !",
                     "exception" => [
-                        $e->getTrace()
+                        "message" => $e->getMessage(),
+                        "file" => $e->getFile(),
+                        "trace" => $e->getTrace()
                     ]
                 ]
             );

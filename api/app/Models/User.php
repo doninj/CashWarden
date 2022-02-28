@@ -56,7 +56,7 @@ class User extends Authenticatable
     }
 
     public function account(){
-        return $this->hasOne(Account::class, "account_id");
+        return $this->hasOne(Account::class, "id", "account_id");
     }
 
     public function getHasBankAutorizationAttribute(){
@@ -68,7 +68,7 @@ class User extends Authenticatable
     }
 
     public function getHasAccountChoicesAttribute(){
-        if($this->account_id){
+        if($this->account()->exists()){
             return true;
         }else{
             return false;
@@ -84,11 +84,11 @@ class User extends Authenticatable
         $this->password = bcrypt($password);
     }
 
-    public function addAccount($account)
+    public function addAccount($accountData)
     {
         $account = new Account();
-        $account->id = $account["id"];
-        $account->name = $account["name"];
+        $account->id = $accountData["id"];
+        $account->name = $accountData["name"];
         $account->save();
         $this->setRelation("account", $account);
     }

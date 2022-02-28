@@ -20,10 +20,12 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('avatar');
+            $table->unsignedBigInteger("bank_id")->nullable(true);
             $table->string('idRequisition', 128)->nullable(true);
             $table->unsignedBigInteger("account_id")->nullable(true);
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('bank_id')->references('id')->on('banks');
             $table->foreign('account_id')->references('id')->on('accounts');
         });
     }

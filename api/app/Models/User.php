@@ -59,6 +59,10 @@ class User extends Authenticatable
         return $this->hasOne(Account::class, "id", "account_id");
     }
 
+    public function bank(){
+        return $this->hasOne(Bank::class, "id", "bank_id");
+    }
+
     public function getHasBankAutorizationAttribute(){
         if($this->idRequisition ?? null){
             return true;
@@ -82,6 +86,16 @@ class User extends Authenticatable
     public function setPassword($password)
     {
         $this->password = bcrypt($password);
+    }
+
+    /**
+     * Méthode permettant de set une banque par son id
+     * @param $bankId
+     * @return void
+     */
+    public function setBankById($bankId){
+        $bank = Bank::find($bankId);
+        $this->setRelation("bank", $bank);
     }
 
     public function addAccount($accountData)

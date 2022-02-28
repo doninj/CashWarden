@@ -49,6 +49,15 @@ class UpdateUserRequest extends FormRequest
     ];
 
     /**
+     * Messages d'erreur concernant l'id de message
+     * @var array
+     */
+    private $bankIdMessage = [
+        "bank_id.integer" => "L'identifiant de la banque doit être du type entier",
+        "bank_id.exists" => "L'identifiant de la banque n'existe pas !"
+    ];
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -64,6 +73,7 @@ class UpdateUserRequest extends FormRequest
             $this->lastNameMessage +
             $this->firstNameMessage +
             $this->passwordMessage +
+            $this->bankIdMessage +
             $this->accountIdMessage +
             $this->accountNameMessage;
     }
@@ -80,6 +90,7 @@ class UpdateUserRequest extends FormRequest
             "lastName" => "max:50",
             "firstName" => "max:50",
             "password" => "confirmed",
+            "bank_id" => "integer|exists:banks,id",
             "account" => "array|size:2",
             "account.id" => "required_with:account",
             "account.name" => "required_with:account|max:255|string",

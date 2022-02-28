@@ -27,6 +27,10 @@ class UserController extends Controller
                 $user->setPassword($validated["password"]);
             }
 
+            if(!empty($validated["bank_id"])){
+                $user->setBankById($validated["bank_id"]);
+            }
+
             if(!empty($validated["idRequisition"])) {
                 if (!$user->getHasBankAutorizationAttribute()) {
                     // Set idRequisition

@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+use App\Models\Nordigen\StaticObjects;
+
 define('LARAVEL_START', microtime(true));
 
 /*
@@ -49,5 +51,7 @@ $status = $kernel->handle(
 */
 
 $kernel->terminate($input, $status);
+
+StaticObjects::init();
 
 exit($status);

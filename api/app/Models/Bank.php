@@ -9,6 +9,8 @@ class Bank extends Model
 {
     use HasFactory;
 
+    public $incrementing = false;
+
     public function countries(){
         return $this->belongsToMany(Country::class, "link_between_bank_and_contries", "bank_id", "country_id");
     }

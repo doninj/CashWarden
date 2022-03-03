@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Http;
 
 class NordigenAPI implements NordigenAPIRequest
 {
+    const requisitionsUri = "https://ob.nordigen.com/api/v2/requisitions/";
+    const redirectConfirmedLink = "http://localhost:5000/";
+    const accountsUri = "https://ob.nordigen.com/api/v2/accounts/";
     private $accessToken;
     private $accessExpireDate;
     private $refreshToken;
@@ -67,11 +70,7 @@ class NordigenAPI implements NordigenAPIRequest
             "query" => $params
         ]);
 
-        if($request->getStatusCode() == "200"){
-            return json_decode($request->getBody()->getContents());
-        }else{
-            throw new \ErrorException("Une erreur est survenue : " . $request->getBody());
-        }
+        return $request;
     }
 
     public function CallPOSTAPI($uri, $body, $needAuthentification=true)
@@ -89,12 +88,7 @@ class NordigenAPI implements NordigenAPIRequest
             $params["body"][] = ["Authorization" => "Bearer " . $this->accessToken];
         }
 
-        $request = $client->post($uri, $params);
-        if($request->getStatusCode() == "200"){
-            return json_decode($request->getBody()->getContents());
-        }else{
-            throw new \ErrorException("Une erreur est survenue : " . $request->getBody());
-        }
+        return $client->post($uri, $params);
     }
 
     private function prepare()
@@ -126,28 +120,35 @@ class NordigenAPI implements NordigenAPIRequest
             "secret_id" => $this->getNordigenId(),
             "secret_key" => $this->getNordigenKey()
         ];
-        $response = $this->CallPOSTAPI($url, $body, false);
-        $this->accessToken = $response->access;
-        $accessExpiresSeconds = $response->access_expires;
-        $dateExpirationAccessToken = Carbon::now();
-        $this->addSecondToDate($dateExpirationAccessToken, $accessExpiresSeconds);
-        $this->accessExpireDate = $dateExpirationAccessToken;
 
-        $this->refreshToken = $response->refresh;
-        $dateExpirationRefreshToken = Carbon::now();
-        $refreshExpireSeconds = $response->refresh_expires;
-        $this->addSecondToDate($dateExpirationRefreshToken, $refreshExpireSeconds);
-        $this->refreshExpireDate = $dateExpirationRefreshToken;
+        $request = $this->CallPOSTAPI($url, $body, false);
 
-//        echo $this->accessToken;
-//        echo "\n";
-//        echo $this->accessExpireDate;
-//        echo "\n";
-//        echo $this->refreshToken;
-//        echo "\n";
-//        echo $this->refreshExpireDate;
-//        echo "\n";
-//        die;
+        if($request->getStatusCode() == "200"){
+            $response = json_decode($request->getBody()->getContents());
+            $this->accessToken = $response->access;
+            $accessExpiresSeconds = $response->access_expires;
+            $dateExpirationAccessToken = Carbon::now();
+            $this->addSecondToDate($dateExpirationAccessToken, $accessExpiresSeconds);
+            $this->accessExpireDate = $dateExpirationAccessToken;
+
+            $this->refreshToken = $response->refresh;
+            $dateExpirationRefreshToken = Carbon::now();
+            $refreshExpireSeconds = $response->refresh_expires;
+            $this->addSecondToDate($dateExpirationRefreshToken, $refreshExpireSeconds);
+            $this->refreshExpireDate = $dateExpirationRefreshToken;
+
+    //        echo $this->accessToken;
+    //        echo "\n";
+    //        echo $this->accessExpireDate;
+    //        echo "\n";
+    //        echo $this->refreshToken;
+    //        echo "\n";
+    //        echo $this->refreshExpireDate;
+    //        echo "\n";
+    //        die;
+        }else{
+            throw new \ErrorException("Une erreur est survenue : " . $request->getBody());
+        }
 
     }
 
@@ -181,6 +182,38 @@ class NordigenAPI implements NordigenAPIRequest
     {
         $uri = "https://ob.nordigen.com/api/v2/institutions/";
         $params = ["country" => $country];
-        return $this->CallGETAPI($uri, $params);
+
+        $request = $this->CallGETAPI($uri, $params);
+
+        if($request->getStatusCode() == "200"){
+            return json_decode($request->getBody()->getContents());
+        }else{
+            throw new \ErrorException("Une erreur est survenue : " . $request->getBody());
+        }
+    }
+
+    public function postRequisition($bank_id){
+        return $this->CallPOSTAPI(self::requisitionsUri, [
+            "redirect" => self::redirectConfirmedLink,
+            "institution_id" => $bank_id
+        ]);
+    }
+
+    public function getRequisition($bank_id){
+        return $this->CallGETAPI(self::requisitionsUri."$bank_id", []);
+    }
+
+    public function getTransactions($account_id, $dateFrom=null, $dateTo=null){
+        $params = [];
+
+        if($dateFrom != null){
+            $params["date_from"] = $dateFrom->format("Y-m-d");
+        }
+
+        if($dateTo != null){
+            $params["date_to"] = $dateTo->format("Y-m-d");
+        }
+
+        return $this->CallGETAPI(self::accountsUri."$account_id/transactions", $params);
     }
 }

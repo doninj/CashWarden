@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('avatar');
-            $table->unsignedBigInteger("bank_id")->nullable(true);
+            $table->string("bank_id")->nullable(true);
             $table->string('idRequisition', 128)->nullable(true);
             $table->unsignedBigInteger("account_id")->nullable(true);
             $table->rememberToken();

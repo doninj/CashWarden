@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Nordigen\StaticObjects;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class BankSeeder extends Seeder
@@ -14,10 +16,17 @@ class BankSeeder extends Seeder
      */
     public function run()
     {
-        //
-    }
-
-    public function callAPI(){
-        HTTP::get("")
+        $nordigenAPI = StaticObjects::$nordigenAPI;
+        $banks = $nordigenAPI->getBanks("FR");
+        $data = [];
+        foreach ($banks as $bank){
+            $bankData = [
+                "id" => $bank->id,
+                "name" => $bank->name,
+                "logo" => $bank->logo,
+            ];
+            $data[] = $bankData;
+        }
+        DB::table("banks")->insert($data);
     }
 }

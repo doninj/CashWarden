@@ -7,6 +7,8 @@ class StaticObjects
     public static $nordigenAPI;
 
     public static function init() {
-        self::$nordigenAPI = new NordigenAPI();
+        if(self::$nordigenAPI == false){
+            self::$nordigenAPI = new NordigenAPI();
+        }
     }
 }

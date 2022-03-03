@@ -4,6 +4,7 @@ namespace App\Models\Nordigen;
 
 use Carbon\Carbon;
 use Carbon\Traits\Date;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 
 class NordigenAPI implements NordigenAPIRequest
@@ -52,21 +53,48 @@ class NordigenAPI implements NordigenAPIRequest
 
     private function getHeader()
     {
-        $this->prepare();
         return [
-            "accept" => "application/json",
-            "Authorization" => "Bearer $this->accessToken"
+            "Content-Type" => "application/json"
         ];
     }
 
-    public function CallGETAPI($uri)
+    public function CallGETAPI($uri, $params)
     {
-        return HTTP::get($uri);
+        $client = new Client();
+
+        $request = $client->get($uri, [
+            "headers" => ["Authorization" => "Bearer " . $this->accessToken],
+            "query" => $params
+        ]);
+
+        if($request->getStatusCode() == "200"){
+            return json_decode($request->getBody()->getContents());
+        }else{
+            throw new \ErrorException("Une erreur est survenue : " . $request->getBody());
+        }
     }
 
-    public function CallPOSTAPI($uri, $body)
+    public function CallPOSTAPI($uri, $body, $needAuthentification=true)
     {
-        return HTTP::withHeaders($this->getHeader())->post($uri, $body);
+        $client = new Client();
+        $params = [
+            "headers" => $this->getHeader(),
+            "body" => json_encode([
+                "secret_id" => $this->getNordigenId(),
+                "secret_key" => $this->getNordigenKey()
+            ])
+        ];
+
+        if ($needAuthentification){
+            $params["body"][] = ["Authorization" => "Bearer " . $this->accessToken];
+        }
+
+        $request = $client->post($uri, $params);
+        if($request->getStatusCode() == "200"){
+            return json_decode($request->getBody()->getContents());
+        }else{
+            throw new \ErrorException("Une erreur est survenue : " . $request->getBody());
+        }
     }
 
     private function prepare()
@@ -85,11 +113,11 @@ class NordigenAPI implements NordigenAPIRequest
     }
 
     private function getNordigenId(){
-        return getenv("NORDIGEN_ID");
+        return env("NORDIGEN_ID");
     }
 
     private function getNordigenKey(){
-        return getenv("NORDIGEN_KEY");
+        return env("NORDIGEN_KEY");
     }
 
     private function createNewToken(){
@@ -98,26 +126,29 @@ class NordigenAPI implements NordigenAPIRequest
             "secret_id" => $this->getNordigenId(),
             "secret_key" => $this->getNordigenKey()
         ];
-        $response = $this->CallPOSTAPI($url, $body);
-        if($response->ok()){
+        $response = $this->CallPOSTAPI($url, $body, false);
+        $this->accessToken = $response->access;
+        $accessExpiresSeconds = $response->access_expires;
+        $dateExpirationAccessToken = Carbon::now();
+        $this->addSecondToDate($dateExpirationAccessToken, $accessExpiresSeconds);
+        $this->accessExpireDate = $dateExpirationAccessToken;
 
-            $this->accessToken = $response["access"];
-            $accessExpiresSeconds = $response["access_expires"];
+        $this->refreshToken = $response->refresh;
+        $dateExpirationRefreshToken = Carbon::now();
+        $refreshExpireSeconds = $response->refresh_expires;
+        $this->addSecondToDate($dateExpirationRefreshToken, $refreshExpireSeconds);
+        $this->refreshExpireDate = $dateExpirationRefreshToken;
 
-            $dateExpirationAccessToken = Carbon::now();
-            $this->addSecondToDate($dateExpirationAccessToken, $accessExpiresSeconds);
-            $this->accessExpireDate = $dateExpirationAccessToken;
+//        echo $this->accessToken;
+//        echo "\n";
+//        echo $this->accessExpireDate;
+//        echo "\n";
+//        echo $this->refreshToken;
+//        echo "\n";
+//        echo $this->refreshExpireDate;
+//        echo "\n";
+//        die;
 
-            $this->refreshToken = $response["refresh"];
-
-            $dateExpirationRefreshToken = Carbon::now();
-            $refreshExpireSeconds = $response["refresh_expires"];
-            $this->addSecondToDate($dateExpirationRefreshToken, $refreshExpireSeconds);
-            $this->refreshExpireDate = $dateExpirationRefreshToken;
-
-        }else{
-            throw new \ErrorException("La requête à échouée");
-        }
     }
 
     private function addSecondToDate($date, $seconds){
@@ -129,7 +160,7 @@ class NordigenAPI implements NordigenAPIRequest
     }
 
     private function tokenMustBeRefresh(){
-        return Carbon::now()->greaterThan($this->accessExpireDate);
+        return Carbon::now()->lessThan($this->accessExpireDate);
     }
 
     private function refreshToken()
@@ -139,20 +170,17 @@ class NordigenAPI implements NordigenAPIRequest
             "refresh" => $this->refreshToken
         ];
         $response = $this->CallPOSTAPI($url, $body);
-        if($response->ok()){
 
-            $this->accessToken = $response["access"];
-            $dateExpirationNewAccessToken = Carbon::now();
-            $this->addSecondToDate($dateExpirationNewAccessToken, $response["access_expires"]);
-            $this->accessExpireDate = $dateExpirationNewAccessToken;
-
-        }else{
-            throw new \ErrorException("La requête à échouée !");
-        }
+        $this->accessToken = $response["access"];
+        $dateExpirationNewAccessToken = Carbon::now();
+        $this->addSecondToDate($dateExpirationNewAccessToken, $response["access_expires"]);
+        $this->accessExpireDate = $dateExpirationNewAccessToken;
     }
 
-    public function getBanks()
+    public function getBanks($country)
     {
-        $this->CallGETAPI("https://ob.nordigen.com/api/v2/institutions/");
+        $uri = "https://ob.nordigen.com/api/v2/institutions/";
+        $params = ["country" => $country];
+        return $this->CallGETAPI($uri, $params);
     }
 }

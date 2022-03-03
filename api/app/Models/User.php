@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Nordigen\NordigenAPI;
+use App\Models\Nordigen\StaticObjects;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -65,7 +67,7 @@ class User extends Authenticatable
 
     public function getHasBankAutorizationAttribute(){
         if($this->idRequisition ?? null){
-            return true;
+            return $this->haveRequisitionValidated();
         }else{
             return false;
         }
@@ -77,6 +79,18 @@ class User extends Authenticatable
         }else{
             return false;
         }
+    }
+
+    public function haveRequisitionValidated(){
+        $request = StaticObjects::$nordigenAPI->getRequisitionById($this->idRequisition);
+        if($request->getStatusCode() == 200){
+            //?ref=f1cb3135-f831-4f2a-be09-22e5c803e671
+            $response = json_decode($request->getBody()->getContents());
+            if($response->status == "LN"){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

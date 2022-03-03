@@ -78,14 +78,11 @@ class NordigenAPI implements NordigenAPIRequest
         $client = new Client();
         $params = [
             "headers" => $this->getHeader(),
-            "body" => json_encode([
-                "secret_id" => $this->getNordigenId(),
-                "secret_key" => $this->getNordigenKey()
-            ])
+            "body" => json_encode($body)
         ];
 
         if ($needAuthentification){
-            $params["body"][] = ["Authorization" => "Bearer " . $this->accessToken];
+            $params["headers"]["Authorization"] = "Bearer " . $this->accessToken;
         }
 
         return $client->post($uri, $params);
@@ -199,8 +196,8 @@ class NordigenAPI implements NordigenAPIRequest
         ]);
     }
 
-    public function getRequisition($bank_id){
-        return $this->CallGETAPI(self::requisitionsUri."$bank_id", []);
+    public function getRequisitionById($requisition_id){
+        return $this->CallGETAPI(self::requisitionsUri."$requisition_id", []);
     }
 
     public function getTransactions($account_id, $dateFrom=null, $dateTo=null){

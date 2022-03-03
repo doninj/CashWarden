@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
@@ -44,7 +45,14 @@ class UserController extends Controller
             if(!empty($validated["account"])){
                 if ($user->getHasBankAutorizationAttribute()) {
                     if (!$user->getHasAccountChoicesAttribute()) {
-                        $user->addAccount($validated["account"]);
+                        $account = $validated["account"];
+                        if(AccountController::accountExistInNordigenAPI($account->name, $user->idRequisition)){
+                            $user->addAccount();
+                        }else{
+                            return response()->json([
+                                "message" => "Le compte saisie n'appartient pas à l'id de réquisition associé à l'utilisateur !"
+                            ]);
+                        }
                     } else {
                         return response(["message" => "Un compte est déjà associé à cet utilisateur !"], 400);
                     }

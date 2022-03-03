@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Authentification\UserAuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\RequisitionController;
@@ -25,7 +26,9 @@ Route::post("/login", [UserAuthController::class, "login"]);
 Route::get("/banks", [BankController::class, "index"]);
 
 Route::middleware('auth:api')->group(function ($route) {
-    $route->post("/requisitions", [RequisitionController::class, "store"]);
+    $route->post("/requisition", [RequisitionController::class, "store"]);
+    $route->get("/nordigen/accounts", [AccountController::class, "nordigenAccount"]);
+
     $route->post("/user", [UserController::class, "update"]);
 
     $route->post("/logout", [UserAuthController::class, "logout"]);

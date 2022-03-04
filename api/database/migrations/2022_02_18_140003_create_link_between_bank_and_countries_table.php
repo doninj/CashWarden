@@ -14,7 +14,7 @@ class CreateLinkBetweenBankAndCountriesTable extends Migration
     public function up()
     {
         Schema::create('link_between_bank_and_countries', function (Blueprint $table) {
-            $table->unsignedBigInteger('bank_id');
+            $table->string('bank_id');
             $table->unsignedBigInteger('country_id');
             $table->primary(["bank_id", "country_id"]);
             $table->foreign('bank_id')->references('id')->on('banks');

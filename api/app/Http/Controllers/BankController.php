@@ -11,11 +11,12 @@ class BankController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        $banks = Bank::all();
+        return response()->json($banks);
     }
 
     /**

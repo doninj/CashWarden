@@ -5,15 +5,63 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
 use App\Models\Account;
+use App\Models\Nordigen\StaticObjects;
+use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
+
+    /**
+     * Méthode permettant de vérifier que le compte de l'utilisateur existe dans la requisition créé sur nordigen
+     * @param $accountId
+     * @param $requisitionId
+     * @return bool
+     */
+    public static function accountExistInNordigenAPI($accountId, $requisitionId)
+    {
+        $requisitionRequest = StaticObjects::$nordigenAPI->getRequisitionById($requisitionId);
+
+        $statusCode = $requisitionRequest->getStatusCode();
+        $response = json_decode($requisitionRequest->getBody()->getContents());
+        if(in_array($statusCode, [200, 201, 202])){
+            if(in_array($accountId, $response->accounts)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function nordigenAccount(Request $request)
+    {
+        $user = $request->user();
+        if($user->getHasBankAutorizationAttribute()){
+            $requisitionRequest = StaticObjects::$nordigenAPI->getRequisitionById($user->idRequisition);
+
+            $statusCode = $requisitionRequest->getStatusCode();
+            $response = json_decode($requisitionRequest->getBody()->getContents());
+            if(in_array($statusCode, [200, 201, 202])){
+                return response()->json($response->accounts);
+            }else{
+                return response()->json(
+                    [
+                        "message" => "Une erreur est survenue lors de l'appel à l'API nordigen !",
+                        "nordigenAPIMessage" => $response
+                    ], $statusCode
+                );
+            }
+        }else{
+            return response()->json([
+                "message" => "L'utilisateur ne possède pas d'identifiant de requisition de validé !\nAssurez-vous d'avoir lié votre compte à l'application !"
+            ], 400);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
     }

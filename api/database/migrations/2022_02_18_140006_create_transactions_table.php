@@ -17,10 +17,10 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->string("label", 64);
             $table->float("montant", 14, 2);
-            $table->char("monnaie", 1);
+            $table->char("monnaie", 10);
             $table->date("dateTransaction");
             $table->string("status");
-            $table->unsignedBigInteger("account_id");
+            $table->string("account_id");
             $table->unsignedBigInteger("category_id");
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts');

@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Nordigen\StaticObjects;
 use Illuminate\Support\Str;
+
+StaticObjects::init();
 
 return [
 

@@ -1,6 +1,4 @@
 <template>
-  <div>
-    <MenuLayout>
       <div class="flex flex-column">
         <div class="mb-5">
           <h2 class="font-bold"> Tableau de bord</h2>
@@ -81,8 +79,6 @@
           </div>
         </div>
       </div>
-    </MenuLayout>
-  </div>
 </template>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 

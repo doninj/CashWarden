@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar');
             $table->string("bank_id")->nullable(true);
             $table->string('idRequisition', 128)->nullable(true);
-            $table->unsignedBigInteger("account_id")->nullable(true);
+            $table->string("account_id")->nullable(true);
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('bank_id')->references('id')->on('banks');

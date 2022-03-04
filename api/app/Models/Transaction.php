@@ -10,10 +10,10 @@ class Transaction extends Model
     use HasFactory;
 
     public function category(){
-        return $this->hasOne(Category::class);
+        return $this->hasOne(Category::class, "id", "category_id");
     }
 
     public function account(){
-        return $this->hasOne(Account::class);
+        return $this->hasOne(Account::class, "id", "account_id");
     }
 }

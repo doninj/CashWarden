@@ -6,9 +6,15 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function index(Request $request){
+        $user = $request->user();
+        return response()->json($user);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -46,11 +52,11 @@ class UserController extends Controller
                 if ($user->getHasBankAutorizationAttribute()) {
                     if (!$user->getHasAccountChoicesAttribute()) {
                         $account = $validated["account"];
-                        if(AccountController::accountExistInNordigenAPI($account->name, $user->idRequisition)){
-                            $user->addAccount();
+                        if(AccountController::accountExistInNordigenAPI($account["id"], $user->idRequisition)){
+                            $user->addAccount($account);
                         }else{
                             return response()->json([
-                                "message" => "Le compte saisie n'appartient pas à l'id de réquisition associé à l'utilisateur !"
+                                "message" => "Le compte saisie n'appartient pas à l'id de réquisition associé à l'utilisateur !", 400
                             ]);
                         }
                     } else {

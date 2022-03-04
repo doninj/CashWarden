@@ -29,6 +29,7 @@ Route::middleware('auth:api')->group(function ($route) {
     $route->post("/requisition", [RequisitionController::class, "store"]);
     $route->get("/nordigen/accounts", [AccountController::class, "nordigenAccount"]);
 
+    $route->get("/user", [UserController::class, "index"]);
     $route->post("/user", [UserController::class, "update"]);
 
     $route->post("/logout", [UserAuthController::class, "logout"]);

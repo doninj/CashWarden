@@ -9,6 +9,11 @@ class Category extends Model
 {
     use HasFactory;
 
+    /**
+     * @var mixed
+     */
+    public static $DEFAULT_CATEGORY_ID = 1;
+
     public function transactions(){
         return $this->hasMany(Transaction::class, "category_id", "id");
     }

@@ -83,7 +83,7 @@ class User extends Authenticatable
 
     public function haveRequisitionValidated(){
         $request = StaticObjects::$nordigenAPI->getRequisitionById($this->idRequisition);
-        if($request->getStatusCode() == 200){
+        if(in_array($request->getStatusCode(), [200, 201, 202])){
             //?ref=f1cb3135-f831-4f2a-be09-22e5c803e671
             $response = json_decode($request->getBody()->getContents());
             if($response->status == "LN"){
@@ -118,6 +118,8 @@ class User extends Authenticatable
         $account->id = $accountData["id"];
         $account->name = $accountData["name"];
         $account->save();
-        $this->setRelation("account", $account);
+        $this->account_id = $account->id;
+        $this->save();
+        $account->initTransaction();
     }
 }

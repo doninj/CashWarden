@@ -11,19 +11,20 @@ import Avatar from "primevue/avatar"
 import InputText from "primevue/inputtext"
 import Button from "primevue/button"
 import Password from "primevue/password"
-import Chart from 'primevue/chart';
-import Dropdown from "primevue/dropdown";
+import Chart from 'primevue/chart'
+import Dropdown from "primevue/dropdown"
+import Toast from "primevue/toast"
 
 export default [
-    Chart,
-    Dialog,
-    Divider,
-    DropDown,
-    SelectButton,
-    Divider,
-    Card,
-    Avatar,
-    InputText,
-    Button,
-    Password,
+  Chart,
+  Dialog,
+  Dropdown,
+  SelectButton,
+  Divider,
+  Card,
+  Avatar,
+  InputText,
+  Button,
+  Password,
+  Toast,
 ]

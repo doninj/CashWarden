@@ -8,12 +8,14 @@ import LoginView from "@/views/LoginView.vue"
 import RegisterView from "@/views/RegisterView.vue"
 
 import auth from "@/middlewares/auth"
+import guest from "@/middlewares/guest"
 import { nextFactory } from "@/middlewares/bootstrap"
 
 export enum Routes {
   Home = "/",
   Login = "/login",
   Register = "/register",
+  BankRegister = "/bank-register",
   Budget = "/budget",
   Transactions = "/transactions",
   Settings = "/settings",
@@ -25,17 +27,34 @@ const router = createRouter({
     {
       path: Routes.Login,
       name: 'login',
-      component: LoginView
+      component: LoginView,
+      meta: {
+        // middleware: [ guest ],
+      }
     },
     {
       path: Routes.Register,
       name: "register",
-      component: RegisterView
+      component: RegisterView,
+      meta: {
+        // middleware: [ guest ],
+      }
+    },
+    {
+      path: Routes.BankRegister,
+      name: Routes.BankRegister,
+      component: () => import("@/views/BankRegisterView.vue"),
+      meta: {
+        // middleware: [ guest ],
+      }
     },
     {
       path: Routes.Home,
       name: 'home',
       component: () => import('../components/layouts/MenuLayout.vue'),
+      meta: {
+        // middleware: [ auth ],
+      },
       children: [
         {
           path: '',
@@ -52,7 +71,7 @@ const router = createRouter({
       name: 'transaction',
       component: () => import('../components/layouts/MenuLayout.vue'),
       meta: {
-        needAuth: true
+        // middleware: [ auth ],
       },
       children: [
         {
@@ -67,11 +86,11 @@ const router = createRouter({
     },
     {
       path: Routes.Budget,
-      name: 'budget',
-      component: () => import('../components/layouts/MenuLayout.vue'),
+      name: "budget",
       meta: {
-        needAuth: true
+        // middleware: [ auth ],
       },
+      component: () => import("../components/layouts/MenuLayout.vue"),
       children: [
         {
           path: '',

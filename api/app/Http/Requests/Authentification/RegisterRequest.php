@@ -45,12 +45,9 @@ class RegisterRequest extends FormRequest
         "password.max" => "Votre mot de passe est trop long !",
     ];
 
-    private $avatarMessage = [
-        'avatar' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048|dimensions:min_width=50,min_height=50,max_width=2000,max_height=2000',
-        "avatar.required" => "Merci de renseigner une image !",
-        "avatar.image" => "Merci de bien sélectionner une image",
-        "avatar.mimes" => "L'image doit être au format jpg, png, jpeg, gif ou svg",
-        "avatar.dimensions" => "L'image doit avoir une taille entre 50x50 & 2000x2000"
+    private $passwordConfirmationMessage = [
+        "passwordConfirmation.required" => "Merci de confirmer votre mot de passe !",
+        "passwordConfirmation.same" => "Les mots de passe ne correspondent pas !",
     ];
 
     /**
@@ -68,9 +65,9 @@ class RegisterRequest extends FormRequest
         return parent::messages() +
             $this->firstNameMessage +
             $this->lastNameMessage +
-            $this->avatarMessage +
             $this->emailMessage +
-            $this->passwordMessage;
+            $this->passwordMessage +
+            $this->passwordConfirmationMessage;
     }
 
     /**
@@ -83,9 +80,9 @@ class RegisterRequest extends FormRequest
         return [
             'firstName' => 'required|max:50',
             'lastName' => 'required|max:50',
-            'avatar' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048|dimensions:min_width=50,min_height=50,max_width=2000,max_height=2000',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed'
+            'password' => 'required|required_with:passwordConfirmation',
+            'passwordConfirmation' => 'required|same:password',
         ];
     }
 }

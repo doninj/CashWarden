@@ -48,13 +48,13 @@ class UserController extends Controller
             }
 
             // Create and set account
-            if(!empty($validated["account"])){
+            if(!empty($validated["account"])) {
                 if ($user->getHasBankAutorizationAttribute()) {
                     if (!$user->getHasAccountChoicesAttribute()) {
                         $account = $validated["account"];
                         if(AccountController::accountExistInNordigenAPI($account["id"], $user->idRequisition)){
                             $user->addAccount($account);
-                        }else{
+                        } else {
                             return response()->json([
                                 "message" => "Le compte saisie n'appartient pas à l'id de réquisition associé à l'utilisateur !", 400
                             ]);

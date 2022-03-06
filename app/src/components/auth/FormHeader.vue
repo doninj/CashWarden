@@ -11,7 +11,7 @@ defineProps<{
 <template>
   <div class="FormHeader">
     <img :src="Logo"/>
-    <span class="FormHeader__appName">CashGuard</span>
+    <span class="FormHeader__appName">CashWarden</span>
 
     <h1>{{ title }}</h1>
     <p>{{ subtitle }}</p>

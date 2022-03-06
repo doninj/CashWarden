@@ -1,30 +1,41 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { useAuth } from "@/stores/auth"
-import FormHeader from "@/components/forms/FormHeader.vue"
+import FormHeader from "@/components/auth/FormHeader.vue"
 import { Routes } from "@/router"
+import {useToast} from "primevue/usetoast";
+import {useRouter} from "vue-router";
 
-const emit = defineEmits<{ (event: "loggedIn"): void }>()
+const toast = useToast()
+const auth = useAuth()
+const router = useRouter()
 
+const isLoggingIn = ref(false)
 const loginForm = ref({
   email: "",
   password: "",
-  confirmPassword: "",
 })
 
 async function onSubmit() {
-  const auth = useAuth()
-  const { email, password, confirmPassword } = loginForm.value
+  const form = loginForm.value
+  isLoggingIn.value = true
 
-  await auth.register(email, password, confirmPassword)
-
-  emit("loggedIn")
+  try {
+    await auth.login(form)
+    await router.push(Routes.Home)
+  }
+  catch (error) {
+    toast.add({ severity:'error', summary: 'Création du compte', detail: "", life: 3000 });
+  }
+  finally {
+    isLoggingIn.value = false
+  }
 }
 
 </script>
 
 <template>
-  <FormHeader title="Inscription" subtitle="Créer votre compte"/>
+  <FormHeader title="Connexion" subtitle="Se connecter à son compte"/>
   <form @submit.prevent="onSubmit">
     <div class="field">
       <label for="email">Email</label>
@@ -34,12 +45,17 @@ async function onSubmit() {
       <label for="password">Password</label>
       <Password id="password" :feedback="false" toggle-mask v-model="loginForm.password"/>
     </div>
-    <div class="field">
-      <label for="confirm-password">Confirmation du mot de passe</label>
-      <Password id="confirm-password" :feedback="false" toggle-mask v-model="loginForm.confirmPassword"/>
-    </div>
-    <Button class="submit" label="Créer votre compte"/>
+    <Button
+        class="submit"
+        type="submit"
+        label="Se connecter"
+        :loading="isLoggingIn"
+    />
   </form>
+  <div class="no-account-cta">
+    Pas encore de compte ?
+    <RouterLink :to="Routes.Register">Inscrivez-vous</RouterLink>
+  </div>
 </template>
 
 <style scoped lang="scss">

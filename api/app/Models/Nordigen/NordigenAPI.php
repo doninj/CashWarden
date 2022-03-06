@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 class NordigenAPI implements NordigenAPIRequest
 {
     const requisitionsUri = "https://ob.nordigen.com/api/v2/requisitions/";
-    const redirectConfirmedLink = "http://localhost:5000/";
+    const redirectConfirmedLink = "http://localhost:3000/bank-register/";
     const accountsUri = "https://ob.nordigen.com/api/v2/accounts/";
     private $accessToken;
     private $accessExpireDate;
@@ -134,15 +134,6 @@ class NordigenAPI implements NordigenAPIRequest
             $this->addSecondToDate($dateExpirationRefreshToken, $refreshExpireSeconds);
             $this->refreshExpireDate = $dateExpirationRefreshToken;
 
-    //        echo $this->accessToken;
-    //        echo "\n";
-    //        echo $this->accessExpireDate;
-    //        echo "\n";
-    //        echo $this->refreshToken;
-    //        echo "\n";
-    //        echo $this->refreshExpireDate;
-    //        echo "\n";
-    //        die;
         }else{
             throw new \ErrorException("Une erreur est survenue : " . $request->getBody());
         }

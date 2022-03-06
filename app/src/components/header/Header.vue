@@ -60,9 +60,15 @@ const items: MenuItem[] = [
 
 <style scoped lang="scss">
 header {
-  width: 255px;
-  height: 100vh;
   background: #363740;
+  height: 100%;
+  width: 255px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
   color: #A4A6B3;
 
   #brand {

@@ -45,7 +45,7 @@ class UserAuthController
      */
     private function getUserThanksToRequestData($data)
     {
-        return User::where('email', $data["email"])->first();
+        return User::with('account')->where('email', $data["email"])->first();
     }
 
     /**
@@ -77,7 +77,8 @@ class UserAuthController
                     "lastName" => $user->lastName,
                     "hasBankAuthorization" => $user->hasBankAuthorization,
                     "hasAccountChoices" => $user->hasAccountChoices,
-                    "avatar" => $user->avatar
+                    "avatar" => $user->avatar,
+                    "account" => $user->account
                 ],
                 'token' => $token
             ];

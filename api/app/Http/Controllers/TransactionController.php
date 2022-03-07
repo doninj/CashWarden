@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -21,6 +22,21 @@ class TransactionController extends Controller
         $transactions = $account->transactions()->orderByDesc("dateTransaction");
         $transactions->paginate(15);
         return response()->json($transactions->get());
+    }
+    public function transactionsPerMonth(Request $request)
+    {
+        $monthInFr = $request->date;
+        $year = $request->annee;
+        $monthInEng= Carbon::translateTimeString($monthInFr);
+        $month = Carbon::parse($monthInEng)->month;
+        $user = $request->user();
+        $account = $user->account;
+        $transaction['AllTransactions'] = $account->transactions()->whereMonth('dateTransaction', '=', $month)->WhereYear('dateTransaction','=',$year)->get();
+        $transaction['TotalDépenses'] = abs($transaction['AllTransactions']->map(function ($transaction) {
+            if ($transaction->montant > 0)
+                return $transaction->montant;
+        })->sum());
+        return response()->json($transaction);
     }
 
     /**

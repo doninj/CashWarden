@@ -6,15 +6,42 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $user = $request->user();
-        return response()->json($user);
+        $userData = $user->load([
+            'account.GetThreeTransactions',
+            'account.transactionsForActualMounth',
+            'account.transactions'
+        ]);
+        $collect = collect($userData->account->transactionsForActualMounth);
+        $userData->account['totalSpendingOfActualMonth'] = abs($collect->map(function ($transaction) {
+            if ($transaction->montant < 0)
+                return $transaction->montant;
+        })->sum());
+        $this->GetMonth($userData);
+        return response()->json($userData);
     }
+    public function GetMonth($userData) {
+        $monthArray = [];
+        $date =  collect($userData->account->transactions);
+        foreach ($date as $transaction) {
+            $myDate = $transaction->dateTransaction;
+            $date = Carbon::createFromFormat('Y-m-d', $myDate);
+            $monthName = $date->translatedFormat('F');
+            if(!in_array($monthName, $monthArray)) {
+                array_push($monthArray, $monthName);
+            }
+        }
+        $userData['months'] = $monthArray;
+        unset($userData->account->transactions);
 
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -24,17 +51,17 @@ class UserController extends Controller
         $user = $request->user();
         $validated = $request->validated();
 
-        try{
+        try {
             // Set nom prénom
             $user->firstName = empty($validated['firstName']) ? $user->firstName : $validated["firstName"];
             $user->lastName = empty($validated['lastName']) ? $user->firstName : $validated["lastName"];
 
             // Set password
-            if(!empty($validated['password'])){
+            if (!empty($validated['password'])) {
                 $user->setPassword($validated["password"]);
             }
 
-            if(!empty($validated["bank_id"])){
+            if (!empty($validated["bank_id"])) {
                 $user->setBankById($validated["bank_id"]);
             }
 
@@ -52,7 +79,7 @@ class UserController extends Controller
                 if ($user->getHasBankAuthorizationAttribute()) {
                     if (!$user->getHasAccountChoicesAttribute()) {
                         $account = $validated["account"];
-                        if(AccountController::accountExistInNordigenAPI($account["id"], $user->idRequisition)){
+                        if (AccountController::accountExistInNordigenAPI($account["id"], $user->idRequisition)) {
                             $user->addAccount($account);
                         } else {
                             return response()->json([
@@ -62,7 +89,7 @@ class UserController extends Controller
                     } else {
                         return response(["message" => "Un compte est déjà associé à cet utilisateur !"], 400);
                     }
-                }else{
+                } else {
                     return response(["message" => "Merci de renseigner en priorité un id de réquisition !"], 400);
                 }
             }
@@ -70,7 +97,7 @@ class UserController extends Controller
             $user->save();
 
             return response($user);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response(
                 [
                     "message" => "Oups une erreur est survenue !",

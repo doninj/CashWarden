@@ -16,6 +16,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #363740;
 
   main {
     min-width: 25rem;

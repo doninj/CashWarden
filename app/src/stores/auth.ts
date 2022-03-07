@@ -38,15 +38,13 @@ export const useAuth = defineStore({
   getters: {
     isLoggedIn: (state) => !!state.user,
     hasBankLinked: (state) => {
-      console.log(state.user)
-      return state.user && state.user.hasBankAuthorization && state.user.hasAccountChoices;
+      return !!state.user && state.user.hasBankAuthorization && state.user.hasAccountChoices;
     },
   },
   actions: {
     async login(loginInput: LoginInput) {
       try {
         const loginData = await axios.post("/login", loginInput)
-        console.log(loginData)
         this.user = loginData.data.user
 
         this.token = loginData.data.token
@@ -73,7 +71,7 @@ export const useAuth = defineStore({
           this.wasRecoveryTried = true
         }
         catch (e) {
-          // this.logout()
+          return Promise.reject(e)
         }
       }
     },
@@ -84,19 +82,6 @@ export const useAuth = defineStore({
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       }
     },
-    async recoverUser() {
-      try {
-        const userData = await axios.get("/user")
-        console.log(userData)
-        this.user = userData.data
-        this.wasRecoveryTried = true
-      }
-      catch (e) {
-        this.logout()
-        return Promise.reject(e)
-      }
-    },
-
     async register(registerInput: RegisterInput): Promise<void> {
       try {
         await axios.post("/register", registerInput)
@@ -106,9 +91,16 @@ export const useAuth = defineStore({
       }
     },
     async logout() {
-      this.user = undefined
-      this.token = undefined
-      localStorage.removeItem('token')
+      try {
+        await axios.post("/logout")
+        this.user = undefined
+        this.token = undefined
+        localStorage.removeItem('token')
+        window.location.reload()
+      }
+      catch (e) {
+        return Promise.reject(e)
+      }
     }
   }
 })

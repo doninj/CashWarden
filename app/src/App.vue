@@ -1,13 +1,25 @@
 <script setup>
-import {useAuth} from "@/stores/auth"
-import LoaderSpinner from "@/components/LoaderSpinner.vue"
+import { useAuth } from "@/stores/auth"
+import AppLoadingView from "@/views/AppLoadingView.vue"
 
 const auth = useAuth()
 auth.recoverToken()
 </script>
 
 <template>
-  <LoaderSpinner v-if="!auth.wasRecoveryTried" />
-  <RouterView v-else />
+  <transition name="fade">
+    <AppLoadingView v-if="!auth.wasRecoveryTried"/>
+    <RouterView v-else/>
+  </transition>
   <Toast/>
 </template>
+
+<style lang="scss">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+</style>

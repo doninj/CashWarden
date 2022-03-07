@@ -1,11 +1,26 @@
 <script setup lang="ts">
+import { onMounted } from "vue"
 import FormHeader from "@/components/auth/FormHeader.vue"
+import axios from "@/utils/axios"
+import { useAuth } from "@/stores/auth"
 
+onMounted(async () => {
+  const { user } = useAuth()
+  const { data: accountsId } = await axios.get("/nordigen/accounts")
+
+  await axios.post("/user", {
+    account: {
+      name: user?.id.toString(),
+      id: accountsId[0]
+    }
+  })
+})
 
 function goToApp() {
   window.open("http://localhost:3000", "_blank")
   window.close()
 }
+
 </script>
 
 <template>

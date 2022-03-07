@@ -75,7 +75,7 @@ class UserAuthController
                     "id" => $user->id,
                     "firstName" => $user->firstName,
                     "lastName" => $user->lastName,
-                    "hasBankAutorization" => $user->hasBankAutorization,
+                    "hasBankAuthorization" => $user->hasBankAuthorization,
                     "hasAccountChoices" => $user->hasAccountChoices,
                     "avatar" => $user->avatar
                 ],

@@ -26,7 +26,7 @@ class User extends Authenticatable
     ];
 
     public $appends = [
-        "hasBankAutorization",
+        "hasBankAuthorization",
         "hasAccountChoices"
     ];
 
@@ -65,7 +65,7 @@ class User extends Authenticatable
         return $this->hasOne(Bank::class, "id", "bank_id");
     }
 
-    public function getHasBankAutorizationAttribute(){
+    public function getHasBankAuthorizationAttribute(){
         if($this->idRequisition ?? null){
             return $this->haveRequisitionValidated();
         }else{

@@ -34,7 +34,7 @@ class AccountController extends Controller
     public function nordigenAccount(Request $request)
     {
         $user = $request->user();
-        if($user->getHasBankAutorizationAttribute()){
+        if($user->getHasBankAuthorizationAttribute()){
             $requisitionRequest = StaticObjects::$nordigenAPI->getRequisitionById($user->idRequisition);
 
             $statusCode = $requisitionRequest->getStatusCode();

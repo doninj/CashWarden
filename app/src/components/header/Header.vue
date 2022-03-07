@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Logo from "@/assets/logo.svg"
+import genAvatarUrl from '@/utils/uiAvatar'
 
 import type { MenuItem } from "@/models/Menu"
 import Menu from "./Menu.vue"
@@ -49,13 +50,12 @@ const items: MenuItem[] = [
     <div id="user">
       <div id="user__avatar">
         <Avatar
-            image="https://i.pravatar.cc/128"
-            class="mr-2"
+            :image="genAvatarUrl(auth.user.firstName, auth.user.lastName)"
             size="large"
             shape="circle"
         />
       </div>
-      John Doe
+      {{ auth.user.firstName }} {{ auth.user.lastName }}
     </div>
     <Menu :items="items"/>
   </header>
@@ -77,6 +77,7 @@ header {
   #brand {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: .5rem;
     padding: .8rem 1.2rem;
     font-size: 1.2rem;

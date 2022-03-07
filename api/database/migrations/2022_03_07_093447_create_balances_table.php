@@ -15,7 +15,7 @@ class CreateBalancesTable extends Migration
     {
         Schema::create('balances', function (Blueprint $table) {
             $table->id();
-            $table->string("amount");
+            $table->decimal("amount", 14, 2);
             $table->date("dateAmount");
             $table->string("account_id");
             $table->foreign("account_id")->references("id")->on("accounts");

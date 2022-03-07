@@ -63,7 +63,7 @@ class Account extends Model
             $balanceListAmount = $response->balances;
             $currentBalance = $balanceListAmount[0];
             $balance = new Balance();
-            $balance->amount = $currentBalance->balanceAmount->amount;
+            $balance->amount = (double) $currentBalance->balanceAmount->amount;
             $balance->dateAmount = $currentBalance->referenceDate;
             $balance->account_id = $this->id;
             $balance->save();

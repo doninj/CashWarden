@@ -5,17 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = $request->user();
+        $account = $user->account;
+        $transactions = $account->transactions()->orderByDesc("dateTransaction");
+        $transactions->paginate(15);
+        return response()->json($transactions->get());
     }
 
     /**

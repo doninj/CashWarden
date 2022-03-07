@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Authentification\UserAuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\RequisitionController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,8 @@ Route::middleware('auth:api')->group(function ($route) {
 
     $route->get("/user", [UserController::class, "index"]);
     $route->post("/user", [UserController::class, "update"]);
+
+    $route->get("/transactions", [TransactionController::class, "index"]);
 
     $route->post("/logout", [UserAuthController::class, "logout"]);
 });

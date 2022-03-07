@@ -15,7 +15,7 @@ class RequisitionController extends Controller
      */
     public function store(StoreRequisitionRequest $request){
         $user = $request->user();
-        if(!$user->getHasBankAutorizationAttribute()){
+        if(!$user->getHasBankAuthorizationAttribute()){
             $validated = $request->validated();
 
             $bank_id = $validated["bank_id"];

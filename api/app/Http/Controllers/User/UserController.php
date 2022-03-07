@@ -39,7 +39,7 @@ class UserController extends Controller
             }
 
             if(!empty($validated["idRequisition"])) {
-                if (!$user->getHasBankAutorizationAttribute()) {
+                if (!$user->getHasBankAuthorizationAttribute()) {
                     // Set idRequisition
                     $user->idRequisition = $validated["idRequisition"];
                 } else {
@@ -49,7 +49,7 @@ class UserController extends Controller
 
             // Create and set account
             if(!empty($validated["account"])) {
-                if ($user->getHasBankAutorizationAttribute()) {
+                if ($user->getHasBankAuthorizationAttribute()) {
                     if (!$user->getHasAccountChoicesAttribute()) {
                         $account = $validated["account"];
                         if(AccountController::accountExistInNordigenAPI($account["id"], $user->idRequisition)){

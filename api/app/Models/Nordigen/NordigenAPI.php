@@ -204,4 +204,9 @@ class NordigenAPI implements NordigenAPIRequest
 
         return $this->CallGETAPI(self::accountsUri."$account_id/transactions", $params);
     }
+
+    public function getCurrentAmmountOfAccount($account_id){
+
+        return $this->CallGETAPI(self::accountsUri."$account_id/balances/", []);
+    }
 }

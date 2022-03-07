@@ -20,6 +20,10 @@ class Account extends Model
         return $this->hasMany(Transaction::class, "account_id", "id");
     }
 
+    public function balances(){
+        return $this->hasMany(Balance::class, "account_id", "id");
+    }
+
     public function initTransaction()
     {
         $request = StaticObjects::$nordigenAPI->getTransactions($this->id);
@@ -43,6 +47,26 @@ class Account extends Model
                     $transaction->save();
                 }
             }
+        }
+    }
+
+    public function initBalance()
+    {
+        $this->setCurrentBalanceAmount();
+    }
+
+    public function setCurrentBalanceAmount(){
+        $request = StaticObjects::$nordigenAPI->getCurrentAmmountOfAccount($this->id);
+        $status = $request->getStatusCode();
+        $response = json_decode($request->getBody()->getContents());
+        if(in_array($status, [200, 201, 202])){
+            $balanceListAmount = $response->balances;
+            $currentBalance = $balanceListAmount[0];
+            $balance = new Balance();
+            $balance->amount = $currentBalance->balanceAmount->amount;
+            $balance->dateAmount = $currentBalance->referenceDate;
+            $balance->account_id = $this->id;
+            $balance->save();
         }
     }
 }

@@ -19,7 +19,6 @@ class CreateUsersTable extends Migration
             $table->string('lastName', 50);
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('avatar');
             $table->string("bank_id")->nullable(true);
             $table->string('idRequisition', 128)->nullable(true);
             $table->string("account_id")->nullable(true);

@@ -1,24 +1,96 @@
 import { defineStore } from 'pinia'
+import axios from "@/utils/axios"
 
 type User = {
-  name: string
+  id: number
+  firstName: string
+  lastName: string
+  hasAccountChoices: boolean
+  hasBankAuthorization: boolean
 }
 
 interface AuthState {
   user?: User
+  token?: string | null
+  wasRecoveryTried: boolean
+}
+
+interface LoginInput {
+  email: string
+  password: string
+}
+
+interface RegisterInput {
+  email: string
+  password: string
+  passwordConfirmation: string
+  firstName: string
+  lastName: string
 }
 
 export const useAuth = defineStore({
   id: 'auth',
   state: () => ({
-    user: undefined
+    user: undefined,
+    token: localStorage.getItem('token'),
+    wasRecoveryTried: !localStorage.getItem('token')
   } as AuthState),
   getters: {
-    isLoggedIn: (state) => !!state.user
+    isLoggedIn: (state) => !!state.user,
+    hasBankLinked: (state) => {
+      console.log(state.user)
+      return state.user && state.user.hasBankAuthorization && state.user.hasAccountChoices;
+    },
   },
   actions: {
-    login() {
-      this.user = { name: 'John Doe' }
+    async login(loginInput: LoginInput) {
+      try {
+        const loginData = await axios.post("/login", loginInput)
+        console.log(loginData)
+        this.user = loginData.data.user
+
+        this.token = loginData.data.token
+        localStorage.setItem('token', loginData.data.token)
+      }
+      catch (e) {
+        return Promise.reject(e)
+      }
     },
+    async recoverToken() {
+      this.token = localStorage.getItem('token')
+
+      if (!this.token) {
+        this.user = undefined
+      }
+      else {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+      }
+    },
+    async recoverUser() {
+      try {
+        const userData = await axios.get("/user")
+        console.log(userData)
+        this.user = userData.data
+        this.wasRecoveryTried = true
+      }
+      catch (e) {
+        this.logout()
+        return Promise.reject(e)
+      }
+    },
+
+    async register(registerInput: RegisterInput): Promise<void> {
+      try {
+        await axios.post("/register", registerInput)
+      }
+      catch (e) {
+        return Promise.reject(e)
+      }
+    },
+    async logout() {
+      this.user = undefined
+      this.token = undefined
+      localStorage.removeItem('token')
+    }
   }
 })

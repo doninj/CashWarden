@@ -3,12 +3,12 @@ import type { IconName } from "@/faIcons"
 
 defineProps<{
   name: IconName,
-  size: String
+  size?: string,
 }>()
 </script>
 
 <template>
- <font-awesome-icon :icon="['fas', name]"  :size="size" />
+ <font-awesome-icon :icon="['fas', name]" :size="size" />
 </template>
 
 <style scoped>

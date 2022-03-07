@@ -4,6 +4,9 @@ import Logo from "@/assets/logo.svg"
 import type { MenuItem } from "@/models/Menu"
 import Menu from "./Menu.vue"
 import { Routes } from "@/router"
+import {useAuth} from "@/stores/auth";
+
+const auth = useAuth()
 
 const items: MenuItem[] = [
   {
@@ -32,7 +35,7 @@ const items: MenuItem[] = [
   {
     label: "Déconnexion",
     icon: "sign-out-alt",
-    action: () => alert("Déconnexion")
+    action: auth.logout
   }
 ]
 </script>

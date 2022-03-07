@@ -27,18 +27,6 @@ class UserAuthController
         $user->email = $validated["email"];
         $user->setPassword($validated["password"]);
 
-//        /* Création de l'utilisateur dans la base de données Firestore */
-//        $firebase_storage_path = 'images/';
-//        $uploadedfile = fopen($validated['avatar'], 'r');
-//        $extension = $validated['avatar']->getClientOriginalExtension();
-//        $file = $user->nickname. '-avatar.' . $extension;
-//        // Upload de l'image
-//        $image = Firebase::storage()->getBucket()->upload($uploadedfile, ['name' => $firebase_storage_path . $file]);
-//        $user->avatar = $image->name();
-
-        $user->avatar = "test";
-
-
         $user->save();
 
         $token = $user->createToken('API Token')->accessToken;

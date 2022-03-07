@@ -1,13 +1,24 @@
-import {createRouter, createWebHistory} from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
+import {
+  createRouter,
+  createWebHistory,
+} from "vue-router"
+
+import HomeView from "@/views/HomeView.vue"
+import LoginView from "@/views/LoginView.vue"
+import RegisterView from "@/views/RegisterView.vue"
+
+import auth from "@/middlewares/auth"
+import guest from "@/middlewares/guest"
+import { nextFactory } from "@/middlewares/bootstrap"
 
 export enum Routes {
-  Home = '/',
-  Login = '/login',
-  Budget = '/budget',
-  Transactions = '/transactions',
-  Settings = '/settings',
+  Home = "/",
+  Login = "/login",
+  Register = "/register",
+  BankRegister = "/bank-register",
+  Budget = "/budget",
+  Transactions = "/transactions",
+  Settings = "/settings",
 }
 
 const router = createRouter({
@@ -16,12 +27,34 @@ const router = createRouter({
     {
       path: Routes.Login,
       name: 'login',
-      component: LoginView
+      component: LoginView,
+      meta: {
+        // middleware: [ guest ],
+      }
+    },
+    {
+      path: Routes.Register,
+      name: "register",
+      component: RegisterView,
+      meta: {
+        // middleware: [ guest ],
+      }
+    },
+    {
+      path: Routes.BankRegister,
+      name: Routes.BankRegister,
+      component: () => import("@/views/BankRegisterView.vue"),
+      meta: {
+        // middleware: [ guest ],
+      }
     },
     {
       path: Routes.Home,
       name: 'home',
       component: () => import('../components/layouts/MenuLayout.vue'),
+      meta: {
+        // middleware: [ auth ],
+      },
       children: [
         {
           path: '',
@@ -38,7 +71,7 @@ const router = createRouter({
       name: 'transaction',
       component: () => import('../components/layouts/MenuLayout.vue'),
       meta: {
-        needAuth: true
+        // middleware: [ auth ],
       },
       children: [
         {
@@ -53,11 +86,11 @@ const router = createRouter({
     },
     {
       path: Routes.Budget,
-      name: 'budget',
-      component: () => import('../components/layouts/MenuLayout.vue'),
+      name: "budget",
       meta: {
-        needAuth: true
+        // middleware: [ auth ],
       },
+      component: () => import("../components/layouts/MenuLayout.vue"),
       children: [
         {
           path: '',
@@ -70,6 +103,26 @@ const router = createRouter({
       ]
     },
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.middleware) {
+    const middleware = Array.isArray(to.meta.middleware)
+      ? to.meta.middleware
+      : [ to.meta.middleware ]
+
+    const context = {
+      from,
+      next,
+      router,
+      to,
+    }
+    const nextMiddleware = nextFactory(context, middleware, 1)
+
+    return middleware[0]({ ...context, next: nextMiddleware })
+  }
+
+  return next()
 })
 
 export default router

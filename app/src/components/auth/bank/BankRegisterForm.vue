@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue"
+import { onMounted, ref } from "vue"
 import FormHeader from "@/components/auth/FormHeader.vue"
-import axios from "@/utils/axios";
+import axios from "@/utils/axios"
 
 interface Bank {
   id: string,
@@ -15,8 +15,8 @@ const isRegistering = ref(false)
 const banks = ref<Bank[]>([])
 
 onMounted(async () => {
-  banks.value = (await axios.get("banks")).data;
-});
+  banks.value = (await axios.get("banks")).data
+})
 
 const selectedBank = ref<Bank | null>(null)
 
@@ -26,8 +26,7 @@ async function onBankSubmit() {
       "bank_id": selectedBank.value.id,
     })
 
-    const windowe = await window.open(requisition.data.requisition_response.link, "_blank", "height=800,width=500")
-    console.log(windowe)
+    window.open(requisition.data.requisition_response.link, "_blank", "height=800,width=500")
   }
 }
 </script>
@@ -50,7 +49,7 @@ async function onBankSubmit() {
             <template #value="slotProps">
               <div class="bank-item" v-if="slotProps.value">
                 <img :src="slotProps.value.logo"/>
-                <div>{{ slotProps.value.name }}lol</div>
+                <div>{{ slotProps.value.name }}</div>
               </div>
               <span v-else>
                     {{ slotProps.placeholder }}

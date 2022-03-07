@@ -56,13 +56,31 @@ export const useAuth = defineStore({
         return Promise.reject(e)
       }
     },
+    async recoverSession() {
+      if(this.wasRecoveryTried) return
+
+      const tokenFromStorage = localStorage.getItem('token')
+      if(tokenFromStorage) {
+        this.token = tokenFromStorage
+
+        try {
+          const userData = await axios.get("/user", {
+            headers: {
+              Authorization: `Bearer ${tokenFromStorage}`
+            }
+          })
+          this.user = userData.data
+          this.wasRecoveryTried = true
+        }
+        catch (e) {
+          // this.logout()
+        }
+      }
+    },
     async recoverToken() {
       this.token = localStorage.getItem('token')
 
-      if (!this.token) {
-        this.user = undefined
-      }
-      else {
+      if (this.token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       }
     },

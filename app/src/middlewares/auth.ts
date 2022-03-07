@@ -4,12 +4,7 @@ import { Routes } from "@/router"
 
 export default async function auth({ next, to, from }: MiddlewareContext) {
   const auth = useAuth()
-
-  if(!auth.wasRecoveryTried) {
-    console.log("revovery not tried")
-    await auth.recoverToken()
-    await auth.recoverUser()
-  }
+  await auth.recoverSession()
 
   console.log("auth", auth)
   if(!auth.isLoggedIn) {

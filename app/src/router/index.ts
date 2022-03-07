@@ -29,7 +29,7 @@ const router = createRouter({
       name: 'login',
       component: LoginView,
       meta: {
-        // middleware: [ guest ],
+        middleware: [ guest ],
       }
     },
     {
@@ -37,7 +37,7 @@ const router = createRouter({
       name: "register",
       component: RegisterView,
       meta: {
-        // middleware: [ guest ],
+        middleware: [ guest ],
       }
     },
     {
@@ -45,7 +45,7 @@ const router = createRouter({
       name: Routes.BankRegister,
       component: () => import("@/views/BankRegisterView.vue"),
       meta: {
-        // middleware: [ guest ],
+        middleware: [ guest ],
       }
     },
     {
@@ -53,7 +53,7 @@ const router = createRouter({
       name: 'home',
       component: () => import('../components/layouts/MenuLayout.vue'),
       meta: {
-        // middleware: [ auth ],
+        middleware: [ auth ],
       },
       children: [
         {
@@ -71,7 +71,7 @@ const router = createRouter({
       name: 'transaction',
       component: () => import('../components/layouts/MenuLayout.vue'),
       meta: {
-        // middleware: [ auth ],
+        middleware: [ auth ],
       },
       children: [
         {
@@ -88,7 +88,7 @@ const router = createRouter({
       path: Routes.Budget,
       name: "budget",
       meta: {
-        // middleware: [ auth ],
+        middleware: [ auth ],
       },
       component: () => import("../components/layouts/MenuLayout.vue"),
       children: [

@@ -121,6 +121,6 @@ class User extends Authenticatable
         $this->account_id = $account->id;
         $this->save();
         $account->initBalance();
-        $account->initTransaction();
+        $account->setLatestTransactions();
     }
 }

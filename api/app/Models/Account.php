@@ -12,6 +12,15 @@ class Account extends Model
 
     public $incrementing = false;
 
+    public static function refreshData()
+    {
+        $accounts = self::all();
+        foreach ($accounts as $account){
+            $account->setCurrentBalanceAmount();
+            $account->setLatestTransactions();
+        }
+    }
+
     public function users(){
         return $this->hasMany(User::class, "account_id", "id");
     }
@@ -24,9 +33,16 @@ class Account extends Model
         return $this->hasMany(Balance::class, "account_id", "id");
     }
 
-    public function initTransaction()
+    public function setLatestTransactions()
     {
-        $request = StaticObjects::$nordigenAPI->getTransactions($this->id);
+        $transactions = $this->transactions()->orderBy("dateTransaction");
+        if($transactions->count() > 0){
+            $latestTransactionDate = $this->transactions()->orderByDesc("dateTransaction")->first()->getTransactionDate();
+            $latestTransactionDate->addDay();
+            $request = StaticObjects::$nordigenAPI->getTransactions($this->id, $latestTransactionDate);
+        }else{
+            $request = StaticObjects::$nordigenAPI->getTransactions($this->id);
+        }
         $status = $request->getStatusCode();
         $response = json_decode($request->getBody()->getContents());
         if(in_array($status, [200, 201, 202])){

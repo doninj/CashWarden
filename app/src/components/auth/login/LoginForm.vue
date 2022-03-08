@@ -5,6 +5,7 @@ import FormHeader from "@/components/auth/FormHeader.vue"
 import { Routes } from "@/router"
 import {useToast} from "primevue/usetoast";
 import {useRouter} from "vue-router";
+import errorsToString from "@/utils/errorsToString"
 
 const toast = useToast()
 const auth = useAuth()
@@ -24,8 +25,13 @@ async function onSubmit() {
     await auth.login(form)
     await router.push(Routes.Home)
   }
-  catch (error) {
-    toast.add({ severity:'error', summary: 'Création du compte', detail: "", life: 3000 });
+  catch ({ response: errorResponse }) {
+    let errorsMessage = errorResponse.data.message
+
+    if(errorResponse.data.errors) {
+      errorsMessage = errorsToString(errorResponse.data.errors)
+    }
+    toast.add({ severity:'error', summary: 'Création du compte', detail: errorsMessage, life: 3000 });
   }
   finally {
     isLoggingIn.value = false

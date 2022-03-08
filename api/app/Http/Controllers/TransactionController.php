@@ -20,8 +20,8 @@ class TransactionController extends Controller
         $user = $request->user();
         $account = $user->account;
         $transactions = $account->transactions()->orderByDesc("dateTransaction");
-        $transactions->paginate(15);
-        return response()->json($transactions->get());
+
+        return response()->json($transactions->paginate(6));
     }
     public function transactionsPerMonth(Request $request)
     {

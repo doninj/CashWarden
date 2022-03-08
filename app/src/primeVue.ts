@@ -14,6 +14,8 @@ import Password from "primevue/password"
 import Chart from 'primevue/chart'
 import Dropdown from "primevue/dropdown"
 import Toast from "primevue/toast"
+import DataTable from "primevue/datatable"
+import Column from "primevue/column"
 
 export default [
   Chart,
@@ -27,4 +29,6 @@ export default [
   Button,
   Password,
   Toast,
+  DataTable,
+  Column
 ]

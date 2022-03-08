@@ -45,7 +45,7 @@ const router = createRouter({
       name: Routes.BankRegister,
       component: () => import("@/views/BankRegisterView.vue"),
       meta: {
-        middleware: [ guest ],
+        middleware: [ auth ],
       }
     },
     {

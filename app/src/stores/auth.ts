@@ -47,8 +47,7 @@ export const useAuth = defineStore({
         const loginData = await axios.post("/login", loginInput)
         this.user = loginData.data.user
 
-        this.token = loginData.data.token
-        localStorage.setItem('token', loginData.data.token)
+        this.saveToken(loginData.data.token)
       }
       catch (e) {
         return Promise.reject(e)
@@ -74,6 +73,11 @@ export const useAuth = defineStore({
           return Promise.reject(e)
         }
       }
+    },
+    saveToken(token: string) {
+      this.token = token
+      localStorage.setItem('token', token)
+      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
     },
     async recoverToken() {
       this.token = localStorage.getItem('token')

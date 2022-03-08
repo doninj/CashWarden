@@ -9,6 +9,9 @@ export default async function guest({ next }: MiddlewareContext) {
   if(auth.isLoggedIn && auth.hasBankLinked) {
     return next({ path: Routes.Home })
   }
+  else if (auth.isLoggedIn && !auth.hasBankLinked) {
+    return next({ path: Routes.BankRegister })
+  }
 
   return next();
 }

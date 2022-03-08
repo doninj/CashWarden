@@ -5,6 +5,7 @@ import FormHeader from "@/components/auth/FormHeader.vue"
 import {Routes} from "@/router"
 import {useRouter} from "vue-router"
 import {useToast} from "primevue/usetoast"
+import errorsToString from "@/utils/errorsToString"
 
 const auth = useAuth()
 const router = useRouter()
@@ -36,23 +37,11 @@ async function onStepSubmit() {
       await router.push(Routes.Login)
     }
     catch ({ response: errorResponse }) {
-      const fieldTraductions = {
-        email: "Email",
-        firstName: "Prénom",
-        lastName: "Nom",
-        password: "Mot de passe",
-        passwordConfirmation: "Confirmation du mot de passe",
-      }
-
       /** Vue3 à quelques soucis avec typescript :/ */
       // @ts-expect-error: entries is not found on Object ?
-      const errorMessage =  Object.entries(errorResponse.data.errors).reduce(
-              // @ts-expect-error: since entries is not found it cannot resolve the type of the values returned
-              (acc, [field, message]) => `${acc}\n ${fieldTraductions[field]}: ${message}`,
-        ""
-      )
+      const errorsMessage = errorsToString(errorResponse.data.errors)
 
-      toast.add({ severity:'error', summary: 'Création du compte', detail: errorMessage, life: 3000 });
+      toast.add({ severity:'error', summary: 'Création du compte', detail: errorsMessage, life: 3000 });
     }
     finally {
       isRegistering.value = false

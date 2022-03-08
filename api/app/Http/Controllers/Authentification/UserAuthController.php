@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Authentification;
 use App\Http\Requests\Authentification\LoginRequest;
 use App\Http\Requests\Authentification\RegisterRequest;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Kreait\Laravel\Firebase\Facades\Firebase;
@@ -45,9 +46,38 @@ class UserAuthController
      */
     private function getUserThanksToRequestData($data)
     {
-        return User::where('email', $data["email"])->first();
+        $user =  User::with(['account.GetThreeTransactions',
+            'account.transactionsForActualMonth',
+            'account.LatestBalances',
+            'account.transactions'])->where('email', $data["email"])->first();
+        $collect = collect($user->account->transactionsForActualMonth);
+        $user->account['totalSpendingOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
+            if ($transaction->montant < 0)
+                return $transaction->montant;
+        })->sum()),2);
+        $user->account['totalIncomeOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
+            if ($transaction->montant > 0)
+                return $transaction->montant;
+        })->sum()),2);
+        $this->GetMonth($user);
+        return $user;
+
     }
 
+    public function GetMonth($userData) {
+        $monthArray = [];
+        $date =  collect($userData->account->transactions);
+        foreach ($date as $transaction) {
+            $myDate = $transaction->dateTransaction;
+            $date = Carbon::createFromFormat('Y-m-d', $myDate);
+            $monthName = $date->translatedFormat('F');
+            if(!in_array($monthName, $monthArray)) {
+                array_push($monthArray, $monthName);
+            }
+        }
+        $userData['months'] = $monthArray;
+        unset($userData->account->transactions);
+    }
     /**
      * Méthode permettant de se connecter
      *
@@ -71,14 +101,7 @@ class UserAuthController
 
             //On retourne la réponse en utilisant le token
             $response = [
-                'user' => [
-                    "id" => $user->id,
-                    "firstName" => $user->firstName,
-                    "lastName" => $user->lastName,
-                    "hasBankAuthorization" => $user->hasBankAuthorization,
-                    "hasAccountChoices" => $user->hasAccountChoices,
-                    "avatar" => $user->avatar
-                ],
+                'user' => $user,
                 'token' => $token
             ];
             return response($response, 200);

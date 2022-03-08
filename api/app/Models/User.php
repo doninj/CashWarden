@@ -123,4 +123,18 @@ class User extends Authenticatable
         $account->initBalance();
         $account->setLatestTransactions();
     }
+
+    public function haveAnyLimitedBudgetAt($dateBudget){
+        $limitedBudgets = $this->limitedBudgets();
+        return !$limitedBudgets->whereDate("previsionDate", "=", $dateBudget)->exists();
+//        if($limitedBudgets->whereDate("previsionDate", "=", $dateBudget)->exists()){
+//            return false;
+//        }else{
+//            return true;
+//        }
+    }
+
+    public function getLatestLimitedBudget(){
+        return $this->limitedBudgets()->orderByDesc("previsionDate")->first();
+    }
 }

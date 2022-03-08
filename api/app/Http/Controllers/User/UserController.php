@@ -15,6 +15,47 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+       $userData = $user->load([
+           'account.GetThreeTransactions',
+           'account.transactionsForActualMounth',
+           'account.transactions',
+           'account.LatestBalances'
+       ]);
+       $collect = collect($userData->account->transactionsForActualMounth);
+       $userData->account['totalSpendingOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
+           if ($transaction->montant < 0)
+               return $transaction->montant;
+       })->sum()),2);
+        $userData->account['totalIncomeOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
+            if ($transaction->montant > 0)
+                return $transaction->montant;
+        })->sum()),2);
+       $this->GetMonthAndYear($userData);
+        return response()->json($user);
+    }
+
+    public function GetMonthAndYear($userData) {
+        $monthArray = [];
+        $yearArray = [];
+        $date =  collect($userData->account->transactions);
+        foreach ($date as $transaction) {
+            $myDate = $transaction->dateTransaction;
+            $date = Carbon::createFromFormat('Y-m-d', $myDate);
+            $monthName = $date->translatedFormat('F');
+            $yearName = $date->translatedFormat('Y');
+            if(!in_array($yearName, $yearArray)) {
+                array_push($yearArray, $yearName);
+            }
+            if(!in_array($monthName, $monthArray)) {
+                array_push($monthArray, $monthName);
+            }
+        }
+        $userData->account['months'] = $monthArray;
+        $userData->account['years'] = $yearArray;
+        unset($userData->account->transactions);
+    }
+    public function showUserWhenConnected(Request $request){
+        $user = $request->user();
         $userData = $user->load([
             'account.GetThreeTransactions',
             'account.transactionsForActualMounth',
@@ -22,26 +63,11 @@ class UserController extends Controller
         ]);
         $collect = collect($userData->account->transactionsForActualMounth);
         $userData->account['totalSpendingOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
-            if ($transaction->montant > 0)
+            if ($transaction->montant < 0)
                 return $transaction->montant;
         })->sum()),2);
         $this->GetMonth($userData);
-        return response()->json($userData);
-    }
-    public function GetMonth($userData) {
-        $monthArray = [];
-        $date =  collect($userData->account->transactions);
-        foreach ($date as $transaction) {
-            $myDate = $transaction->dateTransaction;
-            $date = Carbon::createFromFormat('Y-m-d', $myDate);
-            $monthName = $date->translatedFormat('F');
-            if(!in_array($monthName, $monthArray)) {
-                array_push($monthArray, $monthName);
-            }
-        }
-        $userData['months'] = $monthArray;
-        unset($userData->account->transactions);
-
+        return response()->json($user);
     }
     /**
      * Show the form for creating a new resource.

@@ -27,12 +27,22 @@ class TransactionController extends Controller
     {
         $monthInFr = $request->date;
         $year = $request->annee;
+        if($year != null && $monthInFr != null) {
         $monthInEng= Carbon::translateTimeString($monthInFr);
         $month = Carbon::parse($monthInEng)->month;
+        } else {
+            $now = Carbon::now();
+            $year = $now->year;
+            $month = $now->month;
+        }
         $user = $request->user();
         $account = $user->account;
-        $transaction['AllTransactions'] = $account->transactions()->whereMonth('dateTransaction', '=', $month)->WhereYear('dateTransaction','=',$year)->orderBy('dateTransaction','desc')->get();
-        $transaction['TotalDépenses'] = number_format(abs($transaction['AllTransactions']->map(function ($transaction) {
+        $transaction['allTransactions'] = $account->transactions()->whereMonth('dateTransaction', '=', $month)->WhereYear('dateTransaction','=',$year)->orderBy('dateTransaction','desc')->get();
+        $transaction['totalDepenses'] = number_format(abs($transaction['allTransactions']->map(function ($transaction) {
+            if ($transaction->montant < 0)
+                return $transaction->montant;
+        })->sum()),2);
+        $transaction['totalIncomes'] = number_format(abs($transaction['allTransactions']->map(function ($transaction) {
             if ($transaction->montant > 0)
                 return $transaction->montant;
         })->sum()),2);

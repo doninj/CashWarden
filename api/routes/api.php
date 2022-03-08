@@ -31,6 +31,7 @@ Route::middleware('auth:api')->group(function ($route) {
     $route->get("/nordigen/accounts", [AccountController::class, "nordigenAccount"]);
 
     $route->get("/user", [UserController::class, "index"]);
+    $route->get("/userWhenConnected", [UserController::class, "showUserWhenConnected"]);
 
     $route->get("/transactionsPerMonth", [TransactionController::class, "transactionsPerMonth"]);
     $route->post("/user", [UserController::class, "update"]);

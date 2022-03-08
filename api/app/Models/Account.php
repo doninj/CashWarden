@@ -34,6 +34,9 @@ class Account extends Model
     public function balances(){
         return $this->hasMany(Balance::class, "account_id", "id");
     }
+    public function LatestBalances(){
+        return $this->hasOne(Balance::class, "account_id", "id")->orderByDesc('dateAmount');
+    }
 
     public function transactionsForActualMounth() {
 
@@ -103,7 +106,11 @@ class Account extends Model
             $currentBalance = $balanceListAmount[0];
             $balance = new Balance();
             $balance->amount = (double) $currentBalance->balanceAmount->amount;
-            $balance->dateAmount = $currentBalance->referenceDate;
+            if($currentBalance->referenceDate ?? false){
+                $balance->dateAmount = $currentBalance->referenceDate;
+            }else{
+                $balance->dateAmount = Carbon::now();
+            }
             $balance->account_id = $this->id;
             $balance->save();
         }

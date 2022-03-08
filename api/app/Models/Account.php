@@ -38,16 +38,16 @@ class Account extends Model
         return $this->hasOne(Balance::class, "account_id", "id")->orderByDesc('dateAmount');
     }
 
-    public function transactionsForActualMounth() {
+    public function transactionsForActualMonth() {
 
         $dateOfStartMonth= Carbon::now()->startOfMonth();
         $dateOfEndMonth = Carbon::now()->endOfMonth();
         return $this->transactions()->whereBetween('dateTransaction',[$dateOfStartMonth,$dateOfEndMonth]);
     }
-    public function TotalTransactionsForActualMounth() {
+    public function TotaltransactionsForActualMonth() {
 
         $total = 0;
-        $transactions = $this->transactionsForActualMounth()->get();
+        $transactions = $this->transactionsForActualMonth()->get();
         $sum = $transactions->map(function ($transaction, $key) {
             if($transaction->montant < 0) {
             return $transaction->montant;

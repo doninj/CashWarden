@@ -163,7 +163,6 @@ const lightOptionsDepense = ref({
         weight: 900
       },
       formatter: (value, context) => {
-        console.log(context.dataset.icons)
         return context.dataset.icons[context.dataIndex];
       }
     },
@@ -197,7 +196,6 @@ const lightOptionsIncome = ref({
         weight: 900
       },
       formatter: (value, context) => {
-        console.log(context.dataset.icons)
         return context.dataset.icons[context.dataIndex];
       }
     },

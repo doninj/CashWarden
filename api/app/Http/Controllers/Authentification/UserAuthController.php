@@ -47,10 +47,10 @@ class UserAuthController
     private function getUserThanksToRequestData($data)
     {
         $user =  User::with(['account.GetThreeTransactions',
-            'account.transactionsForActualMounth',
+            'account.transactionsForActualMonth',
             'account.LatestBalances',
             'account.transactions'])->where('email', $data["email"])->first();
-        $collect = collect($user->account->transactionsForActualMounth);
+        $collect = collect($user->account->transactionsForActualMonth);
         $user->account['totalSpendingOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
             if ($transaction->montant < 0)
                 return $transaction->montant;

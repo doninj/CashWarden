@@ -17,11 +17,11 @@ class UserController extends Controller
         $user = $request->user();
        $userData = $user->load([
            'account.GetThreeTransactions',
-           'account.transactionsForActualMounth',
+           'account.transactionsForActualMonth',
            'account.transactions',
            'account.LatestBalances'
        ]);
-       $collect = collect($userData->account->transactionsForActualMounth);
+       $collect = collect($userData->account->transactionsForActualMonth);
        $userData->account['totalSpendingOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
            if ($transaction->montant < 0)
                return $transaction->montant;
@@ -58,10 +58,10 @@ class UserController extends Controller
         $user = $request->user();
         $userData = $user->load([
             'account.GetThreeTransactions',
-            'account.transactionsForActualMounth',
+            'account.transactionsForActualMonth',
             'account.transactions'
         ]);
-        $collect = collect($userData->account->transactionsForActualMounth);
+        $collect = collect($userData->account->transactionsForActualMonth);
         $userData->account['totalSpendingOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
             if ($transaction->montant < 0)
                 return $transaction->montant;

@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLimitedBudgetRequest;
 use App\Http\Requests\UpdateLimitedBudgetRequest;
 use App\Models\LimitedBudget;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class LimitedBudgetController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = $request->user();
+        return response()->json($user->limitedBudgets());
     }
 
     /**

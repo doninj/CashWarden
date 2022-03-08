@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Authentification\UserAuthController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\LimitedBudgetController;
 use App\Http\Controllers\RequisitionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\User\UserController;
@@ -32,6 +33,10 @@ Route::middleware('auth:api')->group(function ($route) {
 
     $route->get("/user", [UserController::class, "index"]);
     $route->post("/user", [UserController::class, "update"]);
+
+    $route->get("/limitedBudgets", [LimitedBudgetController::class, "index"]);
+    $route->post("/limitedBudgets", [LimitedBudgetController::class, "store"]);
+    $route->put("/limitedBudgets/{limitedBudget}", [LimitedBudgetController::class, "update"]);
 
     $route->get("/transactions", [TransactionController::class, "index"]);
 

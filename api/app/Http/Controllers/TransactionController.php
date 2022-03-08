@@ -31,11 +31,11 @@ class TransactionController extends Controller
         $month = Carbon::parse($monthInEng)->month;
         $user = $request->user();
         $account = $user->account;
-        $transaction['AllTransactions'] = $account->transactions()->whereMonth('dateTransaction', '=', $month)->WhereYear('dateTransaction','=',$year)->get();
-        $transaction['TotalDépenses'] = abs($transaction['AllTransactions']->map(function ($transaction) {
+        $transaction['AllTransactions'] = $account->transactions()->whereMonth('dateTransaction', '=', $month)->WhereYear('dateTransaction','=',$year)->orderBy('dateTransaction','desc')->get();
+        $transaction['TotalDépenses'] = number_format(abs($transaction['AllTransactions']->map(function ($transaction) {
             if ($transaction->montant > 0)
                 return $transaction->montant;
-        })->sum());
+        })->sum()),2);
         return response()->json($transaction);
     }
 

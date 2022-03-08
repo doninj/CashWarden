@@ -8,6 +8,7 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Float_;
 
 class UserController extends Controller
 {
@@ -20,10 +21,10 @@ class UserController extends Controller
             'account.transactions'
         ]);
         $collect = collect($userData->account->transactionsForActualMounth);
-        $userData->account['totalSpendingOfActualMonth'] = abs($collect->map(function ($transaction) {
-            if ($transaction->montant < 0)
+        $userData->account['totalSpendingOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
+            if ($transaction->montant > 0)
                 return $transaction->montant;
-        })->sum());
+        })->sum()),2);
         $this->GetMonth($userData);
         return response()->json($userData);
     }

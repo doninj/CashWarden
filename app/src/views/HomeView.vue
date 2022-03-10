@@ -252,7 +252,7 @@ async function showTotal() {
 
 function reformDate() {
   moment.locale('fr')
-  if(transactions.value) {
+  if(transactions[0]) {
   const date = transactions[0].dateTransaction
   return moment(date).format('LL');
   }

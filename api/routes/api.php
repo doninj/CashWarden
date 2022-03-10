@@ -41,6 +41,8 @@ Route::middleware('auth:api')->group(function ($route) {
     $route->post("/limitedBudgets", [LimitedBudgetController::class, "store"]);
     $route->put("/limitedBudgets/{limitedBudget}", [LimitedBudgetController::class, "update"]);
 
+    $route->get("/limitedBudgets/comparison", [LimitedBudgetController::class, "budgetComparison"]);
+
     $route->get("/transactions", [TransactionController::class, "index"]);
 
     $route->post("/logout", [UserAuthController::class, "logout"]);

@@ -12,11 +12,6 @@ class UpdateLimitedBudgetRequest extends FormRequest
         "amount.between" => "Le montant doit avoir une valeur entre 0 et 999 999 999 999.99"
     ];
 
-    private $previsionDateMessage = [
-        "previsionDate.required" => "Merci de renseigner une date prévisionnel de limite de budget !",
-        "previsionDate.date_format" => "La date prévisionnelle doit être au format YYYY-MM-JJ"
-    ];
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -43,7 +38,7 @@ class UpdateLimitedBudgetRequest extends FormRequest
     {
         return [
             "amount" => "numeric|between:0,999999999999.99",
-            "previsionDate" => "date_format:Y-m-d"
+            "previsionDate" => "date_format:Y-m"
         ];
     }
 }

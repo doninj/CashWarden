@@ -130,8 +130,8 @@ class LimitedBudgetController extends Controller
             $previsionValue = $user->getLatestLimitedBudgetAt($date);
             $balanceValue = $user->getLatestRealBalanceAt($date);
             $budgetComparisonResponse[$date->format("m-Y")] = [
-                "prevision" => is_null($previsionValue) ? null : doubleval($previsionValue->amount),
-                "real" => is_null($balanceValue) ? null : doubleval($balanceValue->amount)
+                "prevision" => is_null($previsionValue) ? 0 : doubleval($previsionValue->amount),
+                "real" => is_null($balanceValue) ? 0 : doubleval($balanceValue->amount)
             ];
             $date->addMonth();
         }

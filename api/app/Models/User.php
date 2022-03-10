@@ -149,7 +149,7 @@ class User extends Authenticatable
     }
 
     public function getLatestLimitedBudgetAt($date){
-        return $this->limitedBudgets()->whereDate("previsionDate", "=", $date)->orderByDesc("previsionDate")->first();
+        return $this->limitedBudgets()->whereYear("previsionDate", "=", $date->year)->whereMonth("previsionDate", "=", $date->month)->orderByDesc("previsionDate")->first();
     }
 
     public function getLatestRealBalanceAt($date){

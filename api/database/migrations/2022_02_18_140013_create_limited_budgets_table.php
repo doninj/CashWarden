@@ -15,9 +15,11 @@ class CreateLimitedBudgetsTable extends Migration
     {
         Schema::create('limited_budgets', function (Blueprint $table) {
             $table->id();
-            $table->float("montant");
+            $table->float("amount");
             $table->date("previsionDate");
-//            $table->timestamps();
+            $table->unsignedBigInteger("user_id");
+            $table->foreign("user_id")->references("id")->on("users");
+            $table->timestamps();
         });
     }
 

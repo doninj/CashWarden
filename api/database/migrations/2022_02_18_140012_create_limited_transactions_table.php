@@ -15,9 +15,9 @@ class CreateLimitedTransactionsTable extends Migration
     {
         Schema::create('limited_transactions', function (Blueprint $table) {
             $table->id();
-            $table->float("montant");
-            $table->date("dateDebut");
-            $table->date("dateLimite");
+            $table->decimal("amount", 14, 2);
+            $table->date("startDate");
+            $table->date("deadline")->nullable(true);
             $table->unsignedBigInteger("user_id");
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');

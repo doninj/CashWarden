@@ -20,7 +20,11 @@ class Kernel extends ConsoleKernel
 //        $schedule->call(Account::refreshData())->dailyAt('01:00');
         $schedule->call(function(){
             Account::refreshData();
-        })->dailyAt("10:00");
+        })->dailyAt("09:00");
+
+        $schedule->call(function(){
+            Account::refreshData();
+        })->dailyAt("13:00");
     }
 
     /**

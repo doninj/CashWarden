@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column">
+  <div  class="flex flex-column">
     <div class="mt-5">
       <h2 class="font-bold"> Tableau de bord</h2>
     </div>
@@ -48,9 +48,9 @@
                             placeholder="Selectionner une année"/>
 
                 </div>
-                <div class="flex">
+                <div  class="flex">
                   <div class="mt-5 m-4"  style="height: 300px; width: 300px;">
-                    <Chart :plugins="plugins" ref="primeChart" type="doughnut" :data="chartDataDepense"
+                    <Chart  :plugins="plugins" ref="primeChart" type="doughnut" :data="chartDataSpending"
                            :options="lightOptionsDepense"/>
                   </div>
                   <div class="mt-5 m-4" style="height: 300px; width: 300px;">
@@ -107,17 +107,23 @@ import axios from "@/utils/axios"
 // get account
 const { user } = useAuth()
 const plugins = [ChartjsDoughnutsLabel, ChartDataLabels]
-
+const total = ref()
+const arrayLabelsIncome = ref([])
+let arrayincomeIcon = ref([])
+let arrayIncomeTotal = ref([])
+let arraySpendingIcon = ref([])
+let arrayLabelsSpending = ref([])
+let arraySpendingTotal = ref([])
 const month = ref(null)
 const year = ref(null)
 let transactions = user.account.get_three_transactions
 const primeChart = ref()
 const primeChartIncome = ref()
-
+const loading = ref(true)
 let months = ref()
 let years = ref()
-const chartDataDepense = ref({
-  labels: ['A', 'B', 'C'],
+const chartDataSpending = ref({
+  labels: arrayIncomeTotal.value,
   datasets: [
     {
       icons: ['\uf07a', '\uf469', '\uf2e7', '\uf015', '\uf658',],
@@ -128,7 +134,7 @@ const chartDataDepense = ref({
   ]
 });
 const chartDataIncome = ref({
-  labels: ['A', 'B', 'C'],
+  labels: arrayIncomeTotal.value,
   datasets: [
     {
       icons: ['\uf07a', '\uf469', '\uf2e7', '\uf015', '\uf658',],
@@ -141,7 +147,12 @@ const chartDataIncome = ref({
 const lightOptionsDepense = ref({
   plugins: {
     tooltip: {
-      enabled: true
+      enabled: true,
+      callbacks: {
+        label: ((tooltipItems, data) => {
+          return `${tooltipItems.label} : ${tooltipItems.formattedValue} €`
+        })
+      }
     },
     doughnutlabel: {
       labels: [{
@@ -162,6 +173,18 @@ const lightOptionsDepense = ref({
         size: 20,
         weight: 900
       },
+      display: function (context) {
+        const value = chartDataSpending.value.datasets[0].data[context.dataIndex]
+        if(total.value) {
+        const totalInInt = total.value.replace(',', '')
+        const Total =totalInInt
+        const percentage = (value/Total)*100
+        if(percentage < 5) {
+          return false
+        } else
+        return true
+        }
+      },
       formatter: (value, context) => {
         return context.dataset.icons[context.dataIndex];
       }
@@ -174,7 +197,12 @@ const lightOptionsDepense = ref({
 const lightOptionsIncome = ref({
   plugins: {
     tooltip: {
-      enabled: true
+      enabled: true,
+      callbacks: {
+        label: ((tooltipItems, data) => {
+          return `${tooltipItems.label} : ${tooltipItems.formattedValue} €`
+        })
+      }
     },
     doughnutlabel: {
       labels: [{
@@ -216,22 +244,25 @@ function AmountColor(transaction) {
 
 async function showTotal() {
   if (year.value && month.value) {
-    const response = await axios.get('/transactionsPerMonth', { params: { date: month.value, annee: year.value } })
-    lightOptionsDepense.value.plugins.doughnutlabel.labels[0].text = `${response.data.totalDepenses} €`
-    lightOptionsIncome.value.plugins.doughnutlabel.labels[0].text = `${response.data.totalIncomes} €`
-    const chart = primeChart.value.chart
-    const chartIncome = primeChartIncome.value.chart
-    chartIncome.update()
-    chart.update()
+    const transactionsPerMonth = await axios.get('/transactionsPerMonth', { params: { date: month.value, annee: year.value } })
+    const categories = await axios.get('/categories', { params: { date: month.value, annee: year.value } })
+    refreshChart(categories, transactionsPerMonth)
   }
 }
 
 function reformDate() {
   moment.locale('fr')
+  if(transactions[0]) {
   const date = transactions[0].dateTransaction
   return moment(date).format('LL');
+  }
 }
 
+function unescapeUnicode( str ) {
+  return str.replace( /\\u([a-fA-F0-9]{4})/g, function(g, m1) {
+    return String.fromCharCode(parseInt(m1, 16));
+  });
+}
 function reformMonths() {
   months.value = user.account.months.reduce((accu, curr) => {
     accu.push({ 'name': curr })
@@ -245,15 +276,45 @@ function reformYears() {
     return accu
   }, [])
 }
-
-onBeforeMount(async () => {
-  const response = await axios.get('/transactionsPerMonth')
-  lightOptionsDepense.value.plugins.doughnutlabel.labels[0].text = `${response.data.totalDepenses} €`
-  lightOptionsIncome.value.plugins.doughnutlabel.labels[0].text = `${response.data.totalIncomes} €`
+function refreshChart(categories, transactionPerMonth) {
+  arraySpendingTotal.value = []
+  arrayLabelsSpending.value = []
+  arrayLabelsIncome.value = []
+  arrayIncomeTotal.value = []
+  arrayincomeIcon.value = categories.data.map((income) => {
+    if(income.totalIncome !== 0) {
+      arrayLabelsIncome.value.push(income.label)
+      arrayIncomeTotal.value.push(income.totalIncome)
+      return unescapeUnicode(income.icon)
+    }
+  })
+  arraySpendingIcon.value = categories.data.map((spending) => {
+    if(spending.totalSpending !== 0) {
+      arraySpendingTotal.value.push(spending.totalSpending)
+      arrayLabelsSpending.value.push(spending.label)
+      return unescapeUnicode(spending.icon)
+    }
+  })
+  chartDataSpending.value.datasets[0].data = [...arraySpendingTotal.value]
+  chartDataIncome.value.datasets[0].data = [...arrayIncomeTotal.value]
+  chartDataIncome.value.datasets[0].icons = [...arrayincomeIcon.value]
+  chartDataSpending.value.datasets[0].icons = [...arraySpendingIcon.value]
+  chartDataIncome.value.labels = [...arrayLabelsIncome.value]
+  chartDataSpending.value.labels = [...arrayLabelsSpending.value]
+  total.value = transactionPerMonth.data.totalDepenses
+  lightOptionsDepense.value.plugins.doughnutlabel.labels[0].text = `${transactionPerMonth.data.totalDepenses} €`
+  lightOptionsIncome.value.plugins.doughnutlabel.labels[0].text = `${transactionPerMonth.data.totalIncomes} €`
   const chart = primeChart.value.chart
   const chartIncome = primeChartIncome.value.chart
   chart.update()
   chartIncome.update()
+}
+
+onBeforeMount(async () => {
+  const transactionPerMonth = await axios.get('/transactionsPerMonth')
+  const categories = await axios.get('/categories')
+  loading.value = false
+  refreshChart(categories,transactionPerMonth)
 
   reformMonths()
   reformYears()

@@ -63,25 +63,30 @@ class UserAuthController
                 if ($transaction->montant > 0)
                     return $transaction->montant;
             })->sum()),2);
-            $this->GetMonth($user);
+            $this->GetMonthAndYear($user);
         }
-
         return $user;
 
     }
 
-    public function GetMonth($userData) {
+    public function GetMonthAndYear($userData) {
         $monthArray = [];
+        $yearArray = [];
         $date =  collect($userData->account->transactions);
         foreach ($date as $transaction) {
             $myDate = $transaction->dateTransaction;
             $date = Carbon::createFromFormat('Y-m-d', $myDate);
             $monthName = $date->translatedFormat('F');
+            $yearName = $date->translatedFormat('Y');
+            if(!in_array($yearName, $yearArray)) {
+                array_push($yearArray, $yearName);
+            }
             if(!in_array($monthName, $monthArray)) {
                 array_push($monthArray, $monthName);
             }
         }
-        $userData['months'] = $monthArray;
+        $userData->account['months'] = $monthArray;
+        $userData->account['years'] = $yearArray;
         unset($userData->account->transactions);
     }
     /**

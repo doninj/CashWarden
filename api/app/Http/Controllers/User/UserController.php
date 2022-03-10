@@ -34,7 +34,6 @@ class UserController extends Controller
             })->sum()),2);
             $this->GetMonthAndYear($userData);
         }
-
         return response()->json($user);
     }
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Authentification\UserAuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\LimitedBudgetController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RequisitionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\User\UserController;
@@ -44,6 +45,7 @@ Route::middleware('auth:api')->group(function ($route) {
     $route->get("/limitedBudgets/comparison", [LimitedBudgetController::class, "budgetComparison"]);
 
     $route->get("/transactions", [TransactionController::class, "index"]);
+    $route->get("/categories", [CategoryController::class, "index"]);
 
     $route->post("/logout", [UserAuthController::class, "logout"]);
 });

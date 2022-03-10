@@ -70,6 +70,7 @@ export const useAuth = defineStore({
           this.wasRecoveryTried = true
         }
         catch (e) {
+          this.clearSession()
           return Promise.reject(e)
         }
       }
@@ -94,13 +95,16 @@ export const useAuth = defineStore({
         return Promise.reject(e)
       }
     },
+    async clearSession() {
+      this.user = undefined
+      this.token = undefined
+      localStorage.removeItem('token')
+      window.location.reload()
+    },
     async logout() {
       try {
         await axios.post("/logout")
-        this.user = undefined
-        this.token = undefined
-        localStorage.removeItem('token')
-        window.location.reload()
+        this.clearSession()
       }
       catch (e) {
         return Promise.reject(e)

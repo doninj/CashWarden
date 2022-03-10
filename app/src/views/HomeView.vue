@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!loading" class="flex flex-column">
+  <div  class="flex flex-column">
     <div class="mt-5">
       <h2 class="font-bold"> Tableau de bord</h2>
     </div>
@@ -252,8 +252,10 @@ async function showTotal() {
 
 function reformDate() {
   moment.locale('fr')
+  if(transactions.value) {
   const date = transactions[0].dateTransaction
   return moment(date).format('LL');
+  }
 }
 
 function unescapeUnicode( str ) {

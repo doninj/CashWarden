@@ -46,15 +46,20 @@ class LimitedBudgetController extends Controller
         $previsionDate = $validated["previsionDate"];
 
         if($user->haveAnyLimitedBudgetAt(Carbon::parse($previsionDate))){
-            $limitedBudget = new LimitedBudget();
-            $limitedBudget->amount = $validated["amount"];
-            $limitedBudget->previsionDate = $previsionDate;
-            $limitedBudget->user_id = $user->id;
-            $limitedBudget->save();
+            $limitedBudgetAfterNewDate = $request->user()->getLimitedBudgetAfter($validated["previsionDate"]);
+            if($limitedBudgetAfterNewDate->count() == 0) {
+                $limitedBudget = new LimitedBudget();
+                $limitedBudget->amount = $validated["amount"];
+                $limitedBudget->previsionDate = $previsionDate;
+                $limitedBudget->user_id = $user->id;
+                $limitedBudget->save();
+            }else{
+                return response()->json(["message" => "La date prévisionnel ne doit pas être antérieure à ".$limitedBudgetAfterNewDate->first()->previsionDate], 400);
+            }
 
             return response()->json($limitedBudget);
         }else{
-            return response()->json(["message" => "La date sélectionné possède déjà une limite budgétaire !"]);
+            return response()->json(["message" => "La date sélectionné possède déjà une limite budgétaire ! Veuillez choisir une date postérieur."]);
         }
     }
 
@@ -89,18 +94,23 @@ class LimitedBudgetController extends Controller
      */
     public function update(UpdateLimitedBudgetRequest $request, LimitedBudget $limitedBudget)
     {
-        $user = $request->user();
-
         if($limitedBudget->isLatestLimitedBudgetOfUser){
             $validated = $request->validated();
-            $limitedBudget->amount = empty($validated["amount"]) ? $limitedBudget->amount : $validated["amount"];
+            if(!empty($validated["previsionDate"])){
+                $limitedBudgetAfterNewDate = $request->user()->getLimitedBudgetAfter($validated["previsionDate"]);
+                if($limitedBudgetAfterNewDate->count() == 0){
+                    $limitedBudget->previsionDate = $validated["amount"];
+                }else{
+                    return response()->json(["message" => "La date prévisionnel ne doit pas être antérieure à ".$limitedBudgetAfterNewDate->first()->previsionDate], 400);
+                }
+            }
             $limitedBudget->previsionDate = empty($validated["previsionDate"]) ? $limitedBudget->previsionDate : $validated["previsionDate"];
             $limitedBudget->save();
 
             return response()->json($limitedBudget);
         }else{
             return response()->json([
-                "response" => "La limite budgétaire que vous essayez de modifier n'est pas la dernière de l'utilisateur !"
+                "response" => "Seul la dernière limite de budget peut être modifié !"
             ]);
         }
     }

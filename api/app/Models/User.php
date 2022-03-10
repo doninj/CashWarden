@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Nordigen\NordigenAPI;
 use App\Models\Nordigen\StaticObjects;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -136,5 +137,10 @@ class User extends Authenticatable
 
     public function getLatestLimitedBudget(){
         return $this->limitedBudgets()->orderByDesc("previsionDate")->first();
+    }
+
+    public function getLimitedBudgetAfter($dateString){
+        $date = Carbon::parse($dateString);
+        return $this->limitedBudgets()->whereDate("previsionDate", ">", $date)->orderByDesc("previsionDate");
     }
 }

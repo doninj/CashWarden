@@ -121,16 +121,19 @@ class LimitedBudgetController extends Controller
             $limitNumberResult = 3;
         }
 
-//        $limitedBudgets = $user->getLatestLimitedBudget($limitNumberResult);
-        $balances = $user->getLatestBalances($limitNumberResult);
+        $today = Carbon::now();
+        $previous = $today->subMonths($limitNumberResult-1);
+        $date = $previous;
 
         $budgetComparisonResponse = [];
-        foreach ($balances as $balance){
-            $date = $balance->dateAmount;
-            $budgetComparisonResponse[$date] = [
-                "prevision" => $user->getLatestLimitedBudgetAt($date)->amount,
-                "real" => doubleval($balance->amount)
+        for($i=0; $i<$limitNumberResult; $i++){
+            $previsionValue = $user->getLatestLimitedBudgetAt($date);
+            $balanceValue = $user->getLatestRealBalanceAt($date);
+            $budgetComparisonResponse[$date->format("m-Y")] = [
+                "prevision" => is_null($previsionValue) ? null : doubleval($previsionValue->amount),
+                "real" => is_null($balanceValue) ? null : doubleval($balanceValue->amount)
             ];
+            $date->addMonth();
         }
 
         return response()->json($budgetComparisonResponse);

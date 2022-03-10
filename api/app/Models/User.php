@@ -149,8 +149,11 @@ class User extends Authenticatable
     }
 
     public function getLatestLimitedBudgetAt($date){
-        $monthDate = Carbon::parse($date);
-        return $this->limitedBudgets()->whereDate("previsionDate", "<=", $monthDate)->orderByDesc("previsionDate")->first();
+        return $this->limitedBudgets()->whereDate("previsionDate", "=", $date)->orderByDesc("previsionDate")->first();
+    }
+
+    public function getLatestRealBalanceAt($date){
+        return $this->account->balances()->whereYear("dateAmount", "=", $date->year)->whereMonth("dateAmount", "=", $date->month)->orderByDesc("dateAmount")->first();
     }
 }
 

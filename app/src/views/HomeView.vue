@@ -277,7 +277,6 @@ function reformYears() {
   }, [])
 }
 function refreshChart(categories, transactionPerMonth) {
-  console.log(categories,transactionPerMonth)
   arraySpendingTotal.value = []
   arrayLabelsSpending.value = []
   arrayLabelsIncome.value = []

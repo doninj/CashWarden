@@ -4,6 +4,7 @@ import Logo from "@/assets/logo.svg"
 
 <template>
   <div class="loader-spinner">
+
     <div class="fingerprint-spinner">
       <div class="spinner-ring"></div>
       <div class="spinner-ring"></div>
@@ -15,6 +16,7 @@ import Logo from "@/assets/logo.svg"
       <div class="spinner-ring"></div>
       <div class="spinner-ring"></div>
     </div>
+
     <div id="brand">
       <img :src="Logo"/>
       <div>CashWarden</div>
@@ -129,7 +131,7 @@ import Logo from "@/assets/logo.svg"
 
 @keyframes fingerprint-spinner-animation {
   100% {
-    transform: rotate( 360deg );
+    transform: rotate(360deg);
   }
 }
 </style>

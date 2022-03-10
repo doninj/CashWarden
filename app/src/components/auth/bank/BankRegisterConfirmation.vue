@@ -18,7 +18,6 @@ onMounted(async () => {
 
 function goToApp() {
   window.open("http://localhost:3000", "_blank")
-  window.close()
 }
 
 </script>
@@ -43,17 +42,17 @@ function goToApp() {
 
 <style scoped lang="scss">
 .container {
-  height: 100%;
+  height: 30rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   .body-container {
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
   }
 
   .home-button {

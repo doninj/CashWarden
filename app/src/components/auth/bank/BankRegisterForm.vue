@@ -78,7 +78,7 @@ async function onBankSubmit() {
     <Button
         type="submit"
         class="submit-form-button"
-        label="Créer votre compte"
+        label="Sélectionner votre banque"
         :loading="isRegistering"
     />
   </form>

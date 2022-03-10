@@ -15,22 +15,26 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-       $userData = $user->load([
-           'account.GetThreeTransactions',
-           'account.transactionsForActualMonth',
-           'account.transactions',
-           'account.LatestBalances'
-       ]);
-       $collect = collect($userData->account->transactionsForActualMonth);
-       $userData->account['totalSpendingOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
-           if ($transaction->montant < 0)
-               return $transaction->montant;
-       })->sum()),2);
-        $userData->account['totalIncomeOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
-            if ($transaction->montant > 0)
-                return $transaction->montant;
-        })->sum()),2);
-       $this->GetMonthAndYear($userData);
+
+        if ($user->hasAccountChoices) {
+            $userData = $user->load([
+                'account.GetThreeTransactions',
+                'account.transactionsForActualMonth',
+                'account.transactions',
+                'account.LatestBalances'
+            ]);
+            $collect = collect($userData->account->transactionsForActualMonth);
+            $userData->account['totalSpendingOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
+                if ($transaction->montant < 0)
+                    return $transaction->montant;
+            })->sum()),2);
+            $userData->account['totalIncomeOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
+                if ($transaction->montant > 0)
+                    return $transaction->montant;
+            })->sum()),2);
+            $this->GetMonthAndYear($userData);
+        }
+
         return response()->json($user);
     }
 

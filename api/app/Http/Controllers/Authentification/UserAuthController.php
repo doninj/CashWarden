@@ -46,20 +46,26 @@ class UserAuthController
      */
     private function getUserThanksToRequestData($data)
     {
-        $user =  User::with(['account.GetThreeTransactions',
-            'account.transactionsForActualMonth',
-            'account.LatestBalances',
-            'account.transactions'])->where('email', $data["email"])->first();
-        $collect = collect($user->account->transactionsForActualMonth);
-        $user->account['totalSpendingOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
-            if ($transaction->montant < 0)
-                return $transaction->montant;
-        })->sum()),2);
-        $user->account['totalIncomeOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
-            if ($transaction->montant > 0)
-                return $transaction->montant;
-        })->sum()),2);
-        $this->GetMonth($user);
+        $user = User::where('email', $data['email'])->first();
+
+        if ($user->hasAccountChoices) {
+            $user->load(['account.GetThreeTransactions',
+                'account.transactionsForActualMonth',
+                'account.LatestBalances',
+                'account.transactions']);
+
+            $collect = collect($user->account->transactionsForActualMonth);
+            $user->account['totalSpendingOfActualMonth'] = number_format(abs($collect->map(function ($transaction) {
+                if ($transaction->montant < 0)
+                    return $transaction->montant;
+            })->sum()),2);
+            $user->account['totalIncomeOfActualMonth'] =number_format(abs($collect->map(function ($transaction) {
+                if ($transaction->montant > 0)
+                    return $transaction->montant;
+            })->sum()),2);
+            $this->GetMonth($user);
+        }
+
         return $user;
 
     }

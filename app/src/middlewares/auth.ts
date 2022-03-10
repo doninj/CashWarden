@@ -14,5 +14,9 @@ export default async function auth({ next, to, from }: MiddlewareContext) {
       return next(Routes.BankRegister)
   }
 
+  else if (auth.hasBankLinked && to.name === Routes.BankRegister) {
+    return next(Routes.Home)
+  }
+
   return next();
 }

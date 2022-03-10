@@ -14,7 +14,7 @@ class StoreLimitedBudgetRequest extends FormRequest
 
     private $previsionDateMessage = [
         "previsionDate.required" => "Merci de renseigner une date prévisionnel de limite de budget !",
-        "previsionDate.date_format" => "La date prévisionnelle doit être au format YYYY-MM-JJ"
+        "previsionDate.date_format" => "La date prévisionnelle doit être au format YYYY-MM"
     ];
 
     /**
@@ -43,7 +43,7 @@ class StoreLimitedBudgetRequest extends FormRequest
     {
         return [
             "amount" => "required|numeric|between:0,999999999999.99",
-            "previsionDate" => "required|date_format:Y-m-d"
+            "previsionDate" => "required|date_format:Y-m"
         ];
     }
 }

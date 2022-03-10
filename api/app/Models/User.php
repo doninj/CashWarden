@@ -128,11 +128,6 @@ class User extends Authenticatable
     public function haveAnyLimitedBudgetAt($dateBudget){
         $limitedBudgets = $this->limitedBudgets();
         return !$limitedBudgets->whereDate("previsionDate", "=", $dateBudget)->exists();
-//        if($limitedBudgets->whereDate("previsionDate", "=", $dateBudget)->exists()){
-//            return false;
-//        }else{
-//            return true;
-//        }
     }
 
     public function getLatestLimitedBudget(){

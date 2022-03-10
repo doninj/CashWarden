@@ -57,7 +57,7 @@ class Account extends Model
     }
     public function GetThreeTransactions()
     {
-        return $this->transactions()->limit(3);
+        return $this->transactions()->orderByDesc('dateTransaction')->limit(3);
     }
     public function setLatestTransactions()
     {

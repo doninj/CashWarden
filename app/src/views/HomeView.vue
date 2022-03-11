@@ -1,5 +1,8 @@
 <template>
-  <div  class="flex flex-column">
+  <div v-if="areBudgetsLoading" class="budget__page-spinner">
+    <PageSpinner/>
+  </div>
+  <div v-else class="flex flex-column">
     <div class="mt-5">
       <h2 class="font-bold"> Tableau de bord</h2>
     </div>
@@ -103,12 +106,14 @@ import ChartjsDoughnutsLabel from 'chartjs-plugin-doughnutlabel-rebourne'
 import {useAuth} from "@/stores/auth";
 import moment from 'moment/min/moment-with-locales';
 import axios from "@/utils/axios"
+import PageSpinner from "@/components/PageSpinner.vue"
 
 // get account
 const { user } = useAuth()
 const plugins = [ChartjsDoughnutsLabel, ChartDataLabels]
 const total = ref()
 const arrayLabelsIncome = ref([])
+const areBudgetsLoading = ref(true)
 let arrayincomeIcon = ref([])
 let arrayIncomeTotal = ref([])
 let arraySpendingIcon = ref([])
@@ -304,17 +309,14 @@ function refreshChart(categories, transactionPerMonth) {
   total.value = transactionPerMonth.data.totalDepenses
   lightOptionsDepense.value.plugins.doughnutlabel.labels[0].text = `${transactionPerMonth.data.totalDepenses} €`
   lightOptionsIncome.value.plugins.doughnutlabel.labels[0].text = `${transactionPerMonth.data.totalIncomes} €`
-  const chart = primeChart.value.chart
-  const chartIncome = primeChartIncome.value.chart
-  chart.update()
-  chartIncome.update()
 }
 
 onBeforeMount(async () => {
+  areBudgetsLoading.value = true
   const transactionPerMonth = await axios.get('/transactionsPerMonth')
   const categories = await axios.get('/categories')
-  loading.value = false
   refreshChart(categories,transactionPerMonth)
+  areBudgetsLoading.value = false
 
   reformMonths()
   reformYears()
@@ -394,5 +396,11 @@ onBeforeMount(async () => {
 .date_mise_a_jour {
   font-size: 15px;
   color: #9FA2B4;
+}
+.budget__page-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

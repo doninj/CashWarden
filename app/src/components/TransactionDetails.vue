@@ -74,7 +74,7 @@ defineProps({
 })
 
 </script>
-<style>
+<style scoped>
 
 .p-dropdown .p-dropdown-label {
   color: black !important;

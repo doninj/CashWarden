@@ -24,9 +24,7 @@ class UpdateLimitedBudgetRequest extends FormRequest
 
     public function messages()
     {
-        return parent::messages() +
-            $this->amountMessage +
-            $this->previsionDateMessage;
+        return parent::messages() + $this->amountMessage;
     }
 
     /**
@@ -38,7 +36,6 @@ class UpdateLimitedBudgetRequest extends FormRequest
     {
         return [
             "amount" => "numeric|between:0,999999999999.99",
-            "previsionDate" => "date_format:Y-m"
         ];
     }
 }

@@ -5,14 +5,18 @@ import { categoryIcons } from "@/models/Transaction"
 import { onMounted, ref } from "vue"
 import axios from "@/utils/axios"
 import moment from "moment"
+import PageSpinner from "@/components/PageSpinner.vue"
+
 
 const transactions = ref<Transaction[]>([])
 const totalTransactionsCount = ref(0)
 const transactionsPerPage = ref(6)
+const isTableInitialized = ref(false)
 const areTransactionsLoading = ref(true)
 
 onMounted(async () => {
   await fetchTransactions()
+  isTableInitialized.value = true
 })
 
 async function fetchTransactions(page = 1) {
@@ -57,62 +61,64 @@ function dateFromNow(date: string) {
 </script>
 
 <template>
-  <DataTable
-      :totalRecords="totalTransactionsCount"
-      :value="transactions"
-      :paginator="true"
-      :lazy="true"
-      class="transactions-table"
-      :rows="transactionsPerPage"
-      :loading="areTransactionsLoading"
-      @page="onPageChange($event)"
-      @paginate="test"
-      dataKey="id" :rowHover="true"
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-      :rowsPerPageOptions="[
+  <div class="transactions-table-container">
+    <DataTable
+        v-if="isTableInitialized"
+        :totalRecords="totalTransactionsCount"
+        :value="transactions"
+        :paginator="true"
+        :lazy="true"
+        :rows="transactionsPerPage"
+        :loading="areTransactionsLoading"
+        @page="onPageChange($event)"
+        dataKey="id" :rowHover="true"
+        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+        :rowsPerPageOptions="[
           transactionsPerPage,
           transactionsPerPage * 2,
           transactionsPerPage * 3,
            transactionsPerPage* 4,
       ]"
-      currentPageReportTemplate="Affiche de {first} à {last} de {totalRecords} transactions au total"
-      responsiveLayout="scroll"
-  >
-    <template #empty>
-      Pas de transactions pour le moment !
-    </template>
-    <template #loading>
-      Transactions en cours de chargement.
-    </template>
-    <Column field="name" header="Label" style="min-width: 14rem">
-      <template #body="{data}">
-        <div class="transaction-label">
-          <div class="category-icon">
-            <Icon :name="categoryIcons[data.categoryId]"/>
-          </div>
-          <div class="transaction-label-inner">
-            {{ data.label }}
-            <span>{{ dateFromNow(data.transactionDate) }}</span>
-          </div>
-        </div>
-      </template>
-    </Column>
-    <Column field="createdAt" header="Date" style="min-width: 14rem">
-      <template #body="{data}">
-        {{ data.transactionDate }}
-      </template>
-    </Column>
-    <Column header="Montant"
-            style="min-width: 14rem"
-            class="lol"
+        currentPageReportTemplate="Affiche de {first} à {last} de {totalRecords} transactions au total"
+        responsiveLayout="scroll"
     >
-      <template #body="{data}">
-        <div class="transaction-amount" :class="amountClass(data)">
-          {{ data.amount }}€
-        </div>
+      <template #empty>
+        Pas de transactions pour le moment !
       </template>
-    </Column>
-  </DataTable>
+      <template #loading>
+        Transactions en cours de chargement.
+      </template>
+      <Column field="name" header="Label" style="min-width: 14rem">
+        <template #body="{data}">
+          <div class="transaction-label">
+            <div class="category-icon">
+              <Icon :name="categoryIcons[data.categoryId]"/>
+            </div>
+            <div class="transaction-label-inner">
+              {{ data.label }}
+              <span>{{ dateFromNow(data.transactionDate) }}</span>
+            </div>
+          </div>
+        </template>
+      </Column>
+      <Column field="createdAt" header="Date" style="min-width: 14rem">
+        <template #body="{data}">
+          {{ data.transactionDate }}
+        </template>
+      </Column>
+      <Column header="Montant"
+              style="min-width: 14rem"
+              class="lol"
+      >
+        <template #body="{data}">
+          <div class="transaction-amount" :class="amountClass(data)">
+            {{ data.amount }}€
+          </div>
+        </template>
+      </Column>
+    </DataTable>
+    <PageSpinner class="transactions-table-loader" v-else/>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -157,5 +163,15 @@ function dateFromNow(date: string) {
       }
     }
   }
+}
+.transactions-table-container {
+  min-height: 50rem;
+}
+
+.transactions-table-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

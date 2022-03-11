@@ -10,9 +10,6 @@
                   <h2 class="font-bold"> Budget prévionnel sur les derniers mois</h2>
                   <span class="date_mise_a_jour"> Mise à jour le 24 février 2022 </span>
                 </div>
-                <div>
-                  <span class="voir_plus"> Voir plus </span>
-                </div>
               </div>
               <div class="flex flex-column justify-content-center align-content-center align-items-center">
                 <div class="mt-5" style="height:400px; width:800px;">
@@ -28,19 +25,16 @@
                   <h2 class="font-bold"> Budget prévisionnel du mois</h2>
                 </div>
                 <div>
-                  <span class="voir_plus"> Ajouter un budget </span>
+                  <Button class="p-button-text" @click="emit('addBudgetClicked')">Ajouter un budget</Button>
                 </div>
               </div>
               <div class=" mt-5 flex flex-column justify-content-center align-content-center ">
-                <div v-for="transaction in transactions" :key="transaction.name" class=" mr-5 ml-5 grid">
-                  <div class="col-7">
+                <div v-for="transaction in limitedBudgets" :key="transaction.name" class=" mr-5 ml-5 grid">
+                  <div class="col-3">
                     <span style="font-size: 18px; font-weight: 500"> {{ transaction.name }} </span>
                   </div>
-                  <div class="col-3">
-                    <span class="amount"> {{ transaction.amount }} </span>
-                  </div>
-                  <div class="col-2">
-                    <Icon name="ellipsis-v" size="2x"></Icon>
+                  <div class="col-7">
+                    <span class="amount"> {{ transaction.amount }} € </span>
                   </div>
                   <Divider></Divider>
                 </div>
@@ -54,15 +48,14 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
-import Icon from "@/components/Icon.vue";
-
 defineProps({
-  transactions: Array,
+  limitedBudgets: Array,
   basicsOptions: Object,
   basicsData: Object,
-
 })
+
+const emit = defineEmits(['addBudgetClicked'])
+
 
 </script>
 <style>
@@ -70,6 +63,6 @@ defineProps({
 .amount {
   font-size: 18px;
   font-weight: 500;
-  color: red;
+  color: #e19321;
 }
 </style>

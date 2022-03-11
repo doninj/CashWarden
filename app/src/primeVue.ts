@@ -16,6 +16,8 @@ import Dropdown from "primevue/dropdown"
 import Toast from "primevue/toast"
 import DataTable from "primevue/datatable"
 import Column from "primevue/column"
+import InputNumber from "primevue/inputnumber"
+import Calendar from "primevue/calendar"
 
 export default [
   Chart,
@@ -26,9 +28,11 @@ export default [
   Card,
   Avatar,
   InputText,
+  InputNumber,
   Button,
   Password,
   Toast,
   DataTable,
-  Column
+  Column,
+  Calendar
 ]

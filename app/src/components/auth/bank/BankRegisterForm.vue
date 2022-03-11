@@ -78,16 +78,13 @@ async function onBankSubmit() {
     <Button
         type="submit"
         class="submit-form-button"
-        label="Sélectionner votre banque"
+        label="Enregistrer votre banque"
         :loading="isRegistering"
     />
   </form>
 </template>
 
 <style scoped lang="scss">
-.form-container {
-}
-
 form {
   position: relative;
   display: flex;

@@ -12,6 +12,23 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * @OA\Schema(
+ *     required={"password"},
+ *     @OA\Property (
+ *         property="id", type="integer", example="1"
+ *     ),
+ *     @OA\Property (
+ *         property="lastname", type="string", example="DUPONT"
+ *     ),
+ *     @OA\Property (
+ *         property="firstname", type="string", example="Jean"
+ *     ),
+ *     @OA\Property (
+ *         property="email", type="string", example="dupont.jean@gmail.com"
+ *     )
+ * )
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;

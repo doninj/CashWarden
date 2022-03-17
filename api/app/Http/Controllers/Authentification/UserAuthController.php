@@ -10,9 +10,137 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="User auth",
+ *      description="Toutes les requêtes d'authentification",
+ * )
+ */
 class UserAuthController
 {
+
     /**
+     *@OA\Tag(name="Authentification", description="Requêtes d'authentifications")
+     */
+
+    /**
+     *      @OA\Examples(
+     *        summary="RegisterRequest",
+     *        example = "RegisterRequest",
+     *        value = {
+     *          "lastName": "GIMENEZ",
+     *          "firstName": "Tim",
+     *          "email": "tim.gimenez26@ynov.com",
+     *          "id": 2,
+     *        },
+     *      )
+     */
+
+    /**
+     *
+     * @OA\Post(
+     *      path="/api/register",
+     *      operationId="register",
+     *      tags={"Authentification"},
+     *      summary="Permet de s'enregistrer",
+     *      description="Crée un utilisateur",
+     *
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 ref="#/components/schemas/RegisterRequest",
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Unprocessable Content",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="errors",
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="firstName",
+     *                      type="array",
+     *                      @OA\Items(
+     *                          @OA\Property(
+     *                              type="string",
+     *                              example="Merci de renseigner un prénom !"
+     *                          ),
+     *                      ),
+     *                  ),
+     *                  @OA\Property(
+     *                      property="lastname",
+     *                      type="array",
+     *                      @OA\Items(
+     *                          @OA\Property(
+     *                              type="string",
+     *                              example="Merci de renseigner un nom !"
+     *                          ),
+     *                      ),
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="array",
+     *                      @OA\Items(
+     *                          @OA\Property(
+     *                              type="string",
+     *                              example="Merci de renseigner un email !"
+     *                          ),
+     *                      ),
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="array",
+     *                      @OA\Items(
+     *                          @OA\Property(
+     *                              type="string",
+     *                              example="Merci de renseigner un mot de passe !"
+     *                          ),
+     *                      ),
+     *                  ),
+     *                  @OA\Property(
+     *                      property="passwordConfirmation",
+     *                      type="array",
+     *                      @OA\Items(
+     *                          @OA\Property(
+     *                              type="string",
+     *                              example="Merci de renseigner un mot de passe !"
+     *                          ),
+     *                      ),
+     *                  )
+     *             ),
+     *             @OA\Property(property="message", type="string", example="The given data was invalid"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="An example resource",
+     *         @OA\JsonContent(
+     *             type="object",
+     *                 @OA\Property (
+     *                     property="id", type="integer", example="1"
+     *                 ),
+     *                 @OA\Property (
+     *                     property="lastname", type="string", example="DUPONT"
+     *                 ),
+     *                 @OA\Property (
+     *                     property="firstname", type="string", example="Jean"
+     *                 ),
+     *                 @OA\Property (
+     *                     property="email", type="string", example="dupont.jean@gmail.com"
+     *                 ),
+     *                 @OA\Property (
+     *                     property="password", type="string", example="tuturu"
+     *                 )
+     *         )
+     *     ),
+     * )
+     *
      * Méthode permettant de s'enregistrer
      *
      * @param RegisterRequest $request
@@ -39,6 +167,7 @@ class UserAuthController
     }
 
     /**
+     *
      * Méthode récupérant un utilisateur grâce aux données d'une requête
      *
      * @param $data
@@ -69,6 +198,11 @@ class UserAuthController
 
     }
 
+    /**
+     * Méthode permettant de récupérer une liste des mois et années années de chaque transaction
+     * @param $userData
+     * @return void
+     */
     public function GetMonthAndYear($userData) {
         $monthArray = [];
         $yearArray = [];
@@ -90,6 +224,96 @@ class UserAuthController
         unset($userData->account->transactions);
     }
     /**
+     *
+     * @OA\Post(
+     *      path="/api/login",
+     *      operationId="login",
+     *      tags={"Authentification"},
+     *      summary="Permet de se connecter",
+     *      description="Connecte l'utilisateur",
+     *
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 ref="#/components/schemas/LoginRequest",
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Unprocessable Content",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="errors",
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="array",
+     *                      @OA\Items(
+     *                          @OA\Property(
+     *                              type="string",
+     *                              example="Merci de renseigner un email !"
+     *                          ),
+     *                      ),
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="array",
+     *                      @OA\Items(
+     *                          @OA\Property(
+     *                              type="string",
+     *                              example="Merci de renseigner un mot de passe !"
+     *                          ),
+     *                      ),
+     *                  )
+     *             ),
+     *             @OA\Property(property="message", type="string", example="The given data was invalid"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="An example resource",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="user",
+     *                 type="array",
+     *                 @OA\Items(
+     *                         @OA\Property (
+     *                             property="id", type="integer", example="1"
+     *                         ),
+     *                         @OA\Property (
+     *                             property="lastname", type="string", example="DUPONT"
+     *                         ),
+     *                         @OA\Property (
+     *                             property="firstname", type="string", example="Jean"
+     *                         ),
+     *                         @OA\Property (
+     *                             property="email", type="string", example="dupont.jean@gmail.com"
+     *                         ),
+     *                         @OA\Property (
+     *                             property="password", type="string", example="tuturu"
+     *                         ),
+     *                         @OA\Property (
+     *                             property="hasBankAuthorization", type="boolean", example="false"
+     *                         ),
+     *                         @OA\Property (
+     *                             property="hasAccountChoices", type="boolean", example="false"
+     *                         )
+     *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="token",
+     *                 type="string",
+     *                 example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZmFmOTQ5ODlkMDkzNjA1YTM1MGIxN2I3Yzg0ZDUyNTRlZTdmZmIwMGU5NjBiNWMzMDhjM2YwZTIyNmQ1MDFhNGI2N2Y0YjAwYTQzOGY3M2IiLCJpYXQiOjE2NDc0Njc4MDMuODE4NTMyLCJuYmYiOjE2NDc0Njc4MDMuODE4NTMzLCJleHAiOjE2NzkwMDM4MDMuODExNDA1LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.ZdiWzTvqKzMgvq8Uww6NwDfCIWH0LqoX7llgU6DCVdeHPV7kemgDlP7KEzdxQk-I0YyJYNiNbPcFqsEvQTAN4C4bPcp47UoKub3AVfXCDT7noDEiwfBQV602BLnwsQiH-q1oYUE54zjtO1hOvud2ESYCv7m5iinPoL9ALvVOd184ZTOb3KNLeo6eHx6AJ5XUOXwOIs6lB6efMeeKx3PSfY8xikNu_KjwMpC9YRXEo9XSOzuwqByzBzWJ70p5DWLF6MqtNA2SgT0UxiOUZWDu8XwxpGjiwZ2GUZubX95xICgnbejnXGLPThLZLDVXYb6BCrbI3GgjEQyQf6yP3vybI9AfSeW6r-6nP7QnZ8bTDuLqFEXEdbr4Os7LrTGFhiYDu-NrmFCKNGPaaLNwhpcjFCWLAGjPW24r4lQB2NGX9763fuw0XEdCUvFVKS7ER9LtOPVO7_TUzUWbn8O7TxlLLDdOFcicvX4r2Z8C44COcVQZQh7S9DmOU2y6r3au46ReQyqNpZpzWTfeYFnxG6PjUg6t6cBRGUUXUUuqL3H4ftVhPFjWHMk7cbFsVMlXyILu7GhB6g5Mm3epUVKsu9U0OpP-dJqovyMkpTMJpkBzji1omokj4ILRGNzoFeGEIU0lGEfmVJ55D_nHca0plqBcmdbhwkBNp2DIy4nCT48a_qI"
+     *             )
+     *         )
+     *     )
+     * )
+     *
      * Méthode permettant de se connecter
      *
      * @param LoginRequest $request

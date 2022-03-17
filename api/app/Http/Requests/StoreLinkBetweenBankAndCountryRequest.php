@@ -4,6 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema()
+ */
 class StoreLinkBetweenBankAndCountryRequest extends FormRequest
 {
     /**

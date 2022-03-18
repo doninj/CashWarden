@@ -258,6 +258,216 @@
                 }
             }
         },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Permet de se connecter",
+                "description": "Déconnecte l'utilisateur",
+                "operationId": "logout",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "An example resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Vous avez été déconnecté"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/requisition": {
+            "post": {
+                "tags": [
+                    "Requisition"
+                ],
+                "summary": "Permet de se connecter",
+                "description": "Déconnecte l'utilisateur",
+                "operationId": "postRequisition",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreRequisitionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "": {
+                                                                "type": "string",
+                                                                "example": "Merci de renseigner un identifiant de banque !"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "An example resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "lastname": {
+                                                    "type": "string",
+                                                    "example": "DUPONT"
+                                                },
+                                                "firstname": {
+                                                    "type": "string",
+                                                    "example": "Jean"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "dupont.jean@gmail.com"
+                                                },
+                                                "bank_id": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "IdRequisition": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "account_id": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "hasBankAuthorization": {
+                                                    "type": "boolean",
+                                                    "example": "false"
+                                                },
+                                                "hasAccountChoices": {
+                                                    "type": "boolean",
+                                                    "example": "false"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "requisition_response": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "0e981e62-f803-4ff1-a775-eac2e6af6a2c"
+                                                },
+                                                "created": {
+                                                    "type": "string",
+                                                    "example": "2022-03-17T23:07:51.570255Z"
+                                                },
+                                                "redirect": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:3000/bank-register/"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "CR"
+                                                },
+                                                "institution_id": {
+                                                    "type": "string",
+                                                    "example": "AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                                                },
+                                                "agreement": {
+                                                    "type": "boolean",
+                                                    "example": ""
+                                                },
+                                                "reference": {
+                                                    "type": "boolean",
+                                                    "example": "9f6233b3-e1dc-41b8-96f3-c4e423a74266"
+                                                },
+                                                "accounts": {
+                                                    "type": "json",
+                                                    "example": "[]"
+                                                },
+                                                "link": {
+                                                    "type": "boolean",
+                                                    "example": "https://ob.nordigen.com/psd2/start/9f6233b3-e1dc-41b8-96f3-c4e423a74266/AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                                                },
+                                                "ssn": {
+                                                    "type": "boolean",
+                                                    "example": "null"
+                                                },
+                                                "account_selection": {
+                                                    "type": "boolean",
+                                                    "example": "false"
+                                                },
+                                                "redirect_immediate": {
+                                                    "type": "boolean",
+                                                    "example": "false"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/user": {
             "get": {
                 "tags": [
@@ -548,11 +758,18 @@
                 },
                 "type": "object"
             },
-            "StoreBankRequest": {},
             "StoreLimitedBudgetRequest": {},
             "StoreLimitedTransactionRequest": {},
             "StoreLinkBetweenBankAndCountryRequest": {},
-            "StoreRequisitionRequest": {},
+            "StoreRequisitionRequest": {
+                "properties": {
+                    "bank_id": {
+                        "type": "string",
+                        "example": "AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                    }
+                },
+                "type": "object"
+            },
             "UpdateLimitedBudgetRequest": {},
             "UpdateTransactionRequest": {},
             "UpdateUserRequest": {},

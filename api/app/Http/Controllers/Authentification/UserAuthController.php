@@ -223,6 +223,7 @@ class UserAuthController
         $userData->account['years'] = $yearArray;
         unset($userData->account->transactions);
     }
+
     /**
      *
      * @OA\Post(
@@ -347,6 +348,41 @@ class UserAuthController
     }
 
     /**
+     *
+     * @OA\Post(
+     *      path="/api/logout",
+     *      operationId="logout",
+     *      tags={"Authentification"},
+     *      summary="Permet de se connecter",
+     *      description="Déconnecte l'utilisateur",
+     *      security={
+     *          {"bearer": {}}
+     *      },
+     *
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unauthenticated."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="An example resource",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message", type="string", example="Vous avez été déconnecté"
+     *             )
+     *         )
+     *     )
+     * )
+     *
      * Méthode permettant de se déconnecter
      *
      * @param Request $request

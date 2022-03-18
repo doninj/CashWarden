@@ -6,6 +6,55 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/nordigen/accounts": {
+            "get": {
+                "tags": [
+                    "NordigenAccounts"
+                ],
+                "summary": "Permet d'obtenir des informations sur l'utilisateur connecté",
+                "description": "Obtiens des informations sur l'utilisateur",
+                "operationId": "getNordigenAccount",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "accounts": {
+                                            "type": "json",
+                                            "example": "[\"aa9456eb-5fa98gfd5a-51abb385f9\"]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/register": {
             "post": {
                 "tags": [

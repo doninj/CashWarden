@@ -31,6 +31,48 @@ class AccountController extends Controller
         return false;
     }
 
+    /**
+     *
+     *
+     * @OA\Get(
+     *      path="/api/nordigen/accounts",
+     *      operationId="getNordigenAccount",
+     *      tags={"NordigenAccounts"},
+     *      summary="Permet d'obtenir des informations sur l'utilisateur connecté",
+     *      description="Obtiens des informations sur l'utilisateur",
+     *      security={
+     *          {"bearer": {}}
+     *      },
+     *
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unauthenticated."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="accounts", type="json", example="[""aa9456eb-5fa98gfd5a-51abb385f9""]"
+     *             )
+     *         )
+     *     )
+     * )
+     *
+     *
+     * Méthode permettant de récupérer les comptes associés grâce à nordigen
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function nordigenAccount(Request $request)
     {
         $user = $request->user();

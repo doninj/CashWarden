@@ -411,6 +411,279 @@
                 }
             }
         },
+        "/api/limitedBudgets": {
+            "get": {
+                "tags": [
+                    "LimitedBudgets"
+                ],
+                "summary": "Permet d'obtenir la liste des budgets limités",
+                "description": "Retourne la liste des budgets limités",
+                "operationId": "getLimitedBudgets",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "limitedBudgets": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "amount": {
+                                                        "type": "string",
+                                                        "example": "5800"
+                                                    },
+                                                    "previsionDate": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-01"
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-11T21:44:23.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:30:22.000000Z"
+                                                    },
+                                                    "isLatestLimitedBudgetOfUser": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "LimitedBudgets"
+                ],
+                "summary": "Permet d'obtenir la liste des budgets limités",
+                "description": "Retourne la liste des budgets limités",
+                "operationId": "postLimitedBudgets",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreLimitedBudgetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "limitedBudgets": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "amount": {
+                                                        "type": "string",
+                                                        "example": "2000.0"
+                                                    },
+                                                    "previsionDate": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-01"
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-11T21:44:23.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:30:22.000000Z"
+                                                    },
+                                                    "isLatestLimitedBudgetOfUser": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/limitedBudgets/{id}": {
+            "put": {
+                "tags": [
+                    "LimitedBudgets"
+                ],
+                "summary": "Permet d'obtenir la liste des budgets limités",
+                "description": "Retourne la liste des budgets limités",
+                "operationId": "putLimitedBudgets",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "limited budget id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreLimitedBudgetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "amount": {
+                                            "type": "string",
+                                            "example": "5800"
+                                        },
+                                        "previsionDate": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2022-03-01"
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2022-03-11T21:44:23.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2022-03-14T23:30:22.000000Z"
+                                        },
+                                        "isLatestLimitedBudgetOfUser": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/requisition": {
             "post": {
                 "tags": [
@@ -957,7 +1230,20 @@
                 },
                 "type": "object"
             },
-            "StoreLimitedBudgetRequest": {},
+            "StoreLimitedBudgetRequest": {
+                "properties": {
+                    "amount": {
+                        "type": "number",
+                        "example": "2000.0"
+                    },
+                    "previsionDate": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2022-03-09"
+                    }
+                },
+                "type": "object"
+            },
             "StoreLimitedTransactionRequest": {},
             "StoreLinkBetweenBankAndCountryRequest": {},
             "StoreRequisitionRequest": {

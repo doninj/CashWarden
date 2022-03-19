@@ -5,7 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @OA\Schema()
+ * @OA\Schema(
+ *     @OA\Property (
+ *         property="amount", type="number", example="2000.0"
+ *     ),
+ *     @OA\Property (
+ *         property="previsionDate", type="date", example="2022-03-09"
+ *     ),
+ * )
  */
 class StoreLimitedBudgetRequest extends FormRequest
 {

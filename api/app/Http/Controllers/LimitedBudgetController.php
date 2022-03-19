@@ -12,6 +12,66 @@ use Illuminate\Support\Carbon;
 class LimitedBudgetController extends Controller
 {
     /**
+     *
+     *
+     * @OA\Get(
+     *      path="/api/limitedBudgets",
+     *      operationId="getLimitedBudgets",
+     *      tags={"LimitedBudgets"},
+     *      summary="Permet d'obtenir la liste des budgets limités",
+     *      description="Retourne la liste des budgets limités",
+     *      security={
+     *          {"bearer": {}}
+     *      },
+     *
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unauthenticated."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property (
+     *                 property="limitedBudgets",
+     *                 type="array",
+     *                 @OA\Items(
+     *                         @OA\Property(
+     *                             property="id", type="integer", example="1"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="amount", type="string", example="5800"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="previsionDate", type="date", example="2022-03-01"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="user_id", type="integer", example="1"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="created_at", type="date", example="2022-03-11T21:44:23.000000Z"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="updated_at", type="date", example="2022-03-14T23:30:22.000000Z"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="isLatestLimitedBudgetOfUser", type="boolean", example="true"
+     *                         )
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     *
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -23,16 +83,77 @@ class LimitedBudgetController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
+     *
+     * @OA\Post(
+     *      path="/api/limitedBudgets",
+     *      operationId="postLimitedBudgets",
+     *      tags={"LimitedBudgets"},
+     *      summary="Permet d'obtenir la liste des budgets limités",
+     *      description="Retourne la liste des budgets limités",
+     *      security={
+     *          {"bearer": {}}
+     *      },
+     *
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 ref="#/components/schemas/StoreLimitedBudgetRequest"
+     *             )
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unauthenticated."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property (
+     *                 property="limitedBudgets",
+     *                 type="array",
+     *                 @OA\Items(
+     *                         @OA\Property(
+     *                             property="id", type="integer", example="1"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="amount", type="string", example="2000.0"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="previsionDate", type="date", example="2022-03-01"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="user_id", type="integer", example="1"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="created_at", type="date", example="2022-03-11T21:44:23.000000Z"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="updated_at", type="date", example="2022-03-14T23:30:22.000000Z"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="isLatestLimitedBudgetOfUser", type="boolean", example="true"
+     *                         )
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     *
+     *
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreLimitedBudgetRequest  $request
@@ -64,28 +185,83 @@ class LimitedBudgetController extends Controller
     }
 
     /**
-     * Display the specified resource.
      *
-     * @param  \App\Models\LimitedBudget  $limitedBudget
-     * @return \Illuminate\Http\Response
-     */
-    public function show(LimitedBudget $limitedBudget)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LimitedBudget  $limitedBudget
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(LimitedBudget $limitedBudget)
-    {
-        //
-    }
-
-    /**
+     * @OA\Put(
+     *      path="/api/limitedBudgets/{id}",
+     *      operationId="putLimitedBudgets",
+     *      tags={"LimitedBudgets"},
+     *      summary="Permet d'obtenir la liste des budgets limités",
+     *      description="Retourne la liste des budgets limités",
+     *      security={
+     *          {"bearer": {}}
+     *      },
+     *
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="limited budget id",
+     *          @OA\Schema (
+     *              type="integer",
+     *              format="int64"
+     *          ),
+     *          required=true,
+     *          example=1
+     *      ),
+     *
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 ref="#/components/schemas/UpdateLimitedBudgetRequest"
+     *             )
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unauthenticated."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             type="object",
+     *                         @OA\Property(
+     *                             property="id", type="integer", example="1"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="amount", type="string", example="5800"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="previsionDate", type="date", example="2022-03-01"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="user_id", type="integer", example="1"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="created_at", type="date", example="2022-03-11T21:44:23.000000Z"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="updated_at", type="date", example="2022-03-14T23:30:22.000000Z"
+     *                         ),
+     *                         @OA\Property(
+     *                             property="isLatestLimitedBudgetOfUser", type="boolean", example="true"
+     *                         )
+     *             )
+     *         )
+     *     )
+     * )
+     *
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateLimitedBudgetRequest  $request
@@ -102,16 +278,11 @@ class LimitedBudgetController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Méthode permettant de récupérer une comparaison des budgets (prévisionnel/réel) par date
      *
-     * @param  \App\Models\LimitedBudget  $limitedBudget
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(LimitedBudget $limitedBudget)
-    {
-        //
-    }
-
     public function budgetComparison(Request $request){
         $user = $request->user();
 

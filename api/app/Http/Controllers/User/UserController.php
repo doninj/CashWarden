@@ -91,12 +91,10 @@ class UserController extends Controller
      *                          property= "totalIncomeOfActualMonth", type="number", example="1797.56"
      *                      ),
      *                      @OA\Property(
-     *                          property="months", type="array",
-     *                          @OA\Items(type="json", example="[""mars"", ""février"", ""janvier""]")
+     *                          property="months", type="json", example="[""mars"", ""février"", ""janvier""]")
      *                      ),
      *                      @OA\Property(
-     *                          property="years", type="array",
-     *                          @OA\Items(type="json", example="[""2022"", ""2021""]")
+     *                          property="years", type="json", example="[""2022"", ""2021""]"
      *                      ),
      *                      @OA\Property(
      *                          property="get_three_transactions", type="array",

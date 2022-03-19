@@ -668,141 +668,135 @@
                                                     "example": "1797.56"
                                                 },
                                                 "months": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "json",
-                                                        "example": "[\"mars\", \"février\", \"janvier\"]"
-                                                    }
-                                                },
-                                                "years": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "json",
-                                                        "example": "[\"2022\", \"2021\"]"
-                                                    }
-                                                },
-                                                "get_three_transactions": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "example": "153"
-                                                            },
-                                                            "label": {
-                                                                "type": "string",
-                                                                "example": "VIREMENT EN VOTRE FAVEUR CONDUENT BUSINESS SOLUTIONS (FRA"
-                                                            },
-                                                            "montant": {
-                                                                "type": "number",
-                                                                "example": "1250"
-                                                            },
-                                                            "monnaie": {
-                                                                "type": "string",
-                                                                "example": "EUR"
-                                                            },
-                                                            "dateTransaction": {
-                                                                "type": "string",
-                                                                "format": "date",
-                                                                "example": "2022-03-28"
-                                                            },
-                                                            "status": {
-                                                                "type": "string",
-                                                                "example": "booked"
-                                                            },
-                                                            "account_id": {
-                                                                "type": "string",
-                                                                "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
-                                                            },
-                                                            "category_id": {
-                                                                "type": "integer",
-                                                                "example": "1"
-                                                            },
-                                                            "created_at": {
-                                                                "type": "string",
-                                                                "format": "date",
-                                                                "example": "2022-03-14T23:29:03.000000Z"
-                                                            },
-                                                            "updated_at": {
-                                                                "type": "string",
-                                                                "format": "date",
-                                                                "example": "2022-03-14T23:29:03.000000Z"
-                                                            }
-                                                        },
-                                                        "type": "object"
-                                                    }
-                                                },
-                                                "transactions_for_actual_month": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "example": "153"
-                                                            },
-                                                            "label": {
-                                                                "type": "string",
-                                                                "example": "VIREMENT EN VOTRE FAVEUR CONDUENT BUSINESS SOLUTIONS (FRA"
-                                                            },
-                                                            "montant": {
-                                                                "type": "number",
-                                                                "example": "1250"
-                                                            },
-                                                            "monnaie": {
-                                                                "type": "string",
-                                                                "example": "EUR"
-                                                            },
-                                                            "dateTransaction": {
-                                                                "type": "string",
-                                                                "format": "date",
-                                                                "example": "2022-03-28"
-                                                            },
-                                                            "status": {
-                                                                "type": "string",
-                                                                "example": "booked"
-                                                            },
-                                                            "account_id": {
-                                                                "type": "string",
-                                                                "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
-                                                            },
-                                                            "category_id": {
-                                                                "type": "integer",
-                                                                "example": "1"
-                                                            },
-                                                            "created_at": {
-                                                                "type": "string",
-                                                                "format": "date",
-                                                                "example": "2022-03-14T23:29:03.000000Z"
-                                                            },
-                                                            "updated_at": {
-                                                                "type": "string",
-                                                                "format": "date",
-                                                                "example": "2022-03-14T23:29:03.000000Z"
-                                                            }
-                                                        },
-                                                        "type": "object"
-                                                    }
-                                                },
-                                                "latest_balances": {
-                                                    "properties": {
-                                                        "id": {
-                                                            "type": "number",
-                                                            "example": "4"
-                                                        },
-                                                        "amount": {
-                                                            "type": "number",
-                                                            "example": "5804.18"
-                                                        },
-                                                        "dateAmount": {
-                                                            "type": "number",
-                                                            "example": "2022-03-14"
-                                                        },
-                                                        "account_id": {
-                                                            "type": "number",
-                                                            "example": "e846b95d-6490-44b1-a333-d3d15fe4af25"
-                                                        }
+                                                    "type": "json",
+                                                    "example": "[\"mars\", \"février\", \"janvier\"]"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "years": {
+                                            "type": "json",
+                                            "example": "[\"2022\", \"2021\"]"
+                                        },
+                                        "get_three_transactions": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "153"
                                                     },
-                                                    "type": "object"
+                                                    "label": {
+                                                        "type": "string",
+                                                        "example": "VIREMENT EN VOTRE FAVEUR CONDUENT BUSINESS SOLUTIONS (FRA"
+                                                    },
+                                                    "montant": {
+                                                        "type": "number",
+                                                        "example": "1250"
+                                                    },
+                                                    "monnaie": {
+                                                        "type": "string",
+                                                        "example": "EUR"
+                                                    },
+                                                    "dateTransaction": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-28"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "booked"
+                                                    },
+                                                    "account_id": {
+                                                        "type": "string",
+                                                        "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
+                                                    },
+                                                    "category_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:29:03.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:29:03.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "transactions_for_actual_month": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "153"
+                                                    },
+                                                    "label": {
+                                                        "type": "string",
+                                                        "example": "VIREMENT EN VOTRE FAVEUR CONDUENT BUSINESS SOLUTIONS (FRA"
+                                                    },
+                                                    "montant": {
+                                                        "type": "number",
+                                                        "example": "1250"
+                                                    },
+                                                    "monnaie": {
+                                                        "type": "string",
+                                                        "example": "EUR"
+                                                    },
+                                                    "dateTransaction": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-28"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "booked"
+                                                    },
+                                                    "account_id": {
+                                                        "type": "string",
+                                                        "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
+                                                    },
+                                                    "category_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:29:03.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:29:03.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "latest_balances": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": "4"
+                                                },
+                                                "amount": {
+                                                    "type": "number",
+                                                    "example": "5804.18"
+                                                },
+                                                "dateAmount": {
+                                                    "type": "number",
+                                                    "example": "2022-03-14"
+                                                },
+                                                "account_id": {
+                                                    "type": "number",
+                                                    "example": "e846b95d-6490-44b1-a333-d3d15fe4af25"
                                                 }
                                             },
                                             "type": "object"

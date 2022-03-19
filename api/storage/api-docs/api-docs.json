@@ -93,7 +93,7 @@
                                                         "type": "object"
                                                     }
                                                 },
-                                                "lastname": {
+                                                "lastName": {
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
@@ -354,6 +354,61 @@
                         "bearer": []
                     }
                 ]
+            }
+        },
+        "/api/banks": {
+            "get": {
+                "tags": [
+                    "NordigenAccounts"
+                ],
+                "summary": "Permet d'obtenir la liste des banques",
+                "description": "Retourne la liste des banques",
+                "operationId": "getBanks",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "example": "ABS_CMBRFR2BXXX"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Arkéa Banking Services"
+                                            },
+                                            "logo": {
+                                                "type": "string",
+                                                "example": "https://cdn.nordigen.com/ais/ABS_CMBRFR2BXXX.png"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/requisition": {
@@ -764,6 +819,107 @@
                         "bearer": []
                     }
                 ]
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Permet d'obtenir des informations sur l'utilisateur connecté",
+                "description": "Obtiens des informations sur l'utilisateur",
+                "operationId": "updateUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "lastname": {
+                                            "type": "string",
+                                            "example": "DUPONT"
+                                        },
+                                        "firstname": {
+                                            "type": "string",
+                                            "example": "Jean"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "dupont.jean@gmail.com"
+                                        },
+                                        "bank_id": {
+                                            "type": "string",
+                                            "example": "AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                                        },
+                                        "idRequisition": {
+                                            "type": "string",
+                                            "example": "0e981e62-f803-4ff1-a775-eac2e6af6a2c"
+                                        },
+                                        "account_id": {
+                                            "type": "string",
+                                            "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
+                                        },
+                                        "hasBankAuthorization": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "hasAccountChoices": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "account": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "fdskfjdskl-gfdkapldfsm-aohjgfd"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "compte principal"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         }
     },
@@ -784,11 +940,11 @@
             },
             "RegisterRequest": {
                 "properties": {
-                    "lastname": {
+                    "lastName": {
                         "type": "string",
                         "example": "DUPONT"
                     },
-                    "firstname": {
+                    "firstName": {
                         "type": "string",
                         "example": "Jean"
                     },
@@ -821,7 +977,47 @@
             },
             "UpdateLimitedBudgetRequest": {},
             "UpdateTransactionRequest": {},
-            "UpdateUserRequest": {},
+            "UpdateUserRequest": {
+                "required": [
+                    "password"
+                ],
+                "properties": {
+                    "lastname": {
+                        "type": "string",
+                        "example": "DUPONT"
+                    },
+                    "firstname": {
+                        "type": "string",
+                        "example": "Jean"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "dupont.jean@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "dupont.jean@gmail.com"
+                    },
+                    "bank_id": {
+                        "type": "string",
+                        "example": "AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                    },
+                    "account": {
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "example": "fdskfjdskl-gfdkapldfsm-aohjgfd"
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "compte principal"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
             "User": {
                 "required": [
                     "password"

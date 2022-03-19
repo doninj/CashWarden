@@ -8,10 +8,10 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @OA\Schema(
  *     @OA\Property (
- *         property="lastname", type="string", example="DUPONT"
+ *         property="lastName", type="string", example="DUPONT"
  *     ),
  *     @OA\Property (
- *         property="firstname", type="string", example="Jean"
+ *         property="firstName", type="string", example="Jean"
  *     ),
  *     @OA\Property (
  *         property="email", type="string", example="dupont.jean@gmail.com"

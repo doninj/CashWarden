@@ -74,7 +74,7 @@ class UserAuthController
      *                      ),
      *                  ),
      *                  @OA\Property(
-     *                      property="lastname",
+     *                      property="lastName",
      *                      type="array",
      *                      @OA\Items(
      *                          @OA\Property(

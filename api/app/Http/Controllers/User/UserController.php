@@ -230,6 +230,84 @@ class UserController extends Controller
     }
 
     /**
+     *
+     *
+     * @OA\Post(
+     *      path="/api/user",
+     *      operationId="updateUser",
+     *      tags={"User"},
+     *      summary="Permet d'obtenir des informations sur l'utilisateur connecté",
+     *      description="Obtiens des informations sur l'utilisateur",
+     *      security={
+     *          {"bearer": {}}
+     *      },
+     *
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 ref="#/components/schemas/UpdateUserRequest"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unauthenticated."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property (
+     *                 property="id", type="integer", example="1"
+     *             ),
+     *             @OA\Property (
+     *                 property="lastname", type="string", example="DUPONT"
+     *             ),
+     *             @OA\Property (
+     *                 property="firstname", type="string", example="Jean"
+     *             ),
+     *             @OA\Property (
+     *                 property="email", type="string", example="dupont.jean@gmail.com"
+     *             ),
+     *             @OA\Property (
+     *                 property="bank_id", type="string", example="AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+     *             ),
+     *             @OA\Property (
+     *                 property="idRequisition", type="string", example="0e981e62-f803-4ff1-a775-eac2e6af6a2c"
+     *             ),
+     *             @OA\Property (
+     *                 property="account_id", type="string", example="e806f95a-6455-46a0-f357-d4d15fe4fd90"
+     *             ),
+     *             @OA\Property (
+     *                 property="hasBankAuthorization", type="boolean", example="true"
+     *             ),
+     *             @OA\Property (
+     *                 property="hasAccountChoices", type="boolean", example="true"
+     *             ),
+     *             @OA\Property (
+     *                 property="account", type="object",
+     *                 @OA\Property(
+     *                     property="id", type="string", example="fdskfjdskl-gfdkapldfsm-aohjgfd"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="name", type="string", example="compte principal"
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     *
      * Show the form for creating a new resource.
      *
      */

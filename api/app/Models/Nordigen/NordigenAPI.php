@@ -7,6 +7,9 @@ use Carbon\Traits\Date;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 
+/**
+ * Class nordigenAPI permettant de gérer les appels d'API nordigen
+ */
 class NordigenAPI implements NordigenAPIRequest
 {
     const requisitionsUri = "https://ob.nordigen.com/api/v2/requisitions/";
@@ -17,12 +20,17 @@ class NordigenAPI implements NordigenAPIRequest
     private $refreshToken;
     private $refreshExpireDate;
 
+    /**
+     * Initialisation de l'objet
+     * @throws \ErrorException
+     */
     public function __construct()
     {
         $this->prepare();
     }
 
     /**
+     * Get accessToken
      * @return mixed
      */
     public function getAccessToken()
@@ -31,6 +39,7 @@ class NordigenAPI implements NordigenAPIRequest
     }
 
     /**
+     * Get accessExpireDate
      * @return mixed
      */
     public function getAccessExpireDate()
@@ -39,6 +48,7 @@ class NordigenAPI implements NordigenAPIRequest
     }
 
     /**
+     * Get refreshToken
      * @return mixed
      */
     public function getRefreshToken()
@@ -47,6 +57,7 @@ class NordigenAPI implements NordigenAPIRequest
     }
 
     /**
+     * Get refreshExpireDate
      * @return mixed
      */
     public function getRefreshExpireDate()
@@ -54,6 +65,11 @@ class NordigenAPI implements NordigenAPIRequest
         return $this->refreshExpireDate;
     }
 
+    /**
+     * Permet de récupérer un header de requête
+     *
+     * @return string[]
+     */
     private function getHeader()
     {
         return [
@@ -61,6 +77,14 @@ class NordigenAPI implements NordigenAPIRequest
         ];
     }
 
+    /**
+     * Permet d'appeler une requête GET
+     *
+     * @param $uri
+     * @param $params
+     * @return \GuzzleHttp\Psr7\Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function CallGETAPI($uri, $params)
     {
         $client = new Client();
@@ -73,6 +97,15 @@ class NordigenAPI implements NordigenAPIRequest
         return $request;
     }
 
+    /**
+     * Permet d'appeler une requête POST
+     *
+     * @param $uri
+     * @param $body
+     * @param $needAuthentification
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function CallPOSTAPI($uri, $body, $needAuthentification=true)
     {
         $client = new Client();
@@ -88,6 +121,12 @@ class NordigenAPI implements NordigenAPIRequest
         return $client->post($uri, $params);
     }
 
+    /**
+     * Permet de préparer la requête et réinitialiser le token si celui-ci est obsolète
+     *
+     * @return void
+     * @throws \ErrorException
+     */
     private function prepare()
     {
         if(isset($this->accessExpireDate) && isset($this->refreshExpireDate)){
@@ -103,14 +142,29 @@ class NordigenAPI implements NordigenAPIRequest
         }
     }
 
+    /**
+     * Méthode permettant de récupérer l'identifiant nordigen en variable d'environnement
+     *
+     * @return mixed
+     */
     private function getNordigenId(){
         return env("NORDIGEN_ID");
     }
 
+    /**
+     * Méthode permettant de récupérer la clé nordigen en variable d'environnement
+     * @return mixed
+     */
     private function getNordigenKey(){
         return env("NORDIGEN_KEY");
     }
 
+    /**
+     * Permet de créer un nouveau token en appellant l'api nordigen
+     *
+     * @return void
+     * @throws \ErrorException
+     */
     private function createNewToken(){
         $url = "https://ob.nordigen.com/api/v2/token/new/";
         $body = [
@@ -140,18 +194,39 @@ class NordigenAPI implements NordigenAPIRequest
 
     }
 
+    /**
+     * Méthode permettant d'ajouter des secondes à une date
+     *
+     * @param $date
+     * @param $seconds
+     * @return void
+     */
     private function addSecondToDate($date, $seconds){
         $date->addSecond($seconds);
     }
 
+    /**
+     * Méthode permettant de vérifier si le token peut être raffraichi
+     * @return mixed
+     */
     private function tokenCanBeRefresh(){
         return $this->accessExpireDate->lessThan($this->refreshExpireDate);
     }
 
+    /**
+     * Méthode permettant de vérifier si le token doit être raffraichi
+     * @return bool
+     */
     private function tokenMustBeRefresh(){
         return Carbon::now()->lessThan($this->accessExpireDate);
     }
 
+    /**
+     * Méthode permettant de raffraichir le token
+     *
+     * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     private function refreshToken()
     {
         $url = "https://ob.nordigen.com/api/v2/token/refresh/";
@@ -166,6 +241,14 @@ class NordigenAPI implements NordigenAPIRequest
         $this->accessExpireDate = $dateExpirationNewAccessToken;
     }
 
+    /**
+     * Méthode permettant de récupérer une liste de banques nordigen avec les initiales d'un pays [FR = France]
+     *
+     * @param $country
+     * @return mixed
+     * @throws \ErrorException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getBanks($country)
     {
         $uri = "https://ob.nordigen.com/api/v2/institutions/";
@@ -180,6 +263,13 @@ class NordigenAPI implements NordigenAPIRequest
         }
     }
 
+    /**
+     * Méthode permettant de créer une réquisition sur nordigen
+     *
+     * @param $bank_id
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function postRequisition($bank_id){
         return $this->CallPOSTAPI(self::requisitionsUri, [
             "redirect" => self::redirectConfirmedLink,
@@ -187,10 +277,26 @@ class NordigenAPI implements NordigenAPIRequest
         ]);
     }
 
+    /**
+     * Méthode permettant de récupérer une requisition nordigen par son id
+     *
+     * @param $requisition_id
+     * @return \GuzzleHttp\Psr7\Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getRequisitionById($requisition_id){
         return $this->CallGETAPI(self::requisitionsUri."$requisition_id", []);
     }
 
+    /**
+     * Méthode permettant de récupérer les transactions d'un compte
+     *
+     * @param $account_id
+     * @param $dateFrom
+     * @param $dateTo
+     * @return \GuzzleHttp\Psr7\Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getTransactions($account_id, $dateFrom=null, $dateTo=null){
         $params = [];
 
@@ -205,6 +311,13 @@ class NordigenAPI implements NordigenAPIRequest
         return $this->CallGETAPI(self::accountsUri."$account_id/transactions", $params);
     }
 
+    /**
+     * Méthode permettant de récupérer les soldes d'un compte
+     *
+     * @param $account_id
+     * @return \GuzzleHttp\Psr7\Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getCurrentAmmountOfAccount($account_id){
 
         return $this->CallGETAPI(self::accountsUri."$account_id/balances/", []);

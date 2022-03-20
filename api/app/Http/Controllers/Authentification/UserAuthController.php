@@ -6,7 +6,10 @@ use App\Http\Requests\Authentification\LoginRequest;
 use App\Http\Requests\Authentification\RegisterRequest;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 
@@ -137,7 +140,7 @@ class UserAuthController
      * Méthode permettant de s'enregistrer
      *
      * @param RegisterRequest $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return Application|ResponseFactory|Response
      */
     public function register(RegisterRequest $request)
     {
@@ -148,15 +151,13 @@ class UserAuthController
         $user->firstName = $validated["firstName"];
         $user->email = $validated["email"];
         $user->setPassword($validated["password"]);
-
         $user->save();
-
         $token = $user->createToken('API Token')->accessToken;
 
         return response([
             "user" => $user,
             'token' => $token
-        ]);
+        ],201);
     }
 
     /**
@@ -311,7 +312,7 @@ class UserAuthController
      * Méthode permettant de se connecter
      *
      * @param LoginRequest $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return Application|ResponseFactory|Response
      */
     public function login(LoginRequest $request)
     {
@@ -379,7 +380,7 @@ class UserAuthController
      * Méthode permettant de se déconnecter
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return Application|ResponseFactory|Response
      */
     public function logout(Request $request)
     {

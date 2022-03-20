@@ -10,13 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 
-/**
- * @OA\Info(
- *      version="1.0.0",
- *      title="User auth",
- *      description="Toutes les requêtes d'authentification",
- * )
- */
 class UserAuthController
 {
 

@@ -8,29 +8,5 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class Controller
 {
-    /**
-     * @OA\Info(
-     *      version="1.0.0",
-     *      title="API CashWarden Documentation",
-     *      description="Cette documentation a pour objectif de présenter les différentes requêtes utilisées pour CashWarden",
-     *      @OA\Contact(
-     *          email="tim.gimenez26@gmail.com"
-     *      ),
-     *      @OA\License(
-     *          name="Apache 2.0",
-     *          url="http://www.apache.org/licenses/LICENSE-2.0.html"
-     *      )
-     * )
-     *
-     * @OA\Server(
-     *      url=L5_SWAGGER_CONST_HOST,
-     *      description="Demo API Server"
-     * )
-     *
-     * @OA\Tag(
-     *     name="Projects",
-     *     description="API Endpoints of Projects"
-     * )
-     */
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

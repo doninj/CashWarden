@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "User auth",
-        "description": "Toutes les requêtes d'authentification",
+        "title": "API CashWarden",
+        "description": "Toutes les requêtes API CashWarden",
         "version": "1.0.0"
     },
     "paths": {

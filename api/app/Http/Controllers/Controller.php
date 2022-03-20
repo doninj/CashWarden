@@ -7,6 +7,13 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="API CashWarden",
+ *      description="Toutes les requêtes API CashWarden",
+ * )
+ */
 class Controller extends BaseController
 {
     /**
@@ -16,10 +23,6 @@ class Controller extends BaseController
      *      description="Cette documentation a pour objectif de présenter les différentes requêtes utilisées pour CashWarden",
      *      @OA\Contact(
      *          email="tim.gimenez26@gmail.com"
-     *      ),
-     *      @OA\License(
-     *          name="Apache 2.0",
-     *          url="http://www.apache.org/licenses/LICENSE-2.0.html"
      *      )
      * )
      *

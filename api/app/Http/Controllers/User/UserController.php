@@ -7,11 +7,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use phpDocumentor\Reflection\Types\Float_;
 
 class UserController extends Controller
 {
+    /**
+     * Méthode permettant de récuperer l'utilisateur
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function index(Request $request)
     {
         $user = $request->user();
@@ -37,6 +47,12 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    /**
+     * Méthode permettant de recuperer les mois et années des transactions
+     *
+     * @param $userData
+     * @return void
+     */
     public function GetMonthAndYear($userData) {
         $monthArray = [];
         $yearArray = [];
@@ -72,9 +88,11 @@ class UserController extends Controller
         $this->GetMonth($userData);
         return response()->json($user);
     }
+
     /**
-     * Show the form for creating a new resource.
-     *
+     * Update l'utilisateur et le bank id. Il crée aussi un account
+     * @param UpdateUserRequest $request
+     * @return Application|Response|JsonResponse|ResponseFactory
      */
     public function update(UpdateUserRequest $request)
     {

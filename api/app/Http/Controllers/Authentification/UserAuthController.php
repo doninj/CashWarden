@@ -21,7 +21,7 @@ class UserAuthController
 {
 
     /**
-     *@OA\Tag(name="Authentification", description="Requêtes d'authentifications")
+     * @OA\Tag(name="Authentification", description="Requêtes d'authentifications")
      */
 
     /**
@@ -276,7 +276,7 @@ class UserAuthController
      *     ),
      *     @OA\Response(
      *         response="200",
-     *         description="An example resource",
+     *         description="OK",
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(
@@ -353,7 +353,7 @@ class UserAuthController
      *      path="/api/logout",
      *      operationId="logout",
      *      tags={"Authentification"},
-     *      summary="Permet de se connecter",
+     *      summary="Permet de se déconnecter",
      *      description="Déconnecte l'utilisateur",
      *      security={
      *          {"bearer": {}}
@@ -373,7 +373,7 @@ class UserAuthController
      *     ),
      *     @OA\Response(
      *         response="200",
-     *         description="An example resource",
+     *         description="OK",
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(

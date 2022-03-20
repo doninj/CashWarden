@@ -234,8 +234,8 @@ class UserController extends Controller
      *      path="/api/user",
      *      operationId="updateUser",
      *      tags={"User"},
-     *      summary="Permet d'obtenir des informations sur l'utilisateur connecté",
-     *      description="Obtiens des informations sur l'utilisateur",
+     *      summary="Permet de modifier des information de l'utilisateur",
+     *      description="Modifie les informations de l'utilisateur",
      *      security={
      *          {"bearer": {}}
      *      },

@@ -11,6 +11,60 @@ use Illuminate\Http\Request;
 class TransactionController extends Controller
 {
     /**
+     *
+     *
+     * @OA\Get(
+     *      path="/api/transactions",
+     *      operationId="getTransactions",
+     *      tags={"User"},
+     *      summary="Permet de récupérer une liste de transactions",
+     *      description="Obtiens les transactions de l'utilisateur paginé",
+     *      security={
+     *          {"bearer": {}}
+     *      },
+     *
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unauthenticated."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Lorsqu'un utilisateur est connecté et qu'il possède déjà un compte",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="current_page",
+     *                 type="number",
+     *                 example="1"
+     *             ),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="integer", example="153"),
+     *                     @OA\Property(property="label", type="string", example="VIREMENT EN VOTRE FAVEUR CONDUENT BUSINESS SOLUTIONS (FRA"),
+     *                     @OA\Property(property="montant", type="number", example="1250"),
+     *                     @OA\Property(property="monnaie", type="string", example="EUR"),
+     *                     @OA\Property(property="dateTransaction", type="date", example="2022-03-28"),
+     *                     @OA\Property(property="status", type="string", example="booked"),
+     *                     @OA\Property(property="account_id", type="string", example="e806f95a-6455-46a0-f357-d4d15fe4fd90"),
+     *                     @OA\Property(property="category_id", type="integer", example="1"),
+     *                     @OA\Property(property="created_at", type="date", example="2022-03-14T23:29:03.000000Z"),
+     *                     @OA\Property(property="updated_at", type="date", example="2022-03-14T23:29:03.000000Z")
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     *
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -47,71 +101,5 @@ class TransactionController extends Controller
                 return $transaction->montant;
         })->sum()),2);
         return response()->json($transaction);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreTransactionRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreTransactionRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateTransactionRequest  $request
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateTransactionRequest $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
     }
 }

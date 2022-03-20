@@ -89,8 +89,8 @@ class LimitedBudgetController extends Controller
      *      path="/api/limitedBudgets",
      *      operationId="postLimitedBudgets",
      *      tags={"LimitedBudgets"},
-     *      summary="Permet d'obtenir la liste des budgets limités",
-     *      description="Retourne la liste des budgets limités",
+     *      summary="Permet de créer un budget limité",
+     *      description="Crée un budget limité",
      *      security={
      *          {"bearer": {}}
      *      },
@@ -191,8 +191,8 @@ class LimitedBudgetController extends Controller
      *      path="/api/limitedBudgets/{id}",
      *      operationId="putLimitedBudgets",
      *      tags={"LimitedBudgets"},
-     *      summary="Permet d'obtenir la liste des budgets limités",
-     *      description="Retourne la liste des budgets limités",
+     *      summary="Permet de modifier un budget limité",
+     *      description="Modifie un budget limité",
      *      security={
      *          {"bearer": {}}
      *      },

@@ -13,6 +13,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *         property="previsionDate", type="date", example="2022-03-09"
  *     ),
  * )
+ */
 class UpdateLimitedBudgetRequest extends FormRequest
 {
     private $amountMessage = [

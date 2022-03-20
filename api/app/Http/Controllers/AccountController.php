@@ -38,8 +38,8 @@ class AccountController extends Controller
      *      path="/api/nordigen/accounts",
      *      operationId="getNordigenAccount",
      *      tags={"NordigenAccounts"},
-     *      summary="Permet d'obtenir des informations sur l'utilisateur connecté",
-     *      description="Obtiens des informations sur l'utilisateur",
+     *      summary="Permet d'obtenir la liste des comptes associé à l'utilisateur sur 'nordigen'",
+     *      description="Obtiens la liste des comptes associé à l'utilisateur sur 'nordigen'",
      *      security={
      *          {"bearer": {}}
      *      },

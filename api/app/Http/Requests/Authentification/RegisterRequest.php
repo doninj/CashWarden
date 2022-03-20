@@ -4,6 +4,26 @@ namespace App\Http\Requests\Authentification;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
+/**
+ * @OA\Schema(
+ *     @OA\Property (
+ *         property="lastName", type="string", example="DUPONT"
+ *     ),
+ *     @OA\Property (
+ *         property="firstName", type="string", example="Jean"
+ *     ),
+ *     @OA\Property (
+ *         property="email", type="string", example="dupont.jean@gmail.com"
+ *     ),
+ *     @OA\Property (
+ *         property="password", type="string", example="tuturu"
+ *     ),
+ *     @OA\Property (
+ *         property="passwordConfirmation", type="string", example="tuturu"
+ *     )
+ * )
+ */
 class RegisterRequest extends FormRequest
 {
 
@@ -28,6 +48,7 @@ class RegisterRequest extends FormRequest
     /**
      * Messages d'erreur concernant l'email de l'utilisateur
      * @var array
+     *
      */
     private $emailMessage = [
         "email.required" => "Merci de renseigner un email !",
@@ -45,6 +66,10 @@ class RegisterRequest extends FormRequest
         "password.max" => "Votre mot de passe est trop long !",
     ];
 
+    /**
+     * Messages d'erreur contenant les vérification de mot de passe
+     * @var string[]
+     */
     private $passwordConfirmationMessage = [
         "passwordConfirmation.required" => "Merci de confirmer votre mot de passe !",
         "passwordConfirmation.same" => "Les mots de passe ne correspondent pas !",
@@ -69,6 +94,14 @@ class RegisterRequest extends FormRequest
             $this->passwordMessage +
             $this->passwordConfirmationMessage;
     }
+
+    /**
+     * @OA\Property(format="string", default="DUPONT", description="last name", property="lastname"),
+     * @OA\Property(format="string", default="Jean", description="first name", property="firstname"),
+     * @OA\Property(format="string", default="dupont.jean@gmail.com", description="email", property="email"),
+     * @OA\Property(format="string", default="password", description="password", property="password"),
+     * @OA\Property(format="string", default="password", description="password confirmation", property="passwordConfirmation"),
+     */
 
     /**
      * Récupère les règles de validations à appliquer à la requête

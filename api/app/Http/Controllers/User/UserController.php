@@ -17,10 +17,145 @@ use phpDocumentor\Reflection\Types\Float_;
 class UserController extends Controller
 {
     /**
-     * Méthode permettant de récuperer l'utilisateur
+     *
+     *
+     * @OA\Get(
+     *      path="/api/user",
+     *      operationId="getUserInfo",
+     *      tags={"User"},
+     *      summary="Permet d'obtenir des informations sur l'utilisateur connecté",
+     *      description="Obtiens des informations sur l'utilisateur",
+     *      security={
+     *          {"bearer": {}}
+     *      },
+     *
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unauthenticated."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Lorsqu'un utilisateur est connecté et qu'il possède déjà un compte",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property (
+     *                 property="id", type="integer", example="1"
+     *             ),
+     *             @OA\Property (
+     *                 property="lastname", type="string", example="DUPONT"
+     *             ),
+     *             @OA\Property (
+     *                 property="firstname", type="string", example="Jean"
+     *             ),
+     *             @OA\Property (
+     *                 property="email", type="string", example="dupont.jean@gmail.com"
+     *             ),
+     *             @OA\Property (
+     *                 property="bank_id", type="string", example="AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+     *             ),
+     *             @OA\Property (
+     *                 property="idRequisition", type="string", example="0e981e62-f803-4ff1-a775-eac2e6af6a2c"
+     *             ),
+     *             @OA\Property (
+     *                 property="account_id", type="string", example="e806f95a-6455-46a0-f357-d4d15fe4fd90"
+     *             ),
+     *             @OA\Property (
+     *                 property="hasBankAuthorization", type="boolean", example="true"
+     *             ),
+     *             @OA\Property (
+     *                 property="hasAccountChoices", type="boolean", example="true"
+     *             ),
+     *             @OA\Property (
+     *                  property="account",
+     *                  type="object",
+     *                      @OA\Property(
+     *                          property= "id", type="string", example="e806f95a-6455-46a0-f357-d4d15fe4fd90"
+     *                      ),
+     *                      @OA\Property(
+     *                          property= "name", type="string", example="1"
+     *                      ),
+     *                      @OA\Property(
+     *                          property= "created_at", type="date", example="2022-03-11T21:43:08.000000Z"
+     *                      ),
+     *                      @OA\Property(
+     *                          property= "updated_at", type="date", example="2022-03-11T21:43:08.000000Z"
+     *                      ),
+     *                      @OA\Property(
+     *                          property= "totalSpendingOfActualMonth", type="number", example="914.67"
+     *                      ),
+     *                      @OA\Property(
+     *                          property= "totalIncomeOfActualMonth", type="number", example="1797.56"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="months", type="json", example="[""mars"", ""février"", ""janvier""]")
+     *                      ),
+     *                      @OA\Property(
+     *                          property="years", type="json", example="[""2022"", ""2021""]"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="get_three_transactions", type="array",
+     *                          @OA\Items(
+     *                                  @OA\Property(property="id", type="integer", example="153"),
+     *                                  @OA\Property(property="label", type="string", example="VIREMENT EN VOTRE FAVEUR CONDUENT BUSINESS SOLUTIONS (FRA"),
+     *                                  @OA\Property(property="montant", type="number", example="1250"),
+     *                                  @OA\Property(property="monnaie", type="string", example="EUR"),
+     *                                  @OA\Property(property="dateTransaction", type="date", example="2022-03-28"),
+     *                                  @OA\Property(property="status", type="string", example="booked"),
+     *                                  @OA\Property(property="account_id", type="string", example="e806f95a-6455-46a0-f357-d4d15fe4fd90"),
+     *                                  @OA\Property(property="category_id", type="integer", example="1"),
+     *                                  @OA\Property(property="created_at", type="date", example="2022-03-14T23:29:03.000000Z"),
+     *                                  @OA\Property(property="updated_at", type="date", example="2022-03-14T23:29:03.000000Z")
+     *                          )
+     *                      ),
+     *                      @OA\Property(
+     *                          property="transactions_for_actual_month", type="array",
+     *                          @OA\Items(
+     *                                  @OA\Property(property="id", type="integer", example="153"),
+     *                                  @OA\Property(property="label", type="string", example="VIREMENT EN VOTRE FAVEUR CONDUENT BUSINESS SOLUTIONS (FRA"),
+     *                                  @OA\Property(property="montant", type="number", example="1250"),
+     *                                  @OA\Property(property="monnaie", type="string", example="EUR"),
+     *                                  @OA\Property(property="dateTransaction", type="date", example="2022-03-28"),
+     *                                  @OA\Property(property="status", type="string", example="booked"),
+     *                                  @OA\Property(property="account_id", type="string", example="e806f95a-6455-46a0-f357-d4d15fe4fd90"),
+     *                                  @OA\Property(property="category_id", type="integer", example="1"),
+     *                                  @OA\Property(property="created_at", type="date", example="2022-03-14T23:29:03.000000Z"),
+     *                                  @OA\Property(property="updated_at", type="date", example="2022-03-14T23:29:03.000000Z")
+     *                          )
+     *                      ),
+     *                      @OA\Property(
+     *                          property="latest_balances", type="object",
+     *                          @OA\Property(
+     *                              property="id", type="number", example="4"
+     *                          ),
+     *                          @OA\Property(
+     *                              property="amount", type="number", example="5804.18"
+     *                          ),
+     *                          @OA\Property(
+     *                              property="dateAmount", type="number", example="2022-03-14"
+     *                          ),
+     *                          @OA\Property(
+     *                              property="account_id", type="number", example="e846b95d-6490-44b1-a333-d3d15fe4af25"
+     *                          ),
+     *                      )
+     *                  )
+     *             )
+     *         )
+     *     )
+     * )
+     *
+     *
+     * Méthode permettant de lister les informations d'un utilisateur
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -48,7 +183,7 @@ class UserController extends Controller
     }
 
     /**
-     * Méthode permettant de recuperer les mois et années des transactions
+     * Méthode Permet de lister les mois et années de chaque transactions d'un utilisateur
      *
      * @param $userData
      * @return void
@@ -73,6 +208,13 @@ class UserController extends Controller
         $userData->account['years'] = $yearArray;
         unset($userData->account->transactions);
     }
+
+    /**
+     * Permet d'afficher toutes les informations nécessaire à un utilisateur connecté
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function showUserWhenConnected(Request $request){
         $user = $request->user();
         $userData = $user->load([
@@ -90,9 +232,86 @@ class UserController extends Controller
     }
 
     /**
-     * Update l'utilisateur et le bank id. Il crée aussi un account
-     * @param UpdateUserRequest $request
-     * @return Application|Response|JsonResponse|ResponseFactory
+     *
+     *
+     * @OA\Post(
+     *      path="/api/user",
+     *      operationId="updateUser",
+     *      tags={"User"},
+     *      summary="Permet de modifier des information de l'utilisateur",
+     *      description="Modifie les informations de l'utilisateur",
+     *      security={
+     *          {"bearer": {}}
+     *      },
+     *
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 ref="#/components/schemas/UpdateUserRequest"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unauthenticated."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property (
+     *                 property="id", type="integer", example="1"
+     *             ),
+     *             @OA\Property (
+     *                 property="lastname", type="string", example="DUPONT"
+     *             ),
+     *             @OA\Property (
+     *                 property="firstname", type="string", example="Jean"
+     *             ),
+     *             @OA\Property (
+     *                 property="email", type="string", example="dupont.jean@gmail.com"
+     *             ),
+     *             @OA\Property (
+     *                 property="bank_id", type="string", example="AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+     *             ),
+     *             @OA\Property (
+     *                 property="idRequisition", type="string", example="0e981e62-f803-4ff1-a775-eac2e6af6a2c"
+     *             ),
+     *             @OA\Property (
+     *                 property="account_id", type="string", example="e806f95a-6455-46a0-f357-d4d15fe4fd90"
+     *             ),
+     *             @OA\Property (
+     *                 property="hasBankAuthorization", type="boolean", example="true"
+     *             ),
+     *             @OA\Property (
+     *                 property="hasAccountChoices", type="boolean", example="true"
+     *             ),
+     *             @OA\Property (
+     *                 property="account", type="object",
+     *                 @OA\Property(
+     *                     property="id", type="string", example="fdskfjdskl-gfdkapldfsm-aohjgfd"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="name", type="string", example="compte principal"
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     *
+     * Show the form for creating a new resource.
+     *
      */
     public function update(UpdateUserRequest $request)
     {

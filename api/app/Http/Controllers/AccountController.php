@@ -31,6 +31,48 @@ class AccountController extends Controller
         return false;
     }
 
+    /**
+     *
+     *
+     * @OA\Get(
+     *      path="/api/nordigen/accounts",
+     *      operationId="getNordigenAccount",
+     *      tags={"NordigenAccounts"},
+     *      summary="Permet d'obtenir la liste des comptes associé à l'utilisateur sur 'nordigen'",
+     *      description="Obtiens la liste des comptes associé à l'utilisateur sur 'nordigen'",
+     *      security={
+     *          {"bearer": {}}
+     *      },
+     *
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Unauthenticated."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="accounts", type="json", example="[""aa9456eb-5fa98gfd5a-51abb385f9""]"
+     *             )
+     *         )
+     *     )
+     * )
+     *
+     *
+     * Méthode permettant de récupérer les comptes associés grâce à nordigen
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function nordigenAccount(Request $request)
     {
         $user = $request->user();
@@ -54,81 +96,5 @@ class AccountController extends Controller
                 "message" => "L'utilisateur ne possède pas d'identifiant de requisition de validé !\nAssurez-vous d'avoir lié votre compte à l'application !"
             ], 400);
         }
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreAccountRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreAccountRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Account $account)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Account $account)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateAccountRequest  $request
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateAccountRequest $request, Account $account)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Account $account)
-    {
-        //
     }
 }

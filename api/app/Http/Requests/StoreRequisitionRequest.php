@@ -4,6 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     @OA\Property (
+ *         property="bank_id", type="string", example="AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+ *     )
+ * )
+ */
 class StoreRequisitionRequest extends FormRequest
 {
     /**

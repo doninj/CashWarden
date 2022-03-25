@@ -1,0 +1,1452 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API CashWarden",
+        "description": "Toutes les requêtes API CashWarden",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/nordigen/accounts": {
+            "get": {
+                "tags": [
+                    "NordigenAccounts"
+                ],
+                "summary": "Permet d'obtenir la liste des comptes associé à l'utilisateur sur 'nordigen'",
+                "description": "Obtiens la liste des comptes associé à l'utilisateur sur 'nordigen'",
+                "operationId": "getNordigenAccount",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "accounts": {
+                                            "type": "json",
+                                            "example": "[\"aa9456eb-5fa98gfd5a-51abb385f9\"]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Permet de s'enregistrer",
+                "description": "Crée un utilisateur",
+                "operationId": "register",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "properties": {
+                                                "firstName": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "": {
+                                                                "type": "string",
+                                                                "example": "Merci de renseigner un prénom !"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "lastName": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "": {
+                                                                "type": "string",
+                                                                "example": "Merci de renseigner un nom !"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "": {
+                                                                "type": "string",
+                                                                "example": "Merci de renseigner un email !"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "password": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "": {
+                                                                "type": "string",
+                                                                "example": "Merci de renseigner un mot de passe !"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "passwordConfirmation": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "": {
+                                                                "type": "string",
+                                                                "example": "Merci de renseigner un mot de passe !"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "An example resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "lastname": {
+                                            "type": "string",
+                                            "example": "DUPONT"
+                                        },
+                                        "firstname": {
+                                            "type": "string",
+                                            "example": "Jean"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "dupont.jean@gmail.com"
+                                        },
+                                        "password": {
+                                            "type": "string",
+                                            "example": "tuturu"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Permet de se connecter",
+                "description": "Connecte l'utilisateur",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "": {
+                                                                "type": "string",
+                                                                "example": "Merci de renseigner un email !"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "password": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "": {
+                                                                "type": "string",
+                                                                "example": "Merci de renseigner un mot de passe !"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "lastname": {
+                                                        "type": "string",
+                                                        "example": "DUPONT"
+                                                    },
+                                                    "firstname": {
+                                                        "type": "string",
+                                                        "example": "Jean"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "dupont.jean@gmail.com"
+                                                    },
+                                                    "password": {
+                                                        "type": "string",
+                                                        "example": "tuturu"
+                                                    },
+                                                    "hasBankAuthorization": {
+                                                        "type": "boolean",
+                                                        "example": "false"
+                                                    },
+                                                    "hasAccountChoices": {
+                                                        "type": "boolean",
+                                                        "example": "false"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZmFmOTQ5ODlkMDkzNjA1YTM1MGIxN2I3Yzg0ZDUyNTRlZTdmZmIwMGU5NjBiNWMzMDhjM2YwZTIyNmQ1MDFhNGI2N2Y0YjAwYTQzOGY3M2IiLCJpYXQiOjE2NDc0Njc4MDMuODE4NTMyLCJuYmYiOjE2NDc0Njc4MDMuODE4NTMzLCJleHAiOjE2NzkwMDM4MDMuODExNDA1LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.ZdiWzTvqKzMgvq8Uww6NwDfCIWH0LqoX7llgU6DCVdeHPV7kemgDlP7KEzdxQk-I0YyJYNiNbPcFqsEvQTAN4C4bPcp47UoKub3AVfXCDT7noDEiwfBQV602BLnwsQiH-q1oYUE54zjtO1hOvud2ESYCv7m5iinPoL9ALvVOd184ZTOb3KNLeo6eHx6AJ5XUOXwOIs6lB6efMeeKx3PSfY8xikNu_KjwMpC9YRXEo9XSOzuwqByzBzWJ70p5DWLF6MqtNA2SgT0UxiOUZWDu8XwxpGjiwZ2GUZubX95xICgnbejnXGLPThLZLDVXYb6BCrbI3GgjEQyQf6yP3vybI9AfSeW6r-6nP7QnZ8bTDuLqFEXEdbr4Os7LrTGFhiYDu-NrmFCKNGPaaLNwhpcjFCWLAGjPW24r4lQB2NGX9763fuw0XEdCUvFVKS7ER9LtOPVO7_TUzUWbn8O7TxlLLDdOFcicvX4r2Z8C44COcVQZQh7S9DmOU2y6r3au46ReQyqNpZpzWTfeYFnxG6PjUg6t6cBRGUUXUUuqL3H4ftVhPFjWHMk7cbFsVMlXyILu7GhB6g5Mm3epUVKsu9U0OpP-dJqovyMkpTMJpkBzji1omokj4ILRGNzoFeGEIU0lGEfmVJ55D_nHca0plqBcmdbhwkBNp2DIy4nCT48a_qI"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Permet de se déconnecter",
+                "description": "Déconnecte l'utilisateur",
+                "operationId": "logout",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Vous avez été déconnecté"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/banks": {
+            "get": {
+                "tags": [
+                    "NordigenAccounts"
+                ],
+                "summary": "Permet d'obtenir la liste des banques",
+                "description": "Retourne la liste des banques",
+                "operationId": "getBanks",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "example": "ABS_CMBRFR2BXXX"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Arkéa Banking Services"
+                                            },
+                                            "logo": {
+                                                "type": "string",
+                                                "example": "https://cdn.nordigen.com/ais/ABS_CMBRFR2BXXX.png"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/limitedBudgets": {
+            "get": {
+                "tags": [
+                    "LimitedBudgets"
+                ],
+                "summary": "Permet d'obtenir la liste des budgets limités",
+                "description": "Retourne la liste des budgets limités",
+                "operationId": "getLimitedBudgets",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "limitedBudgets": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "amount": {
+                                                        "type": "string",
+                                                        "example": "5800"
+                                                    },
+                                                    "previsionDate": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-01"
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-11T21:44:23.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:30:22.000000Z"
+                                                    },
+                                                    "isLatestLimitedBudgetOfUser": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "LimitedBudgets"
+                ],
+                "summary": "Permet de créer un budget limité",
+                "description": "Crée un budget limité",
+                "operationId": "postLimitedBudgets",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreLimitedBudgetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "limitedBudgets": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "amount": {
+                                                        "type": "string",
+                                                        "example": "2000.0"
+                                                    },
+                                                    "previsionDate": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-01"
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-11T21:44:23.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:30:22.000000Z"
+                                                    },
+                                                    "isLatestLimitedBudgetOfUser": {
+                                                        "type": "boolean",
+                                                        "example": "true"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/limitedBudgets/{id}": {
+            "put": {
+                "tags": [
+                    "LimitedBudgets"
+                ],
+                "summary": "Permet de modifier un budget limité",
+                "description": "Modifie un budget limité",
+                "operationId": "putLimitedBudgets",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "limited budget id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateLimitedBudgetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "amount": {
+                                            "type": "string",
+                                            "example": "5800"
+                                        },
+                                        "previsionDate": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2022-03-01"
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2022-03-11T21:44:23.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2022-03-14T23:30:22.000000Z"
+                                        },
+                                        "isLatestLimitedBudgetOfUser": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/requisition": {
+            "post": {
+                "tags": [
+                    "Requisition"
+                ],
+                "summary": "Permet de se connecter",
+                "description": "Déconnecte l'utilisateur",
+                "operationId": "postRequisition",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreRequisitionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "": {
+                                                                "type": "string",
+                                                                "example": "Merci de renseigner un identifiant de banque !"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "An example resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "lastname": {
+                                                    "type": "string",
+                                                    "example": "DUPONT"
+                                                },
+                                                "firstname": {
+                                                    "type": "string",
+                                                    "example": "Jean"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "dupont.jean@gmail.com"
+                                                },
+                                                "bank_id": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "IdRequisition": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "account_id": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "hasBankAuthorization": {
+                                                    "type": "boolean",
+                                                    "example": "false"
+                                                },
+                                                "hasAccountChoices": {
+                                                    "type": "boolean",
+                                                    "example": "false"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "requisition_response": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "0e981e62-f803-4ff1-a775-eac2e6af6a2c"
+                                                },
+                                                "created": {
+                                                    "type": "string",
+                                                    "example": "2022-03-17T23:07:51.570255Z"
+                                                },
+                                                "redirect": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:3000/bank-register/"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "CR"
+                                                },
+                                                "institution_id": {
+                                                    "type": "string",
+                                                    "example": "AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                                                },
+                                                "agreement": {
+                                                    "type": "boolean",
+                                                    "example": ""
+                                                },
+                                                "reference": {
+                                                    "type": "boolean",
+                                                    "example": "9f6233b3-e1dc-41b8-96f3-c4e423a74266"
+                                                },
+                                                "accounts": {
+                                                    "type": "json",
+                                                    "example": "[]"
+                                                },
+                                                "link": {
+                                                    "type": "boolean",
+                                                    "example": "https://ob.nordigen.com/psd2/start/9f6233b3-e1dc-41b8-96f3-c4e423a74266/AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                                                },
+                                                "ssn": {
+                                                    "type": "boolean",
+                                                    "example": "null"
+                                                },
+                                                "account_selection": {
+                                                    "type": "boolean",
+                                                    "example": "false"
+                                                },
+                                                "redirect_immediate": {
+                                                    "type": "boolean",
+                                                    "example": "false"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/transactions": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Permet de récupérer une liste de transactions",
+                "description": "Obtiens les transactions de l'utilisateur paginé",
+                "operationId": "getTransactions",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Lorsqu'un utilisateur est connecté et qu'il possède déjà un compte",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "current_page": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "153"
+                                                    },
+                                                    "label": {
+                                                        "type": "string",
+                                                        "example": "VIREMENT EN VOTRE FAVEUR CONDUENT BUSINESS SOLUTIONS (FRA"
+                                                    },
+                                                    "montant": {
+                                                        "type": "number",
+                                                        "example": "1250"
+                                                    },
+                                                    "monnaie": {
+                                                        "type": "string",
+                                                        "example": "EUR"
+                                                    },
+                                                    "dateTransaction": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-28"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "booked"
+                                                    },
+                                                    "account_id": {
+                                                        "type": "string",
+                                                        "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
+                                                    },
+                                                    "category_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:29:03.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:29:03.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Permet d'obtenir des informations sur l'utilisateur connecté",
+                "description": "Obtiens des informations sur l'utilisateur",
+                "operationId": "getUserInfo",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Lorsqu'un utilisateur est connecté et qu'il possède déjà un compte",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "lastname": {
+                                            "type": "string",
+                                            "example": "DUPONT"
+                                        },
+                                        "firstname": {
+                                            "type": "string",
+                                            "example": "Jean"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "dupont.jean@gmail.com"
+                                        },
+                                        "bank_id": {
+                                            "type": "string",
+                                            "example": "AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                                        },
+                                        "idRequisition": {
+                                            "type": "string",
+                                            "example": "0e981e62-f803-4ff1-a775-eac2e6af6a2c"
+                                        },
+                                        "account_id": {
+                                            "type": "string",
+                                            "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
+                                        },
+                                        "hasBankAuthorization": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "hasAccountChoices": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "account": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "1"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2022-03-11T21:43:08.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2022-03-11T21:43:08.000000Z"
+                                                },
+                                                "totalSpendingOfActualMonth": {
+                                                    "type": "number",
+                                                    "example": "914.67"
+                                                },
+                                                "totalIncomeOfActualMonth": {
+                                                    "type": "number",
+                                                    "example": "1797.56"
+                                                },
+                                                "months": {
+                                                    "type": "json",
+                                                    "example": "[\"mars\", \"février\", \"janvier\"]"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "years": {
+                                            "type": "json",
+                                            "example": "[\"2022\", \"2021\"]"
+                                        },
+                                        "get_three_transactions": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "153"
+                                                    },
+                                                    "label": {
+                                                        "type": "string",
+                                                        "example": "VIREMENT EN VOTRE FAVEUR CONDUENT BUSINESS SOLUTIONS (FRA"
+                                                    },
+                                                    "montant": {
+                                                        "type": "number",
+                                                        "example": "1250"
+                                                    },
+                                                    "monnaie": {
+                                                        "type": "string",
+                                                        "example": "EUR"
+                                                    },
+                                                    "dateTransaction": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-28"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "booked"
+                                                    },
+                                                    "account_id": {
+                                                        "type": "string",
+                                                        "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
+                                                    },
+                                                    "category_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:29:03.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:29:03.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "transactions_for_actual_month": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": "153"
+                                                    },
+                                                    "label": {
+                                                        "type": "string",
+                                                        "example": "VIREMENT EN VOTRE FAVEUR CONDUENT BUSINESS SOLUTIONS (FRA"
+                                                    },
+                                                    "montant": {
+                                                        "type": "number",
+                                                        "example": "1250"
+                                                    },
+                                                    "monnaie": {
+                                                        "type": "string",
+                                                        "example": "EUR"
+                                                    },
+                                                    "dateTransaction": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-28"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "booked"
+                                                    },
+                                                    "account_id": {
+                                                        "type": "string",
+                                                        "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
+                                                    },
+                                                    "category_id": {
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:29:03.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2022-03-14T23:29:03.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "latest_balances": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "example": "4"
+                                                },
+                                                "amount": {
+                                                    "type": "number",
+                                                    "example": "5804.18"
+                                                },
+                                                "dateAmount": {
+                                                    "type": "number",
+                                                    "example": "2022-03-14"
+                                                },
+                                                "account_id": {
+                                                    "type": "number",
+                                                    "example": "e846b95d-6490-44b1-a333-d3d15fe4af25"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Permet de modifier des information de l'utilisateur",
+                "description": "Modifie les informations de l'utilisateur",
+                "operationId": "updateUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "lastname": {
+                                            "type": "string",
+                                            "example": "DUPONT"
+                                        },
+                                        "firstname": {
+                                            "type": "string",
+                                            "example": "Jean"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "dupont.jean@gmail.com"
+                                        },
+                                        "bank_id": {
+                                            "type": "string",
+                                            "example": "AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                                        },
+                                        "idRequisition": {
+                                            "type": "string",
+                                            "example": "0e981e62-f803-4ff1-a775-eac2e6af6a2c"
+                                        },
+                                        "account_id": {
+                                            "type": "string",
+                                            "example": "e806f95a-6455-46a0-f357-d4d15fe4fd90"
+                                        },
+                                        "hasBankAuthorization": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "hasAccountChoices": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "account": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "fdskfjdskl-gfdkapldfsm-aohjgfd"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "compte principal"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginRequest": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "dupont.jean@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "tuturu"
+                    }
+                },
+                "type": "object"
+            },
+            "RegisterRequest": {
+                "properties": {
+                    "lastName": {
+                        "type": "string",
+                        "example": "DUPONT"
+                    },
+                    "firstName": {
+                        "type": "string",
+                        "example": "Jean"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "dupont.jean@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "tuturu"
+                    },
+                    "passwordConfirmation": {
+                        "type": "string",
+                        "example": "tuturu"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreLimitedBudgetRequest": {
+                "properties": {
+                    "amount": {
+                        "type": "number",
+                        "example": "2000.0"
+                    },
+                    "previsionDate": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2022-03-09"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreLimitedTransactionRequest": {},
+            "StoreLinkBetweenBankAndCountryRequest": {},
+            "StoreRequisitionRequest": {
+                "properties": {
+                    "bank_id": {
+                        "type": "string",
+                        "example": "AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateLimitedBudgetRequest": {
+                "properties": {
+                    "amount": {
+                        "type": "number",
+                        "example": "2000.0"
+                    },
+                    "previsionDate": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2022-03-09"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateTransactionRequest": {},
+            "UpdateUserRequest": {
+                "required": [
+                    "password"
+                ],
+                "properties": {
+                    "lastname": {
+                        "type": "string",
+                        "example": "DUPONT"
+                    },
+                    "firstname": {
+                        "type": "string",
+                        "example": "Jean"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "dupont.jean@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "dupont.jean@gmail.com"
+                    },
+                    "bank_id": {
+                        "type": "string",
+                        "example": "AGRICOLE_SUD_RHONE_ALPES_AGRIFRPPXXX"
+                    },
+                    "account": {
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "example": "fdskfjdskl-gfdkapldfsm-aohjgfd"
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "compte principal"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "required": [
+                    "password"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "example": "DUPONT"
+                    },
+                    "firstname": {
+                        "type": "string",
+                        "example": "Jean"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "dupont.jean@gmail.com"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "description": "Authorization token obtained from logging in.",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

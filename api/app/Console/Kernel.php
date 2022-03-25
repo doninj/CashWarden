@@ -2,11 +2,13 @@
 
 namespace App\Console;
 
+use App\Models\Account;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+
     /**
      * Define the application's command schedule.
      *
@@ -16,6 +18,14 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+//        $schedule->call(Account::refreshData())->dailyAt('01:00');
+        $schedule->call(function(){
+            Account::refreshData();
+        })->dailyAt("09:00");
+
+        $schedule->call(function(){
+            Account::refreshData();
+        })->dailyAt("18:00");
     }
 
     /**

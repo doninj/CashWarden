@@ -46,6 +46,8 @@ defineProps({
     position: relative;
     transition: color .2s ease-in-out;
     cursor: pointer;
+    color: #A4A6B3;
+    font-weight: normal;
 
     &:before {
       width: 100%;

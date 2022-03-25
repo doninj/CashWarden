@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import Logo from "@/assets/logo.svg"
+import genAvatarUrl from '@/utils/uiAvatar'
 
 import type { MenuItem } from "@/models/Menu"
 import Menu from "./Menu.vue"
 import { Routes } from "@/router"
+import {useAuth} from "@/stores/auth";
+
+const auth = useAuth()
 
 const items: MenuItem[] = [
   {
     route: Routes.Home,
     label: "Vue d'ensemble",
-    icon: "pie-chart"
+    icon: "pie-chart",
   },
   {
     route: Routes.Budget,
@@ -32,7 +36,7 @@ const items: MenuItem[] = [
   {
     label: "Déconnexion",
     icon: "sign-out-alt",
-    action: () => alert("Déconnexion")
+    action: auth.logout
   }
 ]
 </script>
@@ -46,13 +50,12 @@ const items: MenuItem[] = [
     <div id="user">
       <div id="user__avatar">
         <Avatar
-            image="https://i.pravatar.cc/128"
-            class="mr-2"
+            :image="genAvatarUrl(auth.user.firstName, auth.user.lastName)"
             size="large"
             shape="circle"
         />
       </div>
-      John Doe
+      {{ auth.user.firstName }} {{ auth.user.lastName }}
     </div>
     <Menu :items="items"/>
   </header>
@@ -60,14 +63,21 @@ const items: MenuItem[] = [
 
 <style scoped lang="scss">
 header {
-  width: 255px;
-  height: 100vh;
   background: #363740;
+  height: 100%;
+  width: 255px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
   color: #A4A6B3;
 
   #brand {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: .5rem;
     padding: .8rem 1.2rem;
     font-size: 1.2rem;

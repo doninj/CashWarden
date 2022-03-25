@@ -1,5 +1,13 @@
 <?php
 
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Authentification\UserAuthController;
+use App\Http\Controllers\BankController;
+use App\Http\Controllers\LimitedBudgetController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RequisitionController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +22,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post("/register", [UserAuthController::class, "register"]);
+Route::post("/login", [UserAuthController::class, "login"]);
+
+// Récupération des banques
+Route::get("/banks", [BankController::class, "index"]);
+
+Route::middleware('auth:api')->group(function ($route) {
+    $route->post("/requisition", [RequisitionController::class, "store"]);
+    $route->get("/nordigen/accounts", [AccountController::class, "nordigenAccount"]);
+
+    $route->get("/user", [UserController::class, "index"]);
+    $route->get("/userWhenConnected", [UserController::class, "showUserWhenConnected"]);
+
+    $route->get("/transactionsPerMonth", [TransactionController::class, "transactionsPerMonth"]);
+    $route->post("/user", [UserController::class, "update"]);
+
+    $route->get("/limitedBudgets", [LimitedBudgetController::class, "index"]);
+    $route->post("/limitedBudgets", [LimitedBudgetController::class, "store"]);
+    $route->put("/limitedBudgets/{limitedBudget}", [LimitedBudgetController::class, "update"]);
+
+    $route->get("/limitedBudgets/comparison", [LimitedBudgetController::class, "budgetComparison"]);
+
+    $route->get("/transactions", [TransactionController::class, "index"]);
+    $route->get("/categories", [CategoryController::class, "index"]);
+
+    $route->post("/logout", [UserAuthController::class, "logout"]);
 });

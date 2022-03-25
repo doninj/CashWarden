@@ -1,8 +1,9 @@
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { library } from "@fortawesome/fontawesome-svg-core"
 import {
   faPieChart, faHandHoldingDollar,
   faMoneyCheck, faCog,
-  faSignOutAlt
+  faSignOutAlt, faCircleCheck, faEllipsisV,
+  faUtensils, faShoppingBag, faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons"
 
 
@@ -12,15 +13,23 @@ import {
  *   @example
  *   composant faPieCHart -> pie-chart
  * */
-export type IconName = "pie-chart" | "hand-holding-dollar" | "money-check" | "cog" | "sign-out-alt"
+export type IconName =
+  "pie-chart" | "hand-holding-dollar" | "money-check" |
+  "cog" | "sign-out-alt" | "circle-check" | "ellipsis-v" |
+  "utensils" | "shopping-bag" | "arrow-left"
 
 /** ajoute le composant de l'icone */
 const faIcons = [
+  faCircleCheck,
   faPieChart,
   faHandHoldingDollar,
   faMoneyCheck,
   faCog,
-  faSignOutAlt
+  faEllipsisV,
+  faSignOutAlt,
+  faUtensils,
+  faShoppingBag,
+  faArrowLeft,
 ]
 
 faIcons.forEach(icon => library.add(icon))

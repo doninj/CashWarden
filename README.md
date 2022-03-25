@@ -18,6 +18,9 @@
 4. php artisan passport:install
 5. php artisan serve
 
+### Information supplémentaire
+- Ne pas oublier de créer un fichier `.env` à partir du fichier `.env.example` pour le back ET le front
+
 ### Génération du swagger
 
 `php artisan l5-swagger:generate`
@@ -36,7 +39,16 @@ Faire une requête POST sur l'endpoint : `/api/register`.
 - password : string
 - password_confirmation : string
 
-### Choisir ça banque
+### Connexion
+
+Faire une requête POST sur l'endpoint : `/api/login`.
+
+#### Se connecter
+
+- email : string
+- password : string
+
+### Choisir sa banque
 
 Faire une requête GET sur l'endpoint : `/api/banks`.
 Récupérer l'`id` d'une banque depuis la liste.
@@ -60,7 +72,7 @@ Celle-ci renvoie un tableau d'`id` de compte. Choisissez en un.
 
 Mettez à jour l'utilisateur avec une requête PUT sur l'endpoint : `/api/user`.
 
-Avec comme paramètre `account: { name: string, id: int }`
+Avec comme paramètre `account: { name: string, id: string (récupéré précédemment) }`
 
 Ou name est le nom du compte, mais n'a pas d'importance.
 Et id est l'id du compte choisit.
@@ -73,3 +85,8 @@ Vous pouvez maintenant récupérer les informations bancaires de l'utilisateur.
   - date : string pour le mois
   - annee : int pour l'année
 - Liste complète avec pagination `api/transactions`
+
+
+### Déconnexion
+
+Faire une requête POST sur l'endpoint : `/api/logout`.
